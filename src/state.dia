@@ -3892,13 +3892,13 @@ dans le paquetage state.#</dia:string>
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O26">
       <dia:attribute name="obj_pos">
-        <dia:point val="-117.845,-25.951"/>
+        <dia:point val="-150.136,-28.1556"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-117.895,-26.001;-110.365,-21.701"/>
+        <dia:rectangle val="-150.186,-28.2056;-142.656,-23.9056"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="-117.845,-25.951"/>
+        <dia:point val="-150.136,-28.1556"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
         <dia:real val="7.4299999999999997"/>
