@@ -1,17 +1,22 @@
-#compiler of the program
-CXX := gcc
-#compiler flags :
-CXXFLAGS := -g -Wall
-INCLUDES := -I
+MAKE_DIR = $(PWD)
+CONFIG = $(shell mkdir build/; cd build; cmake ..; make -j)
 
-PROGRAMS  := prog
-OBJECTS := *.o
+STATE_DIR = /home/tim/Documents/dev/projet\ transverse/src/shared/state
 
-$(PROGRAMS) : $(OBJECTS)
-	$(CXX) $(inputs) -o $(output) 
+.PHONY : all
+all: clean configure build 
+default_target = all
 
-%.o : %.cpp
-	$(CXX) $(CPPFLAGS) $(INCLUDES) -cpp $(input)  -o $(output)
+.PHONY : clean
+clean : 
+	@$(MAKE) -C src/shared/state -f state.mk clean
+	-rm -r build
 
-$(phony clean):
-	rm -f $(PROGRAMS) *.o *.h
+#créaction du répertoire build et compilation du cmake
+.PHONY : configure
+configure :
+	$(CONFIG)
+
+.PHONY : build
+build : 
+	@$(MAKE) -C src/shared/state -f state.mk build
