@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(RessourcesTest)
 {
   {
     Ressources mana(10);
-    BOOST_CHECK_EQUAL(ex.x, 0);
+    BOOST_REQUIRE_EQUAL(ex.x, 0);
     ex.setX(21);
     BOOST_CHECK_EQUAL(ex.x, 21);
   }
