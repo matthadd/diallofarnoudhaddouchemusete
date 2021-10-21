@@ -3,7 +3,9 @@
 namespace state {
 
 
+Knight::Knight(){}
 
+Knight::~Knight(){}
 
 
 

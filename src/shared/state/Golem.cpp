@@ -3,7 +3,9 @@
 namespace state {
 
 
+Golem::Golem(){}
 
+Golem::~Golem(){}
 
 
 

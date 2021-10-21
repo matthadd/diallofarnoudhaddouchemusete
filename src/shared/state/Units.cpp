@@ -2,8 +2,9 @@
 
 namespace state{
     //Constructeurs et destructeur
-    Units::Units(int size) : size(size){}
-    Units::~Units(){}
+    
+    //Units::Units(int size) : size(size){}
+    //Units::~Units(){}
 	
     //méthodes
     void Units::init(){}
