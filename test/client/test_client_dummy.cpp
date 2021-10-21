@@ -2,6 +2,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <SFML/Graphics.hpp>
+#include <>
 
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {

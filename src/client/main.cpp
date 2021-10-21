@@ -16,10 +16,9 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    Exemple exemple;
-    exemple.setX(53);
-
-    cout << "It works !" << endl;
-
+    Ressources mana(3);
+    cout << "Le joueur possède " << mana.mana << " cristaux de mana" << endl;
+    mana.setMana(10); 
+    cout << "Le joueur possède " << mana.mana << " cristaux de mana" << endl;
     return 0;
 }
