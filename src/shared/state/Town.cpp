@@ -1,9 +1,9 @@
-#include "town.h"
+#include "Town.h"
 
 namespace state{
     //Constructeurs et destructeur
-    town::town(){}
-    town::~town(){}
+    Town::Town(){}
+    Town::~Town(){}
     //méthodes
 	//Getter et Setter
 }

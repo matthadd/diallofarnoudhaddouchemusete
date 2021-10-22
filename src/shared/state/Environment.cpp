@@ -2,8 +2,7 @@
 
 namespace state {
 
-
-Environment::Environment(){}
-Environment::~Environment(){}
+    int getTypeID ();
+    void setTypeID (int newTypeID);
 
 }

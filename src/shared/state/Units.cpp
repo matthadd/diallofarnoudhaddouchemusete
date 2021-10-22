@@ -1,4 +1,4 @@
-#include "Units.h"
+#include "Unit.h"
 
 namespace state{
     //Constructeurs et destructeur
@@ -7,8 +7,8 @@ namespace state{
     //Units::~Units(){}
 	
     //méthodes
-    void Units::init(){}
-    bool move (int i, int j);
+    void init ();
+    bool move (int x, int y);
     bool place (int i, int j);
     int attack (int globalDamage, int globalHp);
 

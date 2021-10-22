@@ -1,4 +1,4 @@
-#include "trainingCamp.h"
+#include "TrainingCamp.h"
 
 namespace state{
     //Constructeurs et destructeur
