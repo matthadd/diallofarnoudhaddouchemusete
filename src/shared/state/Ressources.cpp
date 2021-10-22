@@ -1,18 +1,14 @@
 #include "Ressources.h"
 
-namespace state {
+namespace state{
+    //Constructeurs et destructeur
 
-	//Constructeurs et destructeur
-	Ressources::Ressources(int initMana) : mana(initMana){}
-
-	Ressources::~Ressources(){}
-
+    //méthodes
+    void Ressources::setAmount (int newAmount){
+        this->amount = newAmount;
+    };
+    int Ressources::getAmount (){
+        return this->amount;
+    };
 	//Getter et Setter
-	void Ressources::setMana(int newMana){
-		this->mana = newMana;
-	}
-	int Ressources::getMana(){
-		return this->mana;
-	};
-	
 }

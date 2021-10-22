@@ -1,7 +1,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "../../src/shared/state/Ressources.h"
+#include "../../src/shared/state.h"
 
 using namespace ::state;
 /*
@@ -28,3 +28,40 @@ BOOST_AUTO_TEST_CASE(RessourcesTest)
 }
 */
 /* vim: set sw=2 sts=2 et : */
+BOOST_AUTO_TEST_CASE(TestState)
+{
+  State st{};
+  BOOST_CHECK_EQUAL(st.getTurn(),0);
+  st.setTurn(5);
+  BOOST_CHECK_EQUAL(st.getTurn(),5);
+  st.IncrementTurn();
+  BOOST_CHECK_EQUAL(st.getTurn(),6);
+
+  BOOST_CHECK_EQUAL(st.getPlaying(),NO_PLAYER);
+  st.setPlaying(PLAYER_1);
+  BOOST_CHECK_EQUAL(st.getPlaying(),PLAYER_1);
+  /*
+  st.ChangePlaying();
+  BOOST_CHECK_EQUAL(st.getPlaying(),PLAYER_2);
+  */
+  ///
+  Player p1 = st.getPlayer(1);
+  p1.setColor("Red");
+  BOOST_CHECK_EQUAL(p1.getColor(),"Red");
+}
+
+BOOST_AUTO_TEST_CASE(TestBuilding)
+{
+  Building st{};
+  
+  BOOST_CHECK_EQUAL(st.getAmountMana(),0);
+  st.setAmountMana(5);
+  BOOST_CHECK_EQUAL(st.getAmountMana(),5);
+ }
+
+BOOST_AUTO_TEST_CASE(TestEnvironment)
+{
+  
+
+  
+ }
