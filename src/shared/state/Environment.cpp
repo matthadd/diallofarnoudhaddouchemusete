@@ -2,7 +2,15 @@
 
 namespace state {
 
-    int getTypeID ();
-    void setTypeID (int newTypeID);
+
+    int Environment:: getTypeID  (){
+        return this->typeID; 
+    };
+
+
+
+    void Environment::setTypeID (int typeID){
+        this->typeID= typeID;
+    };
 
 }

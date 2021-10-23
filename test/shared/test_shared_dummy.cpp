@@ -61,7 +61,11 @@ BOOST_AUTO_TEST_CASE(TestBuilding)
 
 BOOST_AUTO_TEST_CASE(TestEnvironment)
 {
+    Environment st{};
   
+    BOOST_CHECK_EQUAL(st.getTypeID(),0);
+    st.setTypeID(5);
+    BOOST_CHECK_EQUAL(st.getTypeID(),5);
 
   
  }
