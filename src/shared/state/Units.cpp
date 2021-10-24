@@ -12,5 +12,4 @@ namespace state{
     bool place (int i, int j);
     int attack (int globalDamage, int globalHp);
 
-    //Getter et Setter
 }

@@ -69,3 +69,21 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
 
   
  }
+
+BOOST_AUTO_TEST_CASE(TestPlayer)
+{
+    Player st{};
+  
+    BOOST_CHECK_EQUAL(st.getColor(),"");
+    st.setColor("YELLOW");
+    BOOST_CHECK_EQUAL(st.getColor(),"YELLOW");
+
+    BOOST_CHECK_EQUAL(st.getName(),"");
+    st.setName("Name");
+    BOOST_CHECK_EQUAL(st.getName(),"Name");
+
+    BOOST_CHECK_EQUAL(st.getStatus(),WAIT);
+    st.setStatus(PLAYING);
+    BOOST_CHECK_EQUAL(st.getStatus(),PLAYING);
+  
+ }
