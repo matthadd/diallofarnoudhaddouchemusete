@@ -1,17 +1,8 @@
 #include "Forest.h"
 
 namespace state {
-
-
-Forest::Forest(){}
-
-Forest::~Forest(){}
-
-
-
-
-
-
-
-
+//constructor
+    Forest::Forest(){}
+//destructor
+    Forest::~Forest(){}
 }
