@@ -16,10 +16,5 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    Mana mana;
-    mana.setAmount(3);
-    cout << "Le joueur possède " << mana.getAmount() << " cristaux de mana" << endl;
-    mana.setAmount(10); 
-    cout << "Le joueur possède " << mana.getAmount() << " cristaux de mana" << endl;
     return 0;
 }

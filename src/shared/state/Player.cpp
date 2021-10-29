@@ -6,7 +6,7 @@ namespace state {
 	Player::Player(){}
 	Player::~Player(){}
     //méthodes
-	int Player::attack(Position position){return 0;}
+	int Player::attack(Position position, int unitID){return 0;}
 	//Getter et Setter
 	std::string Player::getColor (){
 		return this->color;
