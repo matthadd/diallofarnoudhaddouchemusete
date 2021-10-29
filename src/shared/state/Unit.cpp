@@ -2,10 +2,7 @@
 
 namespace state{
     //Constructeurs et destructeur
-    
-    //Units::Units(int size) : size(size){}
-    //Units::~Units(){}
-	
+	// classe abstraite
     //méthodes
     void init ();
     bool move (int x, int y);
