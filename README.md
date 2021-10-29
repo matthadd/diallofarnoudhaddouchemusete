@@ -4,8 +4,6 @@
 ## Setup the environnement : 
 ./setup.sh
 
-#### Required softwares :
-    make install-requirements
 #### clean extern configure build :
     make
 #### Creation and compilation :
