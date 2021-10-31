@@ -31,24 +31,24 @@ BOOST_AUTO_TEST_CASE(RessourcesTest)
 
 BOOST_AUTO_TEST_CASE(TestState)
 {
-  State st{};
-  BOOST_CHECK_EQUAL(st.getTurn(),0);
-  st.setTurn(5);
-  BOOST_CHECK_EQUAL(st.getTurn(),5);
-  st.IncrementTurn();
-  BOOST_CHECK_EQUAL(st.getTurn(),6);
+  State state{};
+  BOOST_CHECK_EQUAL(state.getTurn(),0);
+  state.setTurn(5);
+  BOOST_CHECK_EQUAL(state.getTurn(),5);
+  state.IncrementTurn();
+  BOOST_CHECK_EQUAL(state.getTurn(),6);
 
-  BOOST_CHECK_EQUAL(st.getPlaying(),NO_PLAYER);
-  st.setPlaying(PLAYER_1);
-  BOOST_CHECK_EQUAL(st.getPlaying(),PLAYER_1);
+  BOOST_CHECK_EQUAL(state.getPlaying(),NO_PLAYER);
+  state.setPlaying(PLAYER_1);
+  BOOST_CHECK_EQUAL(state.getPlaying(),PLAYER_1);
   
   //st.ChangePlaying();
   //BOOST_CHECK_EQUAL(st.getPlaying(),PLAYER_2);
   
   ///
-  Player p1 = st.getPlayer(1);
-  p1.setColor("Red");
-  BOOST_CHECK_EQUAL(p1.getColor(),"Red");
+  Player player_1 = state.getPlayer(1);
+  player_1.setColor("Red");
+  BOOST_CHECK_EQUAL(player_1.getColor(),"Red");
 }
 
 BOOST_AUTO_TEST_CASE(TestEnvironment)
@@ -66,28 +66,28 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
 
  BOOST_AUTO_TEST_CASE(TestPosition)
 {
-    Position st{};
+    Position position{};
     // tests setters getters
-    BOOST_CHECK_EQUAL(st.getX(),0);
-    st.setX(10);
-    BOOST_CHECK_EQUAL(st.getX(),10);
+    BOOST_CHECK_EQUAL(position.getX(),0);
+    position.setX(10);
+    BOOST_CHECK_EQUAL(position.getX(),10);
 
-    BOOST_CHECK_EQUAL(st.getY(),0);
-    st.setY(10);
-    BOOST_CHECK_EQUAL(st.getY(),10);
+    BOOST_CHECK_EQUAL(position.getY(),0);
+    position.setY(10);
+    BOOST_CHECK_EQUAL(position.getY(),10);
 
   //test move( X et Y sont initalement a 10 ici)
-    st.move(2,3);
-    BOOST_CHECK_EQUAL(st.getX(),12);
-    BOOST_CHECK_EQUAL(st.getY(),13);
+    position.move(2,3);
+    BOOST_CHECK_EQUAL(position.getX(),12);
+    BOOST_CHECK_EQUAL(position.getY(),13);
   //test changePlace
     //on fixe X et Y à 10
-    st.setY(10);
-    st.setX(10);
+    position.setY(10);
+    position.setX(10);
 
-    st.changePlace(8,4);
-    BOOST_CHECK_EQUAL(st.getX(),8);
-    BOOST_CHECK_EQUAL(st.getY(),4);
+    position.changePlace(8,4);
+    BOOST_CHECK_EQUAL(position.getX(),8);
+    BOOST_CHECK_EQUAL(position.getY(),4);
 
 
 
@@ -96,32 +96,32 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
 
   BOOST_AUTO_TEST_CASE(TestBuilding)
 {
-    Building st{};
+    Building building{};
     // tests setters getters
-    BOOST_CHECK_EQUAL(st.getAmountMana(),0);
-    st.setAmountMana(10);
-    BOOST_CHECK_EQUAL(st.getAmountMana(),10);
+    BOOST_CHECK_EQUAL(building.getAmountMana(),0);
+    building.setAmountMana(10);
+    BOOST_CHECK_EQUAL(sbuildingt.getAmountMana(),10);
 
-    BOOST_CHECK_EQUAL(st.getAmountHP(),0);
-    st.setAmountHP(10);
-    BOOST_CHECK_EQUAL(st.getAmountHP(),10);
+    BOOST_CHECK_EQUAL(building.getAmountHP(),0);
+    building.setAmountHP(10);
+    BOOST_CHECK_EQUAL(building.getAmountHP(),10);
 
-    BOOST_CHECK_EQUAL(st.getBuildingID(),0);
-    st.setBuildingID(8);
-    BOOST_CHECK_EQUAL(st.getBuildingID(),8);
+    BOOST_CHECK_EQUAL(building.getBuildingID(),0);
+    building.setBuildingID(8);
+    BOOST_CHECK_EQUAL(building.getBuildingID(),8);
 
-    BOOST_CHECK_EQUAL(st.getTypeID(),"");
-    st.setTypeID("type1");
-    BOOST_CHECK_EQUAL(st.getTypeID(),"type1");
+    BOOST_CHECK_EQUAL(building.getTypeID(),"");
+    building.setTypeID("type1");
+    BOOST_CHECK_EQUAL(building.getTypeID(),"type1");
 
-    BOOST_CHECK_EQUAL(st.getControler(),0);
-    st.setControler(1);
-    BOOST_CHECK_EQUAL(st.getControler(),1);
+    BOOST_CHECK_EQUAL(building.getControler(),0);
+    building.setControler(1);
+    BOOST_CHECK_EQUAL(building.getControler(),1);
 
-    Position p = st.getPosition();
-    BOOST_CHECK_EQUAL(p.getX(),0);
+    Position position = building.getPosition();
+    BOOST_CHECK_EQUAL(position.getX(),0);
     Position position2(2,8) ;
-    st.setPosition(position2);
+    building.setPosition(position2);
     BOOST_CHECK_EQUAL(position2.getX(),2);
     BOOST_CHECK_EQUAL(position2.getY(),8);
   
@@ -131,19 +131,19 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
 
    BOOST_AUTO_TEST_CASE(TestPlayer)
 {
-    Player st{};
+    Player player{};
      //tests setters getters
-    BOOST_CHECK_EQUAL(st.getColor(),"");
-    st.setColor("Red");
-    BOOST_CHECK_EQUAL(st.getColor(),"Red");
+    BOOST_CHECK_EQUAL(player.getColor(),"");
+    player.setColor("Red");
+    BOOST_CHECK_EQUAL(player.getColor(),"Red");
 
-    BOOST_CHECK_EQUAL(st.getName(),"");
-    st.setName("test");
-    BOOST_CHECK_EQUAL(st.getName(),"test");
+    BOOST_CHECK_EQUAL(player.getName(),"");
+    player.setName("test");
+    BOOST_CHECK_EQUAL(player.getName(),"test");
 
-    BOOST_CHECK_EQUAL(st.getStatus(),WAIT);
-    st.setStatus(PLAYING);
-    BOOST_CHECK_EQUAL(st.getStatus(),PLAYING);
+    BOOST_CHECK_EQUAL(player.getStatus(),WAIT);
+    player.setStatus(PLAYING);
+    BOOST_CHECK_EQUAL(player.getStatus(),PLAYING);
 
     //Unit u= st.getUnit();
     //BOOST_CHECK_EQUAL(u.getSingleUnitHP(),0);
@@ -151,8 +151,28 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
 
     ///Building b1());
 
+ }
+
+   BOOST_AUTO_TEST_CASE(Unit)
+{
+    Unit unit{};
+     //tests setters getters
+    BOOST_CHECK_EQUAL(unit.getColor(),"");
+    unit.setColor("Red");
+    BOOST_CHECK_EQUAL(stunit.getColor(),"Red");
+
+    BOOST_CHECK_EQUAL(unit.getName(),"");
+    unit.setName("test");
+    BOOST_CHECK_EQUAL(unit.getName(),"test");
+
+    BOOST_CHECK_EQUAL(unit.getStatus(),WAIT);
+    unit.setStatus(PLAYING);
+    BOOST_CHECK_EQUAL(unit.getStatus(),PLAYING);
+
+    //Unit u= st.getUnit();
+    //BOOST_CHECK_EQUAL(u.getSingleUnitHP(),0);
 
 
+    ///Building b1());
 
-  
  }
