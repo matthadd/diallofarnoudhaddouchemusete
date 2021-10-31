@@ -145,34 +145,83 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
     player.setStatus(PLAYING);
     BOOST_CHECK_EQUAL(player.getStatus(),PLAYING);
 
-    //Unit u= st.getUnit();
-    //BOOST_CHECK_EQUAL(u.getSingleUnitHP(),0);
+    //gobelin u= st.getgobelin();
+    //BOOST_CHECK_EQUAL(u.getSinglegobelinHP(),0);
 
 
     ///Building b1());
 
  }
 
-   BOOST_AUTO_TEST_CASE(Unit)
+   BOOST_AUTO_TEST_CASE(Gobelin)
 {
-    Unit unit{};
+    Gobelin gobelin{};
      //tests setters getters
-    BOOST_CHECK_EQUAL(unit.getColor(),"");
-    unit.setColor("Red");
-    BOOST_CHECK_EQUAL(stunit.getColor(),"Red");
+    Position position = gobelin.getPosition();
+    BOOST_CHECK_EQUAL(position.getX(),0);
+    Position position2(2,8) ;
+    building.setPosition(position2);
+    Position newPosition = gobelin.getPosition();
+    BOOST_CHECK_EQUAL(position2.getX(),2);
+    BOOST_CHECK_EQUAL(position2.getY(),8);
+    
+    BOOST_CHECK_EQUAL(gobelin.getSinglegobelinHP(), 10);
+    gobelin.setSinglegobelinHP(0);
+    BOOST_CHECK_EQUAL(gobelin.getSinglegobelinHP(),0);
+    
+    BOOST_CHECK_EQUAL(gobelin.getGlobalgobelinHP(), 10);
+    gobelin.setGlobalgobelinHP(0);
+    BOOST_CHECK_EQUAL(gobelin.getGlobalgobelinHP(),0);
 
-    BOOST_CHECK_EQUAL(unit.getName(),"");
-    unit.setName("test");
-    BOOST_CHECK_EQUAL(unit.getName(),"test");
+    BOOST_CHECK_EQUAL(gobelin.getSightRange(), 10);
+    gobelin.setSightRange(0);
+    BOOST_CHECK_EQUAL(gobelin.getSightRange(),0);
 
-    BOOST_CHECK_EQUAL(unit.getStatus(),WAIT);
-    unit.setStatus(PLAYING);
-    BOOST_CHECK_EQUAL(unit.getStatus(),PLAYING);
+    BOOST_CHECK_EQUAL(gobelin.getAttackRange(), 10);
+    gobelin.setAttackRange(0);
+    BOOST_CHECK_EQUAL(gobelin.getAttackRange(),0);
 
-    //Unit u= st.getUnit();
-    //BOOST_CHECK_EQUAL(u.getSingleUnitHP(),0);
+    BOOST_CHECK_EQUAL(gobelin.getSinglegobelinDamage(), 10);
+    gobelin.setSinglegobelinDamage(0);
+    BOOST_CHECK_EQUAL(gobelin.getSinglegobelinDamage(),0);
 
+    BOOST_CHECK_EQUAL(gobelin.getGlobalgobelinDamage(), 10);
+    gobelin.setGlobalgobelinDamage(0);
+    BOOST_CHECK_EQUAL(gobelin.getGlobalgobelinDamage(),0);
 
-    ///Building b1());
+    BOOST_CHECK_EQUAL(gobelin.getMoveRange(), 10);
+    gobelin.setMoveRange(0);
+    BOOST_CHECK_EQUAL(gobelin.getMoveRange(),0);
 
+    BOOST_CHECK_EQUAL(gobelin.getgobelinID(), 10);
+    gobelin.setgobelinID(0);
+    BOOST_CHECK_EQUAL(gobelin.getgobelinID(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getTypeID(), 10);
+    gobelin.setTypeID(0);
+    BOOST_CHECK_EQUAL(gobelin.getTypeID(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getPositions(), 10);
+    gobelin.setPositions(0);
+    BOOST_CHECK_EQUAL(gobelin.getPositions(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getSinglegobelinHp(), 10);
+    gobelin.setSinglegobelinHp(0);
+    BOOST_CHECK_EQUAL(gobelin.getSinglegobelinHp(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getGlobalHp(), 10);
+    gobelin.setGlobalHp(0);
+    BOOST_CHECK_EQUAL(gobelin.getGlobalHp(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getAttackrange(), 10);
+    gobelin.setAttackrange(0);
+    BOOST_CHECK_EQUAL(gobelin.getAttackrange(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getGlobalDamage(), 10);
+    gobelin.getGlobalDamage(0);
+    BOOST_CHECK_EQUAL(gobelin.getGlobalDamage(),0);
+
+    BOOST_CHECK_EQUAL(gobelin.getTypeUnit(), 10);
+    gobelin.setTypeUnit(0);
+    BOOST_CHECK_EQUAL(gobelin.getTypeUnit(),0);
  }
