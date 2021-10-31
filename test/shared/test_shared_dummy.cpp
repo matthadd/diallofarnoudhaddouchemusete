@@ -220,8 +220,4 @@ BOOST_AUTO_TEST_CASE(TestEnvironment)
     BOOST_CHECK_EQUAL(gobelin.getGlobalDamage(), 10);
     gobelin.getGlobalDamage(0);
     BOOST_CHECK_EQUAL(gobelin.getGlobalDamage(),0);
-
-    BOOST_CHECK_EQUAL(gobelin.getTypeUnit(), 10);
-    gobelin.setTypeUnit(0);
-    BOOST_CHECK_EQUAL(gobelin.getTypeUnit(),0);
  }
