@@ -6,7 +6,11 @@ namespace state {
 	Player::Player(){}
 	Player::~Player(){}
     //méthodes
-	int Player::attack(Position position, int unitID){return 0;}
+	int Player::attack(Position position, int unitID){
+	
+		//return getUnit(unitID).attack(position);
+		return 0;
+	}
 	//Getter et Setter
 	std::string Player::getColor (){
 		return this->color;
@@ -31,4 +35,23 @@ namespace state {
     void Player::setStatus (GameStatus _status){
 		this->status = _status;
 	};
+
+	Building Player::getBuildings (int buildingID ){
+		return this->buildings[buildingID];
+	};
+    
+	Unit Player::getUnit (int unitID ){	
+		return this->army[unitID];
+	};
+
+	UnitFactory Player:: getUnitFactory ( ){	
+		return this->unitFactory;
+	};
+
+	//void Player::setRessources (Ressources _ressouces){
+	//	this->ressources = _ressouces;
+	//};
+
+
+	
 }
