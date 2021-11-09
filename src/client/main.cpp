@@ -16,5 +16,15 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
+    if (argc == 2){
+        if(argv[1] == string("hello")){
+            cout<<"Hello world"<<endl;
+        }
+        else if(argv[1] == "state"){
+            cout<<"Utilisez la commande 'make test' pour lancer les tests"<<endl;
+        }
+        else if(argv[1] == "render"){
+            //mettre le teste de rendu ici
+        }
     return 0;
 }
