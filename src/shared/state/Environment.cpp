@@ -12,8 +12,8 @@ namespace state {
     const std::vector<Position>& Environment::getAllPositions() const{
         return allPositions;
     }
-    void Environment::setAllPositions(std::vector<Position>& allPositions){
-        this->allPositions = allPositions;
+    void Environment::setAllPositions(const std::vector<Position>& allPositions){
+        //this->allPositions = allPositions;
     }
     
 
