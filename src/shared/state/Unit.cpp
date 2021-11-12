@@ -4,52 +4,87 @@ namespace state{
     //Constructeurs et destructeur
 	// classe abstraite
     //méthodes
-    void init ();
-    /// incrémente les attributs par les paramètres 
-    /// @param i		(???) 
-    /// @param j		(???) 
-    bool move (int i, int j);
-    /// change les attributs i,j du joeur par les paramètres
-    /// @param i		(???) 
-    /// @param j		(???) 
-    bool place (int i, int j){
-        return this->positions;
+    void Unit::init (){}
+    void Unit::move (int i, int j){
+        positions.move(i,j);
     }
-    int attack (Position position);
-    Position getPosition ();
-    void setPosition (int x, int y);
-    int getSize ();
-    void setSize (int newSize = 0);
-    int getSingleUnitHP ();
-    void setSingleUnitHP (int newSingleUnitHP = 0);
-    int getGlobalUnitHP ();
-    void setGlobalUnitHP (int newGlobalUnitHP = 0);
-    int getSightRange ();
-    void setSightRange (int newSightRange);
-    int getAttackRange ();
-    void setAttackRange (int newAttackRange);
-    int getSingleUnitDamage ();
-    void setSingleUnitDamage (int newSingleUnitDamage);
-    int getGlobalUnitDamage ();
-    void setGlobalUnitDamage (int newGlobalUnitDamage);
-    int getMoveRange ();
-    void setMoveRange (int newMoveRange);
-    int getUnitID ();
-    void setUnitID (int newUnitID);
-    int getTypeID ();
-    void setTypeID (int newTypeID);
+    void Unit::place (int i, int j){
+        positions.changePlace(i,j);
+    }
+    int attack (Position position){
+        return 0;
+    }
+
     // Setters and Getters
-    const Position& getPositions() const;
-    void setPositions(const Position& positions);
-    int getSingleUnitHp() const;
-    void setSingleUnitHp(int singleUnitHp);
-    int getGlobalHp() const;
-    void setGlobalHp(int globalHp);
-    int getAttackrange() const;
-    void setAttackrange(int attackrange);
-    int getGlobalDamage() const;
-    void setGlobalDamage(int globalDamage);
-    const std::string& getTypeUnit() const;
-    void setTypeUnit(const std::string& typeUnit);
+
+    Position Unit::getPosition (){
+        return positions;
+    }    
+    int Unit::getSize (){
+        return size;
+    }
+    void Unit::setSize (int _size){
+        size = _size;
+    }
+    int Unit::getSightRange (){
+        return sightRange;
+    }
+    void Unit::setSightRange (int _sightRange){
+        sightRange = _sightRange;
+    }
+    const Position& Unit::getPositions() const{
+        return positions;
+    }
+    void Unit::setPositions(const Position& _positions){
+        positions = _positions;
+    }
+    int Unit::getSingleUnitHp() const{
+        return singleUnitHp;
+    }
+    void Unit::setSingleUnitHp(int _singleUnitHp){
+        singleUnitHp = _singleUnitHp;
+    }
+    int Unit::getGlobalHp() const{
+        return globalHp;
+    }
+    void Unit::setGlobalHp(int _globalHp){
+        globalHp = _globalHp;
+    }
+    int Unit::getAttackRange(){
+        return attackRange;
+    }
+    void Unit::setAttackRange(int _attackRange){
+        attackRange = _attackRange;
+    }
+    int Unit::getGlobalDamage() const{
+        return globalDamage;
+    }
+    void Unit::setGlobalDamage(int _globalDamage){
+        globalDamage = _globalDamage;
+    }
+    const std::string& Unit::getTypeUnit() const{
+        return typeUnit;
+    }
+    void Unit::setTypeUnit(const std::string& _typeUnit){
+        typeUnit = _typeUnit;
+    }
+    int Unit::getUnitID (){
+        return unitID;
+    }
+    void Unit::setUnitID (int _typeID){
+        unitID = _typeID;
+    }
+    int Unit::getGlobalID (){
+        return globalID;
+    }
+    void Unit::setGlobalID (int _globalID){
+        globalID = _globalID;
+    }
+    int Unit::getMoveRange (){
+        return moveRange;
+    }
+    void Unit::setMoveRange (int _moveRange){
+        moveRange = _moveRange;
+    }
 
 }
