@@ -64,22 +64,22 @@ SUBSCRIBERS ??
 
 
 template <class T> 
-void state::State::Subscribe2TurnBegin()
+void state::State::subscribeTurnBegin()
 {
     TurnBeginEvents.push_back(T::onTurnBegin);
 }
 template <class T> 
-void state::State::Subscribe2TurnBeginAsync()
+void state::State::subscribeTurnBeginAsync()
 {
     TurnBeginEvents.push_back(T::onTurnBeginAsync);
 }
 template <class T> 
-void state::State::Subscribe2TurnEnd()
+void state::State::subscribeTurnEnd()
 {
     TurnEndEvents.push_back(T::onTurnEnd);
 }
 template <class T> 
-void state::State::Subscribe2TurnEndAsync()
+void state::State::subscribeTurnEndAsync()
 {
     TurnEndEvents.push_back(T::onTurnEndAsync);
 }
