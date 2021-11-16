@@ -40,15 +40,15 @@ char state::State::WinnerID()
 }
 void state::State::init()
 {
-    CurrentEnvironnement = NULL;
+    CurrentBackground = NULL;
     turn = 0;
     instance = 0;
     status = 0;
     printf("Initialisation done ... \n");
 }
-void state::State::init(Environnement* env)
+void state::State::init(Background* background)
 {
-    CurrentEnvironnement = env;
+    CurrentBackground = background;
     turn = 0;
     instance = 0;
     status = 0;
