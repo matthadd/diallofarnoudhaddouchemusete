@@ -451,10 +451,10 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#CurrentEnvironnement#</dia:string>
+            <dia:string>#CurrentBackground#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#Environnement*#</dia:string>
+            <dia:string>#Background*#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -500,7 +500,7 @@
             <dia:string>#turn#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#static inline int#</dia:string>
+            <dia:string>#static int#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -966,10 +966,10 @@
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#env#</dia:string>
+                <dia:string>#background#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#Environnement*#</dia:string>
+                <dia:string>#Background*#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -5212,19 +5212,19 @@
         <dia:point val="-141.423,-29.0205"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-141.473,-29.0705;-122.393,-19.9705"/>
+        <dia:rectangle val="-141.473,-29.0705;-119.313,-19.9705"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="-141.423,-29.0205"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="18.98"/>
+        <dia:real val="22.059999999999999"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="9"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#Environnement#</dia:string>
+        <dia:string>#Background#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>
@@ -5362,7 +5362,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#_cellsize#</dia:string>
+            <dia:string>#_cellSize#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#sf::Vector2i#</dia:string>
@@ -5433,7 +5433,7 @@
       <dia:attribute name="operations">
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#Environnement#</dia:string>
+            <dia:string>#Background#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -5463,7 +5463,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#Environnement#</dia:string>
+            <dia:string>#Background#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -6056,7 +6056,7 @@
         <dia:point val="-132.284,-3.17685"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-133.034,-20.0202;-131.534,-2.37685"/>
+        <dia:rectangle val="-133.034,-20.0202;-130.193,-2.37685"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -6064,8 +6064,8 @@
       <dia:attribute name="orth_points">
         <dia:point val="-132.284,-3.17685"/>
         <dia:point val="-132.284,-11.9235"/>
-        <dia:point val="-131.933,-11.9235"/>
-        <dia:point val="-131.933,-19.9702"/>
+        <dia:point val="-130.393,-11.9235"/>
+        <dia:point val="-130.393,-19.9702"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
