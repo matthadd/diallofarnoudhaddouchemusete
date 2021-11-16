@@ -24,7 +24,7 @@ int main(int argc,char* argv[])
             cout<<"Utilisez la commande 'make test' pour lancer les tests"<<endl;
         }
         else if(argv[1] == "render"){
-            //mettre le teste de rendu ici
+            printf("ok");
         }
     return 0;
 }

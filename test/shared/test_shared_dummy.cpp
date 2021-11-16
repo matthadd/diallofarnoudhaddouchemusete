@@ -31,6 +31,7 @@ BOOST_AUTO_TEST_CASE(RessourcesTest)
 
 BOOST_AUTO_TEST_CASE(TestState)
 {
-  State state{};
-  // BOOST_CHECK_EQUAL(state.getTurn(),0);
+  BOOST_CHECK_EQUAL(State::turn,0);
+  State::turn += 10;
+  BOOST_CHECK_EQUAL(State::turn,10);
 }
