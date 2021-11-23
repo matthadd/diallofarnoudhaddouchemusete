@@ -17,13 +17,15 @@ sf::Vector2i state::GameInstance::getPosition()
 
 void state::GameInstance::setPosition(sf::Vector2i v)
 {
-    // doesnt work
-    _position = v;
+    _position = sf::Vector2i(v);
 }
 
 void state::GameInstance::setPosition(int x, int y)
 {
-    // doesnt work
-    _position.x = x;
-    _position.y = y;
+    _position = sf::Vector2i(x,y);
+}
+
+int state::GameInstance::getId()
+{
+    return _id;
 }

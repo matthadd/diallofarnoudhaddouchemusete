@@ -1,5 +1,6 @@
 #include "GameInstanceManager.h"
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 using namespace std;
 using namespace sf;
@@ -40,11 +41,24 @@ int state::GameInstanceManager::getSize(){
 int* state::GameInstanceManager::getArrayFromElements(int sizeMap)
 {
     // assume map is a square
-    int array[sizeMap];
+    int dimMap = (int) sqrt(sizeMap);
+    int map[dimMap][dimMap];
+    int res[sizeMap] = {0}; // or whatever is the default value
+    int indice = 0;
+    sf::Vector2i positionElement;
     for(state::GameInstance* gameInstance : _GameInstances)
     {
-        
+        positionElement = gameInstance->getPosition();
+        map[positionElement.x][positionElement.y] = gameInstance->getId();
+    }
+    for (int i = 0; i< dimMap ; i++)
+    {
+        for (int j = 0; j < dimMap; j++)
+        {
+            res[indice] = map[i][j];
+            indice ++;
+        }
     }
 
-    return array;
+    return res;
 }
