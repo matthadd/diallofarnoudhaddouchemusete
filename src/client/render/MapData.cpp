@@ -1,4 +1,4 @@
-#include "MapData.h"
+/*#include "MapData.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <fstream>
@@ -31,9 +31,9 @@ std::vector<int> getDataFromFile(std::string path){
 
     /*for (auto &n : numbers) {
         printf("%d,", n);
-    }*/
+    }
 
       return numbers;
   }
   else cout << "Unable to open file"; 
-}
+}*/
