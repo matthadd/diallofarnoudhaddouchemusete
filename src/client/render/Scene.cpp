@@ -1,9 +1,8 @@
 #include "Scene.h"
 
 namespace render{
-    Scene::Scene(SceneID id, const state::State& state){
+    Scene::Scene(SceneID id){
     _id = id;
-    _state = state;
     };
     Scene::~Scene(){};
 
