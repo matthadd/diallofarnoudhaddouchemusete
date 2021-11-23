@@ -9,16 +9,22 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
   BOOST_CHECK(1);
 }
-/*
-BOOST_AUTO_TEST_CASE(RessourcesTest)
+
+BOOST_AUTO_TEST_CASE(GameInstanceTest)
 {
   {
-    Ressources mana(10);
-    BOOST_REQUIRE_EQUAL(ex.x, 0);
-    ex.setX(21);
-    BOOST_CHECK_EQUAL(ex.x, 21);
+    GameInstance gi1 ("GI1", 1);
+    GameInstance gi2 ("GI2", 2);
+    BOOST_REQUIRE_EQUAL(gi1.getId(), 1);
+    BOOST_REQUIRE_EQUAL(gi2.getId(), 2);
+    BOOST_REQUIRE_EQUAL(gi1.getName(), "GI1");
+    BOOST_REQUIRE_EQUAL(gi2.getName(), "GI2");
+    BOOST_REQUIRE_EQUAL(gi1.getPosition().x, 0);
+    gi1.setPosition(sf::Vector2i (1,0));
+    BOOST_REQUIRE_EQUAL(gi1.getPosition().x, 1);
   }
-
+}
+/*
   {
     Exemple ex {};
     ex.setX(21);
