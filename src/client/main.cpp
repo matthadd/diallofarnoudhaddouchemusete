@@ -68,21 +68,31 @@ class TileMap : public sf::Drawable, public sf::Transformable
 };
 
 int main(int argc,char* argv[]) {
+
+    
+    // tests state::GameInstance(std::string name, int id)
     state::GameInstance* warrior1 = new state::GameInstance("warrior1",1);
     cout << "Resource loaded" << endl;  
 
     sf::Vector2i pos = warrior1->getPosition();
     cout << "x:" <<pos.x << " y:" <<pos.y << endl;
 
-
+    // test void state::GameInstance::setPosition(sf::Vector2i v)
     warrior1->setPosition(sf::Vector2i(0,1));
     pos = warrior1->getPosition();
     cout << "x:" <<pos.x << " y:" <<pos.y << endl;
-
+    
+    // tests void state::GameInstance::setPosition(int x, int y)
     warrior1->setPosition(1,1);
     pos = warrior1->getPosition();
     cout << "x:" <<pos.x << " y:" <<pos.y << endl;
 
+
+    // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
+    state::GameInstanceManager* gim = new state::GameInstanceManager("GIM_0", 0);
+    
+    // tests int* state::GameInstanceManager::getArrayFromElements(int sizeMap)
+    gim.add()
 
     return 0;
 }
