@@ -73,5 +73,14 @@ int main(int argc,char* argv[]) {
 
     sf::Vector2i pos = warrior1->getPosition();
     cout << "x:" <<pos.x << " y:" <<pos.y << endl;
+
+
+    warrior1->setPosition(sf::Vector2i(1,1));
+    cout << "x:" <<pos.x << " y:" <<pos.y << endl;
+
+    warrior1->setPosition(1,1);
+    cout << "x:" <<pos.x << " y:" <<pos.y << endl;
+
+
     return 0;
 }
