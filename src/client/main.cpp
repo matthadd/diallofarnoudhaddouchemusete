@@ -69,7 +69,6 @@ class TileMap : public sf::Drawable, public sf::Transformable
 
 int main(int argc,char* argv[]) {
 
-    
     // tests state::GameInstance(std::string name, int id)
     state::GameInstance* warrior1 = new state::GameInstance("warrior1",1);
     cout << "Resource loaded" << endl;  
@@ -92,7 +91,7 @@ int main(int argc,char* argv[]) {
     state::GameInstanceManager* gim = new state::GameInstanceManager("GIM_0", 0);
     
     // tests int* state::GameInstanceManager::getArrayFromElements(int sizeMap)
-    gim.add()
+    
 
     return 0;
 }
