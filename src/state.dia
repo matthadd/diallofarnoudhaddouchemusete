@@ -451,10 +451,10 @@
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#CurrentBackground#</dia:string>
+            <dia:string>#CurrentEnvironement#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#Background*#</dia:string>
+            <dia:string>#Environement*#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -989,10 +989,10 @@
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#background#</dia:string>
+                <dia:string>#environement#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#Background*#</dia:string>
+                <dia:string>#Environement*#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
