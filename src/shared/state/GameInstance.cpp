@@ -30,6 +30,10 @@ namespace state{
     {
         return _id;
     }
+    int GameInstance::getTypeID()
+    {
+        return _typeID;
+    }
 
     std::string GameInstance::getName(){
         return _name;

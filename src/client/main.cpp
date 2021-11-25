@@ -89,9 +89,25 @@ int main(int argc,char* argv[]) {
 
     // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     state::GameInstanceManager* gim = new state::GameInstanceManager("GIM_0", 0);
+
+
+    // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
+    gim->add(warrior1);
     
-    // tests int* state::GameInstanceManager::getArrayFromElements(int sizeMap)
-    
+    // tests void state::GameInstanceManager::getArrayFromElements(int* array, int sizeMap)
+    int sizeMap = 32*32;
+    int array[sizeMap] = {0}; // or whatever is the default value
+    for (int k = 0; k < sizeMap; k++)
+    {
+        cout << "array[" << k <<"] = "<< array[k] << endl;
+    }
+    gim->getArrayFromElementsIP(array, sizeMap);
+    for (int k = 0; k< 100; k++)
+    {
+        cout << "array[" << k <<"] = "<< array[k] << endl;
+    }
+
+
 
     return 0;
 }
