@@ -13,8 +13,8 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
 {
   {
-    GameInstance gi1 ("GI1", 1);
-    GameInstance gi2 ("GI2", 2);
+    GameInstance gi1 ("GI1", 1, 1);
+    GameInstance gi2 ("GI2", 2, 2);
     BOOST_REQUIRE_EQUAL(gi1.getId(), 1);
     BOOST_REQUIRE_EQUAL(gi2.getId(), 2);
     BOOST_REQUIRE_EQUAL(gi1.getName(), "GI1");
