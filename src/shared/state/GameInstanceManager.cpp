@@ -38,18 +38,18 @@ int state::GameInstanceManager::getSize(){
 }
 
 
-int* state::GameInstanceManager::getArrayFromElements(int sizeMap)
+int* state::GameInstanceManager::getArrayFromElements(int* res, int sizeMap)
 {
     // assume map is a square
     int dimMap = (int) sqrt(sizeMap);
     int map[dimMap][dimMap];
-    int res[sizeMap] = {0}; // or whatever is the default value
+    // int res[sizeMap] = {0}; // or whatever is the default value
     int indice = 0;
     sf::Vector2i positionElement;
     for(state::GameInstance* gameInstance : _GameInstances)
     {
         positionElement = gameInstance->getPosition();
-        map[positionElement.x][positionElement.y] = gameInstance->getId();
+        map[positionElement.x][positionElement.y] = gameInstance->getTypeID();
     }
     for (int i = 0; i< dimMap ; i++)
     {
@@ -61,4 +61,27 @@ int* state::GameInstanceManager::getArrayFromElements(int sizeMap)
     }
 
     return res;
+}
+
+void state::GameInstanceManager::getArrayFromElementsIP(int* res, int sizeMap)
+{
+    // assume map is a square
+    int dimMap = (int) sqrt(sizeMap);
+    int map[dimMap][dimMap];
+    // int res[sizeMap] = {0}; // or whatever is the default value
+    int indice = 0;
+    sf::Vector2i positionElement;
+    for(state::GameInstance* gameInstance : _GameInstances)
+    {
+        positionElement = gameInstance->getPosition();
+        map[positionElement.x][positionElement.y] = gameInstance->getTypeID();
+    }
+    for (int i = 0; i< dimMap ; i++)
+    {   
+        for (int j = 0; j < dimMap; j++)
+        {
+            res[indice] = map[i][j];
+            indice ++;
+        }
+    }
 }

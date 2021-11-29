@@ -3,10 +3,11 @@
 
 using namespace sf;
 namespace state{
-    GameInstance::GameInstance (std::string name, int id)
+    GameInstance::GameInstance (std::string name, int id, int typeID)
     {
         _name = name;
         _id = id;
+        _typeID = typeID;
         _position = sf::Vector2i(0,0);
     }
 
@@ -28,6 +29,10 @@ namespace state{
     int GameInstance::getId()
     {
         return _id;
+    }
+    int GameInstance::getTypeID()
+    {
+        return _typeID;
     }
 
     std::string GameInstance::getName(){
