@@ -1,6 +1,4 @@
-
 #include <boost/test/unit_test.hpp>
-
 #include "../../src/shared/state.h"
 
 using namespace ::state;
@@ -22,6 +20,13 @@ BOOST_AUTO_TEST_CASE(GameInstanceTest)
     BOOST_REQUIRE_EQUAL(gi1.getPosition().x, 0);
     gi1.setPosition(sf::Vector2i (1,0));
     BOOST_REQUIRE_EQUAL(gi1.getPosition().x, 1);
+    BOOST_REQUIRE_EQUAL(gi1.getPlayerID(), gi2.getPlayerID());
+    /*
+    gi1.setPlayerID(1);
+    gi2.setPlayerID(2);
+    BOOST_CHECK_EQUAL(gi1.getPlayerID(), 1);
+    BOOST_CHECK_EQUAL(gi2.getPlayerID(), 2);
+    */
   }
 }
 /*

@@ -39,6 +39,13 @@ namespace state{
         return _name;
     }
 
+    int GameInstance::getPlayerID (){
+        return _playerID;
+    }
+    void GameInstance::setPlayerID (int playerID){
+        _playerID = playerID;
+    }
+
     GameInstance::~GameInstance(){}
     GameInstance::GameInstance(){}
 }
