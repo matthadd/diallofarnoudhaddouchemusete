@@ -115,7 +115,7 @@ int main(int argc,char* argv[]) {
     gim->getArrayFromElementsIP(array, sizeMap);
     for (int k = 0; k< 50; k++)
     {
-        // cout << "array[" << k <<"] = "<< array[k] << endl;
+        cout << "array[" << k <<"] = "<< array[k] << endl;
     }
 
 

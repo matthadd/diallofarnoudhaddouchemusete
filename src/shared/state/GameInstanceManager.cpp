@@ -71,6 +71,19 @@ void state::GameInstanceManager::getArrayFromElementsIP(int* res, int sizeMap)
     // int res[sizeMap] = {0}; // or whatever is the default value
     int indice = 0;
     sf::Vector2i positionElement;
+        //ini map
+    for (int i = 0; i< dimMap ; i++)
+    {   
+        for (int j = 0; j < dimMap; j++)
+        {
+            map[i][j] = 4*16;
+        }
+    }
+    // ini res
+    for (int i = 0; i < dimMap * dimMap; i ++)
+    {
+        res[i] = 0;
+    }
     for(state::GameInstance* gameInstance : _GameInstances)
     {
         positionElement = gameInstance->getPosition();
