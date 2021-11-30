@@ -5479,8 +5479,13 @@
         <dia:color val="#000000ff"/>
       </dia:attribute>
       <dia:connections>
+<<<<<<< HEAD
         <dia:connection handle="0" to="O8" connection="62"/>
         <dia:connection handle="1" to="O9" connection="42"/>
+=======
+        <dia:connection handle="0" to="O12" connection="62"/>
+        <dia:connection handle="1" to="O13" connection="42"/>
+>>>>>>> 24722a49ee7a5e57b6e551e3cb5324fc4547691e
       </dia:connections>
       <dia:childnode parent="O0"/>
     </dia:object>
@@ -5584,7 +5589,11 @@
         <dia:color val="#000000ff"/>
       </dia:attribute>
       <dia:connections>
+<<<<<<< HEAD
         <dia:connection handle="0" to="O8" connection="62"/>
+=======
+        <dia:connection handle="0" to="O12" connection="62"/>
+>>>>>>> 24722a49ee7a5e57b6e551e3cb5324fc4547691e
         <dia:connection handle="1" to="O5" connection="28"/>
       </dia:connections>
       <dia:childnode parent="O0"/>
@@ -5665,8 +5674,13 @@
         <dia:color val="#000000ff"/>
       </dia:attribute>
       <dia:connections>
+<<<<<<< HEAD
         <dia:connection handle="0" to="O7" connection="54"/>
         <dia:connection handle="1" to="O8" connection="62"/>
+=======
+        <dia:connection handle="0" to="O11" connection="54"/>
+        <dia:connection handle="1" to="O12" connection="62"/>
+>>>>>>> 24722a49ee7a5e57b6e551e3cb5324fc4547691e
       </dia:connections>
       <dia:childnode parent="O0"/>
     </dia:object>
