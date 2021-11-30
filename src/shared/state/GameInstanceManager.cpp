@@ -49,7 +49,7 @@ int* state::GameInstanceManager::getArrayFromElements(int* res, int sizeMap)
     for(state::GameInstance* gameInstance : _GameInstances)
     {
         positionElement = gameInstance->getPosition();
-        map[positionElement.x][positionElement.y] = gameInstance->getTypeID();
+        map[positionElement.y][positionElement.x] = gameInstance->getTypeID();
     }
     for (int i = 0; i< dimMap ; i++)
     {
@@ -74,7 +74,7 @@ void state::GameInstanceManager::getArrayFromElementsIP(int* res, int sizeMap)
     for(state::GameInstance* gameInstance : _GameInstances)
     {
         positionElement = gameInstance->getPosition();
-        map[positionElement.x][positionElement.y] = gameInstance->getTypeID();
+        map[positionElement.y][positionElement.x] = gameInstance->getTypeID();
     }
     for (int i = 0; i< dimMap ; i++)
     {   
