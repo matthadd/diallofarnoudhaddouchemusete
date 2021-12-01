@@ -3,20 +3,20 @@
 
 using namespace sf;
 namespace render{
-    Layer::Layer(LayerID layerID, const std::string& tilesetPath, unsigned width, unsigned height, int nbCol, int nbRow){
+    Layer::Layer(LayerID layerID, const std::string& tilesetPath, sf::Vector2u tileSize, const int* tiles, unsigned width, unsigned height){
         _layerID = layerID;
-        _tileSetPath = tilesetPath;
+        _tilesetPath = tilesetPath;
+        _tileSize = tileSize;   
+        _tiles = tiles;     
         _width = width;
         _height = height;
-        _nbCol = nbCol;
-        _nbRow = nbRow;
     }
 
     Layer::~Layer(){};
 
-    bool Layer::load(int* tiles)
+    bool Layer::load()
     {
-        if(!_tileset.loadFromFile(_tileSetPath)){
+        if(!_tileset.loadFromFile(_tilesetPath)){
             return false;
         }
 
@@ -26,7 +26,7 @@ namespace render{
         for(unsigned int i=0; i < _width; ++i){
             for(unsigned int j=0; j < _height; ++j){
 
-                int tileNumber = tiles[i + j * _width];
+                int tileNumber = _tiles[i + j * _width];
 
                 int tu = tileNumber % (_tileset.getSize().x / _tileSize.x);
                 int tv = tileNumber / (_tileset.getSize().x / _tileSize.x);
