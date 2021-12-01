@@ -4,16 +4,17 @@ namespace render{
     Scene::Scene(SceneID id, state::State& state,int windowWidth, int windowHeight, std::string title) : _sceneInfo(state){
     _id = id;
     sf::RenderWindow _window(sf::VideoMode(windowWidth, windowHeight), title);
-    /*
-    // on gère les évènements
-    while(_window.isOpen()){
-        sf::Event event;
-        while (_window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-                _window.close();
+    
+        // on gère les évènements
+        while(_window.isOpen()){
+            sf::Event event;
+            while (_window.pollEvent(event))
+            {
+                if(event.type == sf::Event::Closed)
+                    _window.close();
+            }
+        
         }
-    */
     }
 
     Scene::~Scene(){};
@@ -26,7 +27,7 @@ namespace render{
         return _layers;
     }
 
-    void Scene::drawScene (){
+    /*void Scene::drawScene (){
         std::vector<state::GameInstanceManager*> GIMlist;
         GIMlist = _sceneInfo._GImaganagers;
         
@@ -40,7 +41,7 @@ namespace render{
             }
         }
         _window.display();
-    }
+    }*/
 
     void Scene::setSceneInfo(state::State& state){
         _sceneInfo = state;
