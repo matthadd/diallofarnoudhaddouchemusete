@@ -500,7 +500,7 @@
             <dia:string>#turn#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#static int#</dia:string>
+            <dia:string>#int#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -635,7 +635,7 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#_GImaganagers#</dia:string>
+            <dia:string>#_GImanagers#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#std::vector&lt;GameInstanceManager*&gt;#</dia:string>
@@ -5918,7 +5918,7 @@
         <dia:point val="-116.02,-16.49"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-116.07,-16.54;-105.995,-6.04002"/>
+        <dia:rectangle val="-116.07,-16.54;-105.995,-6.04"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="-116.02,-16.49"/>

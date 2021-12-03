@@ -98,3 +98,7 @@ void state::GameInstanceManager::getArrayFromElementsIP(int* res, int sizeMap)
         }
     }
 }
+
+std::vector<state::GameInstance*> state::GameInstanceManager::getGameInstances (){
+    return _GameInstances;
+}
