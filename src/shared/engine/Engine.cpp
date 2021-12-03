@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include "Engine.h"
 #include <queue>
 #include "engine.h"
@@ -54,5 +53,4 @@ namespace engine{
         return _currentState;
     }
 }
-=======
->>>>>>> 54951ee16f5d6796dc6b3843996bb4a260ebf03b
+
