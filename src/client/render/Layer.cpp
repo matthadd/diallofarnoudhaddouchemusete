@@ -13,6 +13,7 @@ namespace render{
     }
 
     Layer::~Layer(){};
+    Layer::Layer(){};
 
     bool Layer::load()
     {
@@ -49,7 +50,7 @@ namespace render{
         return true;
     }
 
-    void Layer::draw(sf::RenderTarget& target, sf::RenderStates states)
+    void Layer::draw(sf::RenderTarget& target, sf::RenderStates states) const 
     {
         // on applique la transformation
         states.transform *= getTransform();
