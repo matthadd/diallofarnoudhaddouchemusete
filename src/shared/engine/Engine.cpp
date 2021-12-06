@@ -6,7 +6,7 @@
 #include <memory>
 
 namespace engine{
-    Engine::Engine(state::State &state){
+    Engine::Engine(state::State state){
         _currentState = state;
     }
 
