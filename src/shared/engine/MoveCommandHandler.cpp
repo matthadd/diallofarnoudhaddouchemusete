@@ -10,24 +10,25 @@ namespace engine{
     MoveCommandHandler::~MoveCommandHandler(){}
 
     bool MoveCommandHandler::process(state::State& state){
+        bool res = true;
         sf::Vector2i vec = sf::Vector2i(_newPositionX,_newPositionY);
-        for(size_t i = 0; i<state._GImanagers.size(); i++){
-            for(size_t j =0; j<state._GImanagers[i]->getGameInstances().size(); j++){
-                if(state._GImanagers[i]->getGameInstances()[j]->getPosition() == vec){
+        for(size_t i = 0; i<state._GImanagers.size(); i++)
+        {
+            for(size_t j =0; j<state._GImanagers[i]->getGameInstances().size(); j++)
+            {
+                if(state._GImanagers[i]->getGameInstances()[j]->getPosition() == vec)
+                {
                     if(state._GImanagers[i]->getGameInstances()[j]->getTypeID()>6)
                     {
-                        return false;
+                        res =false;
                     }
-                    else if(state._GImanagers[i]->getGameInstances()[j]->getTypeID()==2){
-                        return false;
-                    }
-                    else
+                    else if(state._GImanagers[i]->getGameInstances()[j]->getTypeID()==2)
                     {
-                        return true;
+                        res = false;
                     }
                 }
             }
         }
-        return true;
+        return res;
     }
 }

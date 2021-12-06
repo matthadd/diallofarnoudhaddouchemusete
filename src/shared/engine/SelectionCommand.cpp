@@ -1,4 +1,5 @@
 #include "SelectionCommand.h"
+#include <iostream>
 
 namespace engine{
 
@@ -16,9 +17,19 @@ namespace engine{
         SelectionCommandHandler* handler = new SelectionCommandHandler(_selectedPositionX, _selectedPositionY);
         
         //verification
-        if(handler->process(state)){
+        if(handler->process(state))
+        {
             //process principal
+
+            return true;
         }
+        else 
+        {
+            std::cout << "La commande n'a pas été exécutée\n" << std::endl;
+            return false;
+        }
+
+
     }
 
     state::GameInstance* SelectionCommand::getGameInstance (){

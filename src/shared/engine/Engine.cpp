@@ -3,51 +3,67 @@
 #include "engine.h"
 #include <iostream>
 #include "Command.h"
-
+#include <memory>
 
 namespace engine{
-    Engine::Engine(state::State state){
+    Engine::Engine(state::State &state){
         _currentState = state;
     }
 
     Engine::~Engine(){}
 
-    void Engine::addCommand(Command* ptr_cmd){
+    void Engine::addCommand(std::shared_ptr<Command> ptr_cmd){
         _commandQueue.push(ptr_cmd);
     }
 
     void Engine::processCommands(){
-        for(size_t i = 0; i < _commandQueue.size(); i++){
-            CommandTypeID type = _commandQueue.front()->getCommandTypeID();
+        // On copie les commandes dans un buffer
+        std::unique_ptr<std::queue< std::shared_ptr<Command>> > commands_buffer;
+        commands_buffer.reset(new std::queue<std::shared_ptr<Command>>(_commandQueue));
+        // On clear la fifo de commandes
+        std::cout << "taille de la queue avant le front : " << _commandQueue.size() << "\n" << std::endl;
+        std::queue<std::shared_ptr<Command>> empty;
+        std::swap(_commandQueue, empty);
+        std::cout << "taille de la queue après le swap : " << _commandQueue.size() << "\n" << std::endl;
+        std::cout << "La taille du buffer : " << commands_buffer->size() << "\n" <<  std::endl;
+        size_t buff_size = commands_buffer->size();
+        for(size_t i = 0; i < buff_size; i++){
+            CommandTypeID type = commands_buffer->front()->getCommandTypeID();
+            std::cout << type << std::endl;
             switch (type)
             {
             case 1://SelectionCommand
-                if(_commandQueue.front()->process(_currentState)){
-                    SelectionCommand* command = (SelectionCommand*)malloc(sizeof(*command));
-                    command = (SelectionCommand*) _commandQueue.front();
+                std::cout << "Vous avez activez une commande de sélection\n" << std::endl;
+                if(commands_buffer->front()->process(_currentState)){
+                    SelectionCommand* command = (SelectionCommand*) commands_buffer->front().get();
                     _currentSelectedInstance = command->getGameInstance();
-                    free(command);
-                }
-                _commandQueue.pop();
+                    std::cout << "la commande de sélection a été exécutée\n" << std::endl;
+                }    
+                commands_buffer->pop();
                 break;
             case 2://MoveCommand
-                MoveCommand* command = (MoveCommand*)malloc(sizeof(*command));
-                command = (MoveCommand*) _commandQueue.front();
-                command->setGameInstance(_currentSelectedInstance);
-                if(command->process(_currentState)){
-                    std::cout << "MoveCommand a réussi\n" << std::endl;
+                std::cout << "Vous avez activez une commande move\n" << std::endl;
+                std::shared_ptr<MoveCommand> moveCommand = std::dynamic_pointer_cast<MoveCommand>(commands_buffer->front());
+                moveCommand->setGameInstance(_currentSelectedInstance);
+                if(moveCommand->process(_currentState)){
+                    std::cout << "La commande de déplacement a été exécutée\n" << std::endl;
                 }
-                free(command);
-                _commandQueue.pop();
+                else{
+                    std::cout << "La commande de déplacement n'a pas été exécutée." << std::endl;
+                }
+                commands_buffer->pop();
                 break;
             /*case 3:
                 break;
             case 4:
                 break;*/
             }
-            _commandQueue.pop();
+            std::cout << "La taille du buffer : " << commands_buffer->size() << "\n" <<  std::endl;
+
         }
+
     }
+
 
     state::State& Engine::getState(){
         return _currentState;

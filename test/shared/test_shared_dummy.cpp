@@ -1,7 +1,9 @@
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/state.h"
+#include "../../src/shared/engine.h"
 
 using namespace ::state;
+using namespace ::engine;
 
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
@@ -20,13 +22,11 @@ BOOST_AUTO_TEST_CASE(GameInstanceTest)
     BOOST_REQUIRE_EQUAL(gi1.getPosition().x, 0);
     gi1.setPosition(sf::Vector2i (1,0));
     BOOST_REQUIRE_EQUAL(gi1.getPosition().x, 1);
-    BOOST_REQUIRE_EQUAL(gi1.getPlayerID(), gi2.getPlayerID());
-    /*
+    //BOOST_CHECK_EQUAL(gi1.getPlayerID(), gi2.getPlayerID());
     gi1.setPlayerID(1);
     gi2.setPlayerID(2);
     BOOST_CHECK_EQUAL(gi1.getPlayerID(), 1);
     BOOST_CHECK_EQUAL(gi2.getPlayerID(), 2);
-    */
   }
 }
 /*
@@ -40,11 +40,47 @@ BOOST_AUTO_TEST_CASE(GameInstanceTest)
 */
 /* vim: set sw=2 sts=2 et : */
 
-BOOST_AUTO_TEST_CASE(TestState)
+BOOST_AUTO_TEST_CASE(TestStateEngine)
 {
-  /*BOOST_CHECK_EQUAL(State::turn,0);
-  State::turn += 10;
-  BOOST_CHECK_EQUAL(State::turn,10);*/
+  State state;
+
+  GameInstance *dwarf1 = new GameInstance("Dwarf_1", 1, 8);
+  dwarf1->setPosition(sf::Vector2i(12,15));
+  BOOST_REQUIRE_EQUAL(dwarf1->getPosition().y, 15);
+  dwarf1->setPlayerID(1);
+
+  GameInstance *dwarf2 = new GameInstance("Dwarf_2", 2, 8);
+  dwarf2->setPosition(sf::Vector2i(12,16));
+  BOOST_REQUIRE_EQUAL(dwarf2->getPosition().x, 12);
+  dwarf2->setPlayerID(2);
+
+  GameInstance *dwarf3 = new GameInstance("Dwarf_3", 3, 8);
+  dwarf3->setPosition(sf::Vector2i(12,17));
+  BOOST_REQUIRE_EQUAL(dwarf2->getPlayerID(), 2);
+  dwarf3->setPlayerID(2);
+
+  GameInstanceManager *unitGI = new GameInstanceManager("Unit's Manager", 1);
+  unitGI->add(dwarf1);
+  unitGI->add(dwarf2);
+  unitGI->add(dwarf3);
+
+  state._GImanagers.push_back(unitGI);
+
+  Engine engine(state);
+
+  std::shared_ptr<SelectionCommand> selecDwarf1 = std::make_shared<SelectionCommand>(12, 15);
+  auto selecDwarf1Eff = selecDwarf1;
+  std::shared_ptr<MoveCommand> moveDwarf1 = std::make_shared<MoveCommand>(13, 15);
+  engine.addCommand(selecDwarf1Eff);
+  engine.addCommand(moveDwarf1);
+  engine.processCommands();
+
+  state = engine.getState();
+
+  BOOST_REQUIRE_EQUAL(dwarf1->getPosition().x, 13);
+  BOOST_REQUIRE_EQUAL(dwarf1->getPosition().y, 15);
+ 
+
 }
 
 /*
