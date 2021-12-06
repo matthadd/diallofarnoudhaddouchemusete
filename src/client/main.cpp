@@ -65,7 +65,9 @@ int main(int argc,char* argv[]) {
     render::Layer warrior_layer(render::BACKGROUND, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
 
     state::State state;
-    render::Scene s(1, state, 32, 32, "title");
+
+   
+    render::Scene s(render::MENU, state, 32, 32, "title");
     s.render(warriors_arr);
     s.render(warriors_arr);
 

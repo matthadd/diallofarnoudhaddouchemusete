@@ -1,7 +1,7 @@
 #include "Scene.h"
 using namespace sf;
 namespace render{
-    Scene::Scene(int id, state::State& state,int windowWidth, int windowHeight, std::string title) : _sceneInfo(state){
+    Scene::Scene(SceneID id, state::State& state,int windowWidth, int windowHeight, std::string title) : _sceneInfo(state){
     _id = id;
     /*sf::RenderWindow _window(sf::VideoMode(windowWidth, windowHeight), title);
     
