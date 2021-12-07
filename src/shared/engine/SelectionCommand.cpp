@@ -12,15 +12,22 @@ namespace engine{
 
     SelectionCommand::~SelectionCommand(){}
 
-    bool SelectionCommand::process(state::State& state){
+    bool SelectionCommand::process(state::State& state){        
 
-        SelectionCommandHandler* handler = new SelectionCommandHandler(_selectedPositionX, _selectedPositionY);
-        
         //verification
-        if(handler->process(state))
+        bool res = false;
+        
+        for(size_t i=0; i< state._GImanagers.size(); i++){
+            for(size_t j=0; j<state._GImanagers[i]->getGameInstances().size(); j++){
+                if(state._GImanagers[i]->getGameInstances()[j]->getPosition() == sf::Vector2i(_selectedPositionX,_selectedPositionY)){
+                    res = true;
+                    _gameInstanceSelected = state._GImanagers[i]->getGameInstances()[j];
+                }
+            }
+        }
+        if(res)
         {
-            //process principal
-
+            //Traitement à faire sur l'affichage
             return true;
         }
         else 
