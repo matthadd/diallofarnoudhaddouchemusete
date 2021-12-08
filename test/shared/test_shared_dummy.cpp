@@ -69,14 +69,14 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
 
   std::shared_ptr<SelectionCommand> selecDwarf1 = std::make_shared<SelectionCommand>(12, 15);
   auto selecDwarf1Eff = selecDwarf1;
-  std::shared_ptr<MoveCommand> moveDwarf1 = std::make_shared<MoveCommand>(13, 15);
+  std::shared_ptr<MoveCommand> moveDwarf1 = std::make_shared<MoveCommand>(13, 15, dwarf1->getId());
   engine.addCommand(selecDwarf1Eff);
   engine.addCommand(moveDwarf1);
   engine.processCommands();
 
   state = engine.getState();
 
-  //BOOST_REQUIRE_EQUAL(dwarf1->getPosition().x, 13);
+  BOOST_REQUIRE_EQUAL(dwarf1->getPosition().x, 13);
   //BOOST_REQUIRE_EQUAL(dwarf1->getPosition().y, 15);
 
 }
