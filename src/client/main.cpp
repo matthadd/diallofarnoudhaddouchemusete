@@ -50,9 +50,12 @@ int main(int argc,char* argv[]) {
         cout << "array[" << k <<"] = "<< array[k] << endl;
     }
 
+    // Process to create Unit and add it to GIM
     state::GameInstance* warrior2 = new state::GameInstance("warrior2", 2, 129);
     warrior2->setPosition(2,2);
     gim->add(warrior2);
+
+    // Process to add GIM to Layer
     int warriors_arr[sizeMap] = {0};
     for (int i = 0; i < sizeMap; i++){ warriors_arr[i] = 0;}
     gim->getArrayFromElementsIP(warriors_arr, sizeMap);
@@ -62,15 +65,23 @@ int main(int argc,char* argv[]) {
     render::Layer l;
     
     // tests render::Layer(args) construct
-    render::Layer warrior_layer(render::BACKGROUND, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
+    render::Layer warrior_layer(0, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
+
+
 
     state::State state;
-
    
     render::Scene s(render::MENU, state, 32, 32, "title");
     s.render(warriors_arr);
-    s.render(warriors_arr);
 
-
+    // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
+    // test reference to own GIM
+    state::GameInstanceManager* gim2 = new state::GameInstanceManager("GIM_0", 0);
+    for (state::GameInstanceManager* g : gim->_GameManagers)
+    {
+        cout << g->getSize() << endl;
+        render::Layer(g);
+    }
+    
     return 0;
 }

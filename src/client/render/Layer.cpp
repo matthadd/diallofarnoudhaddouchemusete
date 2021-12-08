@@ -3,13 +3,22 @@
 
 using namespace sf;
 namespace render{
-    Layer::Layer(LayerID layerID, const std::string& tilesetPath, sf::Vector2u tileSize, const int* tiles, unsigned width, unsigned height){
+    Layer::Layer(int layerID, const std::string& tilesetPath, sf::Vector2u tileSize, const int* tiles, unsigned width, unsigned height){
         _layerID = layerID;
         _tilesetPath = tilesetPath;
         _tileSize = tileSize;   
         _tiles = tiles;     
         _width = width;
         _height = height;
+    }
+
+    Layer::Layer(int _layerId, GameInstanceManager* gim) : _layerId(_layerId)
+    {
+        _tilesetPath = gim->resPath;
+        _tileSize = sf::Vector2u(32, 32);   
+        _tiles = tiles;     
+        _width = 16;
+        _height = 16;
     }
 
     Layer::~Layer(){};

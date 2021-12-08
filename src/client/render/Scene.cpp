@@ -63,12 +63,12 @@ namespace render{
 
     // on crée la TileMapMoussa avec le niveau précédemment déini
     
-    render::Layer warriors(render::MOVABLE, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
+    render::Layer warriors(2, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
 
     if (!warriors.load())
         return -1;
 
-    render::Layer background(render::BACKGROUND, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), background_arr, 16, 16);
+    render::Layer background(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), background_arr, 16, 16);
 
     if (!background.load())
         return -1;
