@@ -9,6 +9,8 @@ state::GameInstanceManager::GameInstanceManager (std::string name, int id)
 {
     _name = name;
     _id = id;
+    _GameManagers.push_back(this);
+
 }
 
 void state::GameInstanceManager::add(state::GameInstance* gameInstance)
