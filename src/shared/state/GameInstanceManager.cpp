@@ -5,7 +5,7 @@
 using namespace std;
 using namespace sf;
 
-state::GameInstanceManager::GameInstanceManager (std::string name, int id)
+state::GameInstanceManager::GameInstanceManager (std::string name, state::GIMTypeID id)
 {
     _name = name;
     _id = id;
@@ -13,7 +13,7 @@ state::GameInstanceManager::GameInstanceManager (std::string name, int id)
 
 }
 
-char state::GameInstanceManager::getID(){
+state::GIMTypeID state::GameInstanceManager::getID(){
     return _id;
 }
 void state::GameInstanceManager::add(state::GameInstance* gameInstance)

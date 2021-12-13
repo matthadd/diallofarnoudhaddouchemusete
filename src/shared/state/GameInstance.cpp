@@ -3,7 +3,7 @@
 
 using namespace sf;
 namespace state{
-    GameInstance::GameInstance (std::string name, int id, int typeID)
+    GameInstance::GameInstance (std::string name, int id, GameInstanceTypeID typeID)
     {
         _name = name;
         _id = id;
@@ -11,7 +11,7 @@ namespace state{
         _position = sf::Vector2i(0,0);
     }
 
-    GameInstance::GameInstance (int gameInstanceTypeID, int id)
+    GameInstance::GameInstance (GameInstanceTypeID gameInstanceTypeID, int id)
     {
         _typeID = gameInstanceTypeID;
         _id = id;
@@ -32,11 +32,11 @@ namespace state{
         _position = sf::Vector2i(x,y);
     }
 
-    int GameInstance::getId()
+    int GameInstance::getID()
     {
         return _id;
     }
-    int GameInstance::getTypeID()
+    GameInstanceTypeID GameInstance::getTypeID()
     {
         return _typeID;
     }
@@ -50,6 +50,11 @@ namespace state{
     }
     void GameInstance::setPlayerID (int playerID){
         _playerID = playerID;
+    }
+
+    bool GameInstance::isSelected()
+    {
+        return _selected;
     }
 
     GameInstance::~GameInstance(){}

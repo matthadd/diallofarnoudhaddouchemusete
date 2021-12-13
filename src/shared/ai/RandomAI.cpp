@@ -38,8 +38,8 @@ namespace ai{
                 int rand_value = RandomAI::GenRand(RandomAI::_unitActionRandRange);
                 std::cout<<rand_value<<std::endl;
                 if(rand_value == 1){
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16), GI->getId()));
-                    std::cout << "l'unité (id = " << GI->getId() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16), GI->getID()));
+                    std::cout << "l'unité (id = " << GI->getID() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
                 }
             }
         }

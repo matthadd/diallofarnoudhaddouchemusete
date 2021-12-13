@@ -23,7 +23,7 @@ namespace engine{
         {
             for(auto gm : gim->getGameInstances())
             {
-                if(gm->getId() == _unitID)
+                if(gm->getID() == _unitID)
                 {
                     unit = gm;
                 }

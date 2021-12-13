@@ -17,11 +17,13 @@ namespace engine{
         //verification
         bool res = false;
         
-        for(size_t i=0; i< state._GImanagers.size(); i++){
-            for(size_t j=0; j<state._GImanagers[i]->getGameInstances().size(); j++){
-                if(state._GImanagers[i]->getGameInstances()[j]->getPosition() == sf::Vector2i(_selectedPositionX,_selectedPositionY)){
+        for(auto gim : state._GImanagers)
+        {
+            for(auto gi : gim->getGameInstances())
+            {
+                if(gi->getPosition() == sf::Vector2i(_selectedPositionX,_selectedPositionY)){
                     res = true;
-                    _gameInstanceSelected = state._GImanagers[i]->getGameInstances()[j];
+                    _gameInstanceSelected = gi;
                 }
             }
         }

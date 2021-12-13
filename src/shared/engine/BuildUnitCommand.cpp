@@ -5,7 +5,7 @@ using namespace state;
 
 namespace engine{
 
-    BuildUnitCommand::BuildUnitCommand (int buildingID, int newUnitTypeID, int uniqueID)
+    BuildUnitCommand::BuildUnitCommand (int buildingID, GameInstanceTypeID newUnitTypeID, int uniqueID)
     {
         _buildingID = buildingID;
         _newUnitType = newUnitTypeID;
@@ -21,43 +21,34 @@ namespace engine{
         GameInstanceManager *buildingGIM;
         GameInstanceManager *unitGIM;
         // Recherche des GameInstanceManagers
-        for(size_t i=0; i<state._GImanagers.size(); i++)
+        for(auto gim : state._GImanagers)
         {
-            if(state._GImanagers[i]->getID() == 1)
+            if(gim->getID() == GIMTypeID::BUILDING)
             {
-                buildingGIM = state._GImanagers[i];
+                buildingGIM = gim;
             }
-            else if(state._GImanagers[i]->getID() == 2)
+            else if(gim->getID() == GIMTypeID::UNIT)
             {
-                unitGIM = state._GImanagers[i];
+                unitGIM = gim;
             }
         }
         // Vérification du type du bâtiment
         sf::Vector2i buildingPosition;
         int playerID;
-        for(size_t i=0; i<buildingGIM->getGameInstances().size(); i++)
+        for(auto gi : buildingGIM->getGameInstances())
         {
-            if(buildingGIM->getGameInstances()[i]->getId() == _buildingID)
+            if(gi->getID() == _buildingID)
             {
-                switch (buildingGIM->getGameInstances()[i]->getTypeID())
-                {
-                case 3:
+                if(gi->getTypeID() == state::GameInstanceTypeID::HEADQUARTER || state::GameInstanceTypeID::TRAININGCAMP)
                 {
                     res = true;
-                    buildingPosition = buildingGIM->getGameInstances()[i]->getPosition();
-                    playerID = buildingGIM->getGameInstances()[i]->getPlayerID();
-                    break;
+                    buildingPosition = gi->getPosition();
+                    playerID = gi->getPlayerID();
                 }
-                case 6:
+                else
                 {
-                    res = true;
-                    buildingPosition = buildingGIM->getGameInstances()[i]->getPosition();
-                    playerID = buildingGIM->getGameInstances()[i]->getPlayerID();
-                    break;
-                }
-                default:
                     res = false;
-                    break;
+                    std::cout << "Il ne s'agit pas d'un bâtiment" << std::endl;
                 }
             }
         }

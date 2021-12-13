@@ -13,7 +13,7 @@ using namespace sf;
 int main(int argc,char* argv[]) {
 
     // tests state::GameInstance(std::string name, int id)
-    state::GameInstance* warrior1 = new state::GameInstance("warrior1", 1, 129);
+    state::GameInstance* warrior1 = new state::GameInstance("warrior1", 1, state::GameInstanceTypeID::DWARF);
     cout << "Resource loaded" << endl;  
 
     sf::Vector2i pos = warrior1->getPosition();
@@ -31,7 +31,7 @@ int main(int argc,char* argv[]) {
  
 
     // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-    state::GameInstanceManager* gim = new state::GameInstanceManager("GIM_1", 0);
+    state::GameInstanceManager* gim = new state::GameInstanceManager("GIM_1", state::GIMTypeID::UNIT);
 
 
     // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
@@ -51,7 +51,7 @@ int main(int argc,char* argv[]) {
     }
 
     // Process to create Unit and add it to GIM
-    state::GameInstance* warrior2 = new state::GameInstance("warrior2", 2, 129);
+    state::GameInstance* warrior2 = new state::GameInstance("warrior2", 2, state::GameInstanceTypeID::DWARF);
     warrior2->setPosition(2,2);
     gim->add(warrior2);
 
@@ -76,7 +76,7 @@ int main(int argc,char* argv[]) {
 
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     // test reference to own GIM
-    state::GameInstanceManager* gim2 = new state::GameInstanceManager("GIM_0", 0);
+    state::GameInstanceManager* gim2 = new state::GameInstanceManager("GIM_0", state::GIMTypeID::UNIT);
     for (state::GameInstanceManager* g : gim->_GameManagers)
     {
         cout << g->getSize() << endl;
