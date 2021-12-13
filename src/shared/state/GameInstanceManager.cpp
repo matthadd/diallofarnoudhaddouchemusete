@@ -13,6 +13,9 @@ state::GameInstanceManager::GameInstanceManager (std::string name, int id)
 
 }
 
+char state::GameInstanceManager::getID(){
+    return _id;
+}
 void state::GameInstanceManager::add(state::GameInstance* gameInstance)
 {
     std::vector<state::GameInstance*>* v = &_GameInstances;

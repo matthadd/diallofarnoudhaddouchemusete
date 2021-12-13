@@ -1,9 +1,12 @@
 #include <boost/test/unit_test.hpp>
 #include "../../src/shared/state.h"
 #include "../../src/shared/engine.h"
+#include "../../src/shared/ai.h"
+
 
 using namespace ::state;
 using namespace ::engine;
+using namespace ::ai;
 
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
@@ -79,6 +82,47 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   BOOST_REQUIRE_EQUAL(dwarf1->getPosition().x, 13);
   //BOOST_REQUIRE_EQUAL(dwarf1->getPosition().y, 15);
 
+}
+
+BOOST_AUTO_TEST_CASE(TetsAiEngine){
+  #define Player_ID 1
+  #define AI_ID 2
+  #define UNIT_LAYER_ID 2
+
+  //Initialisation d'un état du jeu
+  State state;
+  int InstanceID = 0;
+
+  GameInstance *dwarfPlayer = new GameInstance("Dwarf_Player", InstanceID, 8);
+  InstanceID++;
+  dwarfPlayer->setPosition(sf::Vector2i(12,15));
+  dwarfPlayer->setPlayerID(Player_ID);
+
+  GameInstance *dwarfAI = new GameInstance("Dwarf_AI", InstanceID, 8);
+  InstanceID++;
+  dwarfAI->setPosition(sf::Vector2i(12,16));
+  int initialXPosition = dwarfAI->getPosition().x;
+  dwarfAI->setPlayerID(AI_ID);
+
+  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", UNIT_LAYER_ID);
+  unitGIM->add(dwarfPlayer);
+  unitGIM->add(dwarfAI);
+
+  state._GImanagers.push_back(unitGIM);
+
+  //Création du moteur du jeu et instanciation de l'ia
+  Engine engine(state);
+  RandomAI randomAI;
+
+  //Génération des commandes de l'IA aléatoire
+  randomAI.GenCommands(engine, state, AI_ID);
+  
+  engine.processCommands();
+  state = engine.getState();
+  int newXPosition = dwarfAI->getPosition().x;
+  
+  BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
+  BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (dwarfAI->getId()) (dwarfPlayer->getId()));
 }
 
 /*
