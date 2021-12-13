@@ -104,9 +104,10 @@ namespace render{
             {
                 l.load();
                 window.draw(l);
-                sleep(2);
                 window.display();
             }
+            sleep(1); // put macro here for frame rate
+
            
            
         }
