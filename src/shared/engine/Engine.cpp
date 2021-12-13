@@ -32,7 +32,9 @@ namespace engine{
             std::cout << type << std::endl;
             switch (type)
             {
+
             case 1://SelectionCommand
+            {
                 std::cout << "Vous avez activez une commande de sélection\n" << std::endl;
                 if(commands_buffer->front()->process(_currentState)){
                     SelectionCommand* command = (SelectionCommand*) commands_buffer->front().get();
@@ -41,7 +43,10 @@ namespace engine{
                 }    
                 commands_buffer->pop();
                 break;
+            }
+
             case 2://MoveCommand
+            {
                 std::cout << "Vous avez activez une commande move\n" << std::endl;
                 std::shared_ptr<MoveCommand> moveCommand = std::dynamic_pointer_cast<MoveCommand>(commands_buffer->front());
                 moveCommand->setGameInstance(_currentSelectedInstance);
@@ -53,10 +58,21 @@ namespace engine{
                 }
                 commands_buffer->pop();
                 break;
-            /*case 3:
+            }
+
+            case 4://BuildUnitCommand
+            {
+                std::shared_ptr<BuildUnitCommand> buildUnitCommand = std::dynamic_pointer_cast<BuildUnitCommand>(commands_buffer->front());
+                if(buildUnitCommand->process(_currentState)){
+                    std::cout << "La commande de création d'unité a été exécutée\n" << std::endl;
+                }
+                else{
+                    std::cout << "La commande de création d'unité n'a pas été exécutée." << std::endl;
+                }
+                commands_buffer->pop();
                 break;
-            case 4:
-                break;*/
+            }
+            
             }
             std::cout << "La taille du buffer : " << commands_buffer->size() << "\n" <<  std::endl;
 

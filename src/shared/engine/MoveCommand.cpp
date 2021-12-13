@@ -17,17 +17,23 @@ namespace engine{
         //Vérification de la règle
         bool res = true;
         sf::Vector2i vec = sf::Vector2i(_newPositionX,_newPositionY);
-        for(size_t i=0; i<state._GImanagers.size(); i++)
+        state::GameInstance *unit;
+        
+        for(auto gim : state._GImanagers)
         {
-            for(size_t j=0; j<state._GImanagers[i]->getGameInstances().size(); j++)
+            for(auto gm : gim->getGameInstances())
             {
-                if(state._GImanagers[i]->getGameInstances()[j]->getPosition() == vec)
+                if(gm->getId() == _unitID)
                 {
-                    if(state._GImanagers[i]->getGameInstances()[j]->getTypeID()>6)
+                    unit = gm;
+                }
+                if(gm->getPosition() == vec)
+                {
+                    if(gm->getTypeID() > 6)
                     {
-                        res =false;
+                        res = false;
                     }
-                    else if(state._GImanagers[i]->getGameInstances()[j]->getTypeID()==2)
+                    if(gm->getTypeID() == 2)
                     {
                         res = false;
                     }
@@ -38,16 +44,7 @@ namespace engine{
         //Modification du state
         if(res)
         {
-            for(size_t i = 0; i<state._GImanagers.size(); i++)
-            {
-                for(size_t j =0; j<state._GImanagers[i]->getGameInstances().size(); j++)
-                {
-                    if(state._GImanagers[i]->getGameInstances()[j]->getId() == _unitID)
-                    {
-                        state._GImanagers[i]->getGameInstances()[j]->setPosition(_newPositionX,_newPositionY);
-                    }
-                }
-            }
+            unit->setPosition(vec);
             std::cout << "L'unité se trouve maintenant sur la case de coordonnées : (" << _newPositionX << "," << _newPositionY << ")\n" << std::endl;
             return true;
         }

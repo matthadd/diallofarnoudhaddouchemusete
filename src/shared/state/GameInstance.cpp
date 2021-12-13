@@ -11,6 +11,12 @@ namespace state{
         _position = sf::Vector2i(0,0);
     }
 
+    GameInstance::GameInstance (int gameInstanceTypeID, int id)
+    {
+        _typeID = gameInstanceTypeID;
+        _id = id;
+    }
+
     sf::Vector2i GameInstance::getPosition()
     {
         return _position;
