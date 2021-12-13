@@ -10,6 +10,7 @@ namespace render{
         _tiles = tiles;     
         _width = width;
         _height = height;
+        _layers.push_back(*this);
     }
 
 
