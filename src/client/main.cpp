@@ -80,7 +80,6 @@ int main(int argc,char* argv[]) {
     for (state::GameInstanceManager* g : gim->_GameManagers)
     {
         cout << g->getSize() << endl;
-        render::Layer(g);
     }
     
     return 0;

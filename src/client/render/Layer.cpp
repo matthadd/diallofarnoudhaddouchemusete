@@ -12,14 +12,6 @@ namespace render{
         _height = height;
     }
 
-    Layer::Layer(int _layerId, GameInstanceManager* gim) : _layerId(_layerId)
-    {
-        _tilesetPath = gim->resPath;
-        _tileSize = sf::Vector2u(32, 32);   
-        _tiles = tiles;     
-        _width = 16;
-        _height = 16;
-    }
 
     Layer::~Layer(){};
     Layer::Layer(){};
