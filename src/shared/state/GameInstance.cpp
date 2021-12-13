@@ -57,6 +57,16 @@ namespace state{
         return _selected;
     }
 
+    void GameInstance::select()
+    {
+        _selected = true;
+    }
+
+    void GameInstance::unselect()
+    {
+        _selected = false;
+    }
+
     GameInstance::~GameInstance(){}
     GameInstance::GameInstance(){}
 }

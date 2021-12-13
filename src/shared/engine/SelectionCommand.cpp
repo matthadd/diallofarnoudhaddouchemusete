@@ -23,6 +23,7 @@ namespace engine{
             {
                 if(gi->getPosition() == sf::Vector2i(_selectedPositionX,_selectedPositionY)){
                     res = true;
+                    gi->select();
                     _gameInstanceSelected = gi;
                 }
             }

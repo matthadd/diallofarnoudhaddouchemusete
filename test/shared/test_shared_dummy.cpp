@@ -84,6 +84,8 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
 
   BOOST_REQUIRE_EQUAL(dwarf1->getPosition().x, 13);
 
+  std::cout << "test sur les types des GameInstance, \n BAT = "  << (int) GameInstanceTypeID::BAT << "\n" << std::endl;
+
 }
 
 BOOST_AUTO_TEST_CASE(TetsAiEngine){
