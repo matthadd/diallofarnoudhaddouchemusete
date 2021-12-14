@@ -5,8 +5,10 @@
 #include "../engine.h"
 #include "../state.h"
 
-namespace ai{
-    void AI::run(engine::Engine& engine){
+namespace ai
+{
+    void AI::run(engine::Engine &engine)
+    {
         engine.processCommands();
     }
 }

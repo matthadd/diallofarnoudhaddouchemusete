@@ -2,16 +2,17 @@
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
-namespace state{
-    GameInstance::GameInstance (std::string name, int id, GameInstanceTypeID typeID)
+namespace state
+{
+    GameInstance::GameInstance(std::string name, int id, GameInstanceTypeID typeID)
     {
         _name = name;
         _id = id;
         _typeID = typeID;
-        _position = sf::Vector2i(0,0);
+        _position = sf::Vector2i(0, 0);
     }
 
-    GameInstance::GameInstance (GameInstanceTypeID gameInstanceTypeID, int id)
+    GameInstance::GameInstance(GameInstanceTypeID gameInstanceTypeID, int id)
     {
         _typeID = gameInstanceTypeID;
         _id = id;
@@ -29,7 +30,7 @@ namespace state{
 
     void GameInstance::setPosition(int x, int y)
     {
-        _position = sf::Vector2i(x,y);
+        _position = sf::Vector2i(x, y);
     }
 
     int GameInstance::getID()
@@ -41,14 +42,17 @@ namespace state{
         return _typeID;
     }
 
-    std::string GameInstance::getName(){
+    std::string GameInstance::getName()
+    {
         return _name;
     }
 
-    int GameInstance::getPlayerID (){
+    int GameInstance::getPlayerID()
+    {
         return _playerID;
     }
-    void GameInstance::setPlayerID (int playerID){
+    void GameInstance::setPlayerID(int playerID)
+    {
         _playerID = playerID;
     }
 
@@ -67,6 +71,6 @@ namespace state{
         _selected = false;
     }
 
-    GameInstance::~GameInstance(){}
-    GameInstance::GameInstance(){}
+    GameInstance::~GameInstance() {}
+    GameInstance::GameInstance() {}
 }
