@@ -45,7 +45,7 @@ namespace ai
                 std::cout << rand_value << std::endl;
                 if (rand_value == 1)
                 {
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16), GI->getID()));
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16)));
                     std::cout << "l'unité (id = " << GI->getID() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
                 }
             }

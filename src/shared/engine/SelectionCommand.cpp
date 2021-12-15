@@ -23,10 +23,13 @@ namespace engine
         {
             for (auto gi : gim->getGameInstances())
             {
+                gi->unselect();
                 if (gi->getPosition() == sf::Vector2i(_selectedPositionX, _selectedPositionY))
                 {
                     res = true;
                     gi->select();
+                    std::cout << "GI whose ID is : " << gi->getID() << " selected : " << gi->isSelected() << "\n" << std::endl;
+
                     _gameInstanceSelected = gi;
                 }
             }

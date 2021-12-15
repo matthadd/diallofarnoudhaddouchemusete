@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
 {
 
     // tests state::GameInstance(std::string name, int id)
-    state::GameInstance *warrior1 = new state::GameInstance("warrior1", 1, (state::GameInstanceTypeID) 129);
+    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID) 129);
+    warrior1->initIDCounter();
     cout << "Resource loaded" << endl;
 
     sf::Vector2i pos = warrior1->getPosition();
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
     }
 
     // Process to create Unit and add it to GIM
-    state::GameInstance *warrior2 = new state::GameInstance("warrior2", 2, (state::GameInstanceTypeID) 129);
+    state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID) 129);
     warrior2->setPosition(2, 2);
     gim->add(warrior2);
 

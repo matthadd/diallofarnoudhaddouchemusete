@@ -3,11 +3,10 @@
 
 namespace engine
 {
-    MoveCommand::MoveCommand(int newPositionX, int newPositionY, int unitID)
+    MoveCommand::MoveCommand(int newPositionX, int newPositionY)
     {
         _newPositionX = newPositionX;
         _newPositionY = newPositionY;
-        _unitID = unitID;
         _commandTypeID = (CommandTypeID)2;
     }
 
@@ -25,7 +24,7 @@ namespace engine
         {
             for (auto gm : gim->getGameInstances())
             {
-                if (gm->getID() == _unitID)
+                if (gm->isSelected() && gm->getTypeID() > 6)
                 {
                     unit = gm;
                 }
@@ -47,7 +46,7 @@ namespace engine
         if (res)
         {
             unit->setPosition(vec);
-            std::cout << "L'unité se trouve maintenant sur la case de coordonnées : (" << _newPositionX << "," << _newPositionY << ")\n"
+            std::cout << "L'unité de ID : " << unit->getID() << " se trouve maintenant sur la case de coordonnées : (" << _newPositionX << "," << _newPositionY << ")\n"
                       << std::endl;
             return true;
         }

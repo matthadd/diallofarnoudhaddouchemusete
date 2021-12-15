@@ -6,11 +6,10 @@ using namespace state;
 namespace engine
 {
 
-    BuildUnitCommand::BuildUnitCommand(int buildingID, GameInstanceTypeID newUnitTypeID, int uniqueID)
+    BuildUnitCommand::BuildUnitCommand(int buildingID, GameInstanceTypeID newUnitTypeID)
     {
         _buildingID = buildingID;
         _newUnitType = newUnitTypeID;
-        _uniqueID = uniqueID;
         _commandTypeID = (CommandTypeID)4;
     }
 
@@ -59,7 +58,7 @@ namespace engine
         // Créatiion de l'unité
         if (res)
         {
-            GameInstance *newUnit = new GameInstance(_newUnitType, _uniqueID);
+            GameInstance *newUnit = new GameInstance(_newUnitType);
             newUnit->setPlayerID(playerID);
             newUnit->setPosition(buildingPosition);
             unitGIM->add(newUnit);
