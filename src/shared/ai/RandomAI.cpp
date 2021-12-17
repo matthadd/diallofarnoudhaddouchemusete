@@ -52,4 +52,10 @@ namespace ai
         }
     }
 
+    void RandomAI::run (engine::Engine& engine)
+    {
+        engine.processCommands();
+    }
+
+
 }

@@ -7,8 +7,4 @@
 
 namespace ai
 {
-    void AI::run(engine::Engine &engine)
-    {
-        engine.processCommands();
-    }
 }
