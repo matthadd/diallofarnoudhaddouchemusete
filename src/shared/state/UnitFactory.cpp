@@ -1,18 +1,25 @@
 #include "UnitFactory.h"
-#include "UnitInstance.h"
 
 using namespace std;
 
 namespace state{
 
-    UnitFactory::UnitFactory(){}
+    UnitFactory::UnitFactory (){}
 
     UnitFactory::~UnitFactory(){}
 
-    GameInstance *UnitFactory::createGI(GameInstanceTypeID typeID, int playerID)
+    GameInstance* UnitFactory::createGI(GameInstanceTypeID typeID, int playerID)
     {
         if(typeID == GameInstanceTypeID::BAT){
-            return new UnitInstance(typeID, playerID, 10, 10, 40, 100); 
+            return (GameInstance*) new UnitInstance(typeID, playerID, 10, 10, 4, 10); 
+        }
+        else if(typeID == GameInstanceTypeID::DWARF)
+        {
+            return (GameInstance*) new UnitInstance(typeID, playerID, 50, 50, 1, 4); 
+        }
+        else
+        {
+            return NULL;
         }
     }
 }
