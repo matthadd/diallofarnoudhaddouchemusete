@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   int newXPosition = dwarfAI->getPosition().x;
   
   
-  //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
+  BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
   BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (dwarfAI->getID()) (dwarfPlayer->getID()));
   
 }
