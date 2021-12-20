@@ -17,60 +17,47 @@ namespace engine
 
     bool BuildUnitCommand::process(state::State &state)
     {
-        bool res = false;
-        GameInstanceManager *buildingGIM;
-        GameInstanceManager *unitGIM;
-        // Recherche des GameInstanceManagers
-        for (auto gim : state._GImanagers)
+        bool res = true;
+        try
         {
-            if (gim->getID() == GIMTypeID::BUILDING)
-            {
-                buildingGIM = gim;
+            //Checking typeID
+            if(state.getSource()->getTypeID() != GameInstanceTypeID::HEADQUARTER && 
+               state.getSource()->getTypeID() != GameInstanceTypeID::TRAININGCAMP)
+            {   
+                throw std::string("Only training camps and headquarters can produce unit");
+                res = false;
             }
-            else if (gim->getID() == GIMTypeID::UNIT)
-            {
-                unitGIM = gim;
-            }
-        }
-        // Vérification du type du bâtiment
-        sf::Vector2i buildingPosition;
-        int playerID;
-        for (auto gi : buildingGIM->getGameInstances())
-        {
-            if (gi->getID() == _buildingID)
-            {
-                if (gi->getTypeID() == state::GameInstanceTypeID::HEADQUARTER || state::GameInstanceTypeID::TRAININGCAMP)
-                {
-                    res = true;
-                    buildingPosition = gi->getPosition();
-                    playerID = gi->getPlayerID();
-                }
-                else
-                {
-                    res = false;
-                    std::cout << "Il ne s'agit pas d'un bâtiment" << std::endl;
-                }
-            }
-        }
-        // Vérification du mana
-        // A faire lorsqu'on aura fixé le prix de chaque unité
 
-        // Créatiion de l'unité
-        if (res)
-        {
-            GameInstance *newUnit = new GameInstance(_newUnitType);
-            newUnit->setPlayerID(playerID);
-            newUnit->setPosition(buildingPosition);
-            unitGIM->add(newUnit);
-            std::cout << "Le joueur : " << playerID << " a entraîné une unité !\n"
-                      << std::endl;
-            return true;
+            Player *ply_ptr = state.GetActivePlayer();
+            UnitFactory uf;
+            UnitInstance* createdUnit = (UnitInstance*) uf.createGI(_newUnitType, ply_ptr->getID());
+            
+            // Checking mana balance
+            if(ply_ptr->balance() < createdUnit->cost())
+            {
+                throw std::string("You do not have enough mana to produce this unit !");
+                delete createdUnit;
+                res = false;
+            }
+
+            //debit player mana wallet
+
+            ply_ptr->debit(createdUnit->cost());
+            //state._GImanagers["units"]->add(createdUnit);
+            state.addGI("units", createdUnit);
+            return res;
+            
         }
-        else
+        catch(std::string& str)
         {
-            std::cout << "L'unité n'a pas pu être recrutée !\n"
-                      << std::endl;
-            return false;
+            std::cerr << str << '\n';
+            return res;
         }
+        catch(std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            std::cout << "BuilUnitCommand error" << '\n';
+        }
+
     }
 }

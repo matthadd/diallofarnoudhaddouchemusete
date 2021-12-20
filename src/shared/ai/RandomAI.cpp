@@ -28,12 +28,11 @@ namespace ai
     void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
     {
         state::GameInstanceManager *unit_gim;
-        int unit_layer_id = 2;
-        for (state::GameInstanceManager *GIM : state._GImanagers)
+        for (auto x : state._GImanagers)
         {
-            if (GIM->getID() == unit_layer_id)
+            if (x.first == "units")
             {
-                unit_gim = GIM;
+                unit_gim = x.second;
             }
         }
 

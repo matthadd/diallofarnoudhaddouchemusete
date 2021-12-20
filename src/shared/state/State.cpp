@@ -1,5 +1,6 @@
 #include "State.h"
 #include <iostream>
+#include <map>
 
 namespace state{
     state::State::State(){}
@@ -61,6 +62,69 @@ namespace state{
     void* state::State::ProcessAllAsync(void* func)
     {
         (*((std::function<void()>*)func))();
+        return NULL;
+    }
+
+    GameInstance *state::State::getSource()
+    {
+        return _GImanagers["units"]->getSource();
+    }
+
+    GameInstance *state::State::getObjective()
+    {
+        return _GImanagers["units"]->getObjective();
+    }
+
+    void state::State::addGI(std::string key, GameInstance *gi)
+    {
+        _GImanagers[key]->add(gi);
+    }
+
+    void state::State::addGIM(std::string key, GameInstanceManager* gim)
+    {
+       try
+       {
+           _GImanagers.insert({key, gim});
+       }
+       catch(const std::exception& e)
+       {
+           std::cerr << e.what() << '\n';
+           _GImanagers[key] = gim;
+       }
+       
+        
+    }
+
+    void state::State::selectObjective(std::vector<int> unitPos)
+    {
+        for(auto elt : _GImanagers)
+        {
+            elt.second->selectObjective(unitPos);
+        }
+    }
+
+    void state::State::selectSource(std::vector<int> unitPos)
+    {
+        for(auto elt : _GImanagers)
+        {
+            elt.second->selectSource(unitPos);
+        }
+    }
+
+    GameInstance* state::State::getGI(int x, int y)
+    {
+        std::vector<int> vec = {x,y};
+        for(auto elt : _GImanagers)
+        {
+            for(auto gi : elt.second->getGameInstances())
+            {
+                if(gi->getPosition() == vec)
+                {
+                    return gi;
+                    break;
+                }
+            }
+        }
         return NULL;
     }
 

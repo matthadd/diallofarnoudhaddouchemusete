@@ -11,7 +11,7 @@ namespace state
         _name = name;
         _id = ++_idCounter;
         _typeID = typeID;
-        _position = sf::Vector2i(0, 0);
+        _position = std::vector<int> {0, 0};
     }
 
     GameInstance::GameInstance(GameInstanceTypeID gameInstanceTypeID)
@@ -26,19 +26,19 @@ namespace state
         _id = _idCounter;
     }
 
-    sf::Vector2i GameInstance::getPosition()
+    std::vector<int> GameInstance::getPosition()
     {
         return _position;
     }
 
-    void GameInstance::setPosition(sf::Vector2i v)
+    void GameInstance::assignPostion (std::vector<int> newPos)
     {
-        _position = sf::Vector2i(v);
+        _position = newPos;
     }
 
-    void GameInstance::setPosition(int x, int y)
+    void GameInstance::assignPosition(int x, int y)
     {
-        _position = sf::Vector2i(x, y);
+        _position = std::vector<int> {x, y};
     }
 
     int GameInstance::getID()
@@ -77,6 +77,16 @@ namespace state
     void GameInstance::unselect()
     {
         _selected = false;
+    }
+
+    int GameInstance::getX() const
+    {
+        return _position[0];
+    }
+
+    int GameInstance::getY() const
+    {
+        return _position[1];
     }
 
     GameInstance::~GameInstance() {}

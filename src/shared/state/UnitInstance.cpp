@@ -10,7 +10,7 @@ namespace state{
 
     }
 
-    UnitInstance::UnitInstance (GameInstanceTypeID typeID, int playerID, int HP, int damage, int sight, int moveRange)
+    UnitInstance::UnitInstance (GameInstanceTypeID typeID, int playerID, int HP, int damage, int sight, int moveRange, int price)
     {
             _id = ++_idCounter;
             _typeID = typeID;
@@ -19,6 +19,7 @@ namespace state{
             _damage = damage;
             _sight = sight;
             _moveRange = moveRange;
+            _price = price;
     }
 
 
@@ -43,6 +44,11 @@ namespace state{
     bool UnitInstance::isUnit()
     {
         return true;
+    }
+
+    int UnitInstance::cost() const
+    {
+        return _price;
     }
 
 };

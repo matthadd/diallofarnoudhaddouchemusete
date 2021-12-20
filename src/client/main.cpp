@@ -19,21 +19,21 @@ int main(int argc, char *argv[])
     warrior1->initIDCounter();
     cout << "Resource loaded" << endl;
 
-    sf::Vector2i pos = warrior1->getPosition();
-    cout << "x:" << pos.x << " y:" << pos.y << endl;
+    std::vector<int> pos = warrior1->getPosition();
+    cout << "x:" << pos[0] << " y:" << pos[1] << endl;
 
     // test void state::GameInstance::setPosition(sf::Vector2i v)
-    warrior1->setPosition(sf::Vector2i(0, 1));
+    warrior1->assignPosition(0, 1);
     pos = warrior1->getPosition();
-    cout << "x:" << pos.x << " y:" << pos.y << endl;
+    cout << "x:" << pos[0] << " y:" << pos[1] << endl;
 
     // tests void state::GameInstance::setPosition(int x, int y)
-    warrior1->setPosition(15, 0);
+    warrior1->assignPosition(15, 0);
     pos = warrior1->getPosition();
-    cout << "x:" << pos.x << " y:" << pos.y << endl;
+    cout << "x:" << pos[0] << " y:" << pos[1] << endl;
 
     // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-    state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", state::GIMTypeID::UNIT);
+    state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", 1);
 
     // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
     gim->add(warrior1);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     // Process to create Unit and add it to GIM
     state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID) 129);
-    warrior2->setPosition(2, 2);
+    warrior2->assignPosition(2, 2);
     gim->add(warrior2);
 
     // Process to add GIM to Layer
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     // test reference to own GIM
-    state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", state::GIMTypeID::UNIT);
+    state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 1);
     for (state::GameInstanceManager *g : gim->_GameManagers)
     {
         cout << g->getSize() << endl;
