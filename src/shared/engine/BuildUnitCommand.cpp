@@ -23,11 +23,11 @@ namespace engine
         // Recherche des GameInstanceManagers
         for (auto gim : state._GImanagers)
         {
-            if (gim->getID() == GIMTypeID::BUILDING)
+            if (gim->getID() == 2) // macro GIMTypeID::BUILDING
             {
                 buildingGIM = gim;
             }
-            else if (gim->getID() == GIMTypeID::UNIT)
+            else if (gim->getID() == 3) // macro GIMTypeID::UNIT
             {
                 unitGIM = gim;
             }

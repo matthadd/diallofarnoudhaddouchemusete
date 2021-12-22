@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     cout << "x:" << pos.x << " y:" << pos.y << endl;
 
     // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-    state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", state::GIMTypeID::UNIT);
+    state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", 3, "res/Tileset/png/Unit_Map_(32).png"); // unit
 
     // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
     gim->add(warrior1);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     // test reference to own GIM
-    state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", state::GIMTypeID::UNIT);
+    state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); //unit
     for (state::GameInstanceManager *g : gim->_GameManagers)
     {
         cout << g->getSize() << endl;

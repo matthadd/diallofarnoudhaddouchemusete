@@ -53,12 +53,6 @@ namespace render{
     {
         sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
    
-        // const int background_arr[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};   
-        render::Layer warriors(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
-
-        if (!warriors.load())
-            return -1;
-
         while (window.isOpen())
         {
             sf::Event event;
@@ -69,13 +63,11 @@ namespace render{
             }
             window.clear();
             for (render::Layer l : _Layers)
-            {
-                // window.draw(background);
-
-                
+            {              
                 window.draw(l);
                 window.display();
             }
+
            
         }
     }
@@ -83,11 +75,6 @@ namespace render{
     int Scene::render2()
     {
         sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
-   
-        // const int background_arr[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};   
-
-        // if (!warriors.load())
-            // return -1;
 
         while (window.isOpen())
         {
@@ -99,17 +86,24 @@ namespace render{
             }
             window.clear();
 
-            //printf("wolla");
             for (render::Layer l : _Layers)
             {
                 l.load();
                 window.draw(l);
                 window.display();
             }
+
             sleep(1); // put macro here for frame rate
 
-           
-           
+            while (!_Layers.empty()) {_Layers.pop_back();printf("tchunk-");}
+
+            int array[32*32] = {0};
+            for (state::GameInstanceManager* gim : _sceneInfo._GImanagers)
+            {
+                printf("GIM ID : %d\n", gim->getID());
+                // "res/Tileset/png/Unit_Map_(32).png"
+                add(render::Layer((int)gim->getID(), gim->getRes(), sf::Vector2u(32, 32), array, 16, 16));
+            }
         }
     }
 

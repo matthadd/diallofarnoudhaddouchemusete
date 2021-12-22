@@ -5,17 +5,23 @@
 using namespace std;
 using namespace sf;
 
-state::GameInstanceManager::GameInstanceManager(std::string name, state::GIMTypeID id)
+state::GameInstanceManager::GameInstanceManager(std::string name, int id, std::string path)
 {
     _name = name;
     _id = id;
     _GameManagers.push_back(this);
 }
 
-state::GIMTypeID state::GameInstanceManager::getID()
+int state::GameInstanceManager::getID()
 {
     return _id;
 }
+
+std::string state::GameInstanceManager::getRes()
+{
+    return _path;
+}
+
 void state::GameInstanceManager::add(state::GameInstance *gameInstance)
 {
     std::vector<state::GameInstance *> *v = &_GameInstances;
