@@ -40,7 +40,10 @@ namespace state{
     {
         return _HP;
     }
-
+    int UnitInstance::getSight() 
+    {
+        return _sight;
+    }    
     bool UnitInstance::isUnit()
     {
         return true;
@@ -49,6 +52,14 @@ namespace state{
     int UnitInstance::cost() const
     {
         return _price;
+    }
+    int UnitInstance::getDamage() 
+    {
+        return _damage;
+    }
+    void UnitInstance::setDamage (int damage)
+    {
+        _HP-= damage;
     }
 
 };
