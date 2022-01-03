@@ -95,14 +95,17 @@ namespace render{
 
             sleep(1); // put macro here for frame rate
 
-            while (!_Layers.empty()) {_Layers.pop_back();printf("tchunk-");}
+            printf("REFRESH\n");
+
+            while (!_Layers.empty()) {_Layers.pop_back();printf("POP\n");}
 
             int array[32*32] = {0};
             for (state::GameInstanceManager* gim : _sceneInfo._GImanagers)
             {
                 printf("GIM ID : %d\n", gim->getID());
-                // "res/Tileset/png/Unit_Map_(32).png"
+                gim->getArrayFromElementsIP(array, 32);
                 add(render::Layer((int)gim->getID(), gim->getRes(), sf::Vector2u(32, 32), array, 16, 16));
+                printf("FILL\n");
             }
         }
     }
