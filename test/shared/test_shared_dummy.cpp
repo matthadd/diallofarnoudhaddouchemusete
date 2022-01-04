@@ -22,21 +22,35 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
   {
     GameInstance gi1 ("GI1", (GameInstanceTypeID) 1);
-    GameInstance gi2 ("GI2", (GameInstanceTypeID) 1);
-    BOOST_REQUIRE_EQUAL(gi1.getID(), 1);
-    BOOST_REQUIRE_EQUAL(gi2.getID(), 2);
-    BOOST_REQUIRE_EQUAL(gi1.getName(), "GI1");
-    BOOST_REQUIRE_EQUAL(gi2.getName(), "GI2");
-    BOOST_REQUIRE_EQUAL(gi1.getX(), 0);
+    BOOST_CHECK_EQUAL(gi1.getID(), 1);
+    BOOST_CHECK_EQUAL(gi1.getX(), 0);
+    BOOST_CHECK_EQUAL(gi1.getY(), 0);
+    BOOST_CHECK_EQUAL(gi1.getName(), "GI1");
+    GameInstance gi2 ((GameInstanceTypeID) 1);
+    BOOST_CHECK_EQUAL(gi2.getID(), 2);
+
+    std::vector<int> newPos = {2,3};
     gi1.assignPosition(1,0);
-    BOOST_REQUIRE_EQUAL(gi1.getX(), 1);
-    gi1.setPlayerID(1);
-    gi2.setPlayerID(2);
+    BOOST_CHECK_EQUAL(gi1.getX(), 1);
+    BOOST_CHECK_EQUAL(gi1.getY(), 0);
+    gi2.assignPosition(newPos);
+    BOOST_CHECK_EQUAL(gi2.getX(), 2);
+    BOOST_CHECK_EQUAL(gi2.getY(), 3);
+
+    gi1.select();
+    BOOST_CHECK_EQUAL(gi1.isSelected(), true);
+    gi1.unselect();
+    BOOST_CHECK_EQUAL(gi1.isSelected(), false);
+
+    gi1.setPlayerID(1); 
     BOOST_CHECK_EQUAL(gi1.getPlayerID(), 1);
+    gi2.setPlayerID(2);
     BOOST_CHECK_EQUAL(gi2.getPlayerID(), 2);
     
     State stateO;
     GameInstanceManager *ugim = new GameInstanceManager("units", 0);
+    BOOST_CHECK_EQUAL(ugim->getID(), 0);
+    BOOST_CHECK_EQUAL(ugim->getSize(), 0);
     
     UnitFactory uf;
     UnitInstance *bat1 = (UnitInstance*) uf.createGI(GameInstanceTypeID::BAT, Player1_ID);
@@ -45,7 +59,10 @@ BOOST_AUTO_TEST_CASE(GameInstanceTest)
     
     stateO.addGIM("units", ugim);
     stateO._GImanagers["units"]->add(bat1);
+    BOOST_CHECK_EQUAL(ugim->getSize(), 1);
     ugim->selectObjective(bat1->getPosition());
+    ugim->remove(bat1);
+    BOOST_CHECK_EQUAL(ugim->getSize(), 0);
 
     BOOST_CHECK_EQUAL(stateO.getObjective()->getID(), bat1->getID());
   }
