@@ -57,15 +57,24 @@ BOOST_AUTO_TEST_CASE(GameInstanceTest)
     UnitInstance *bat1 = (UnitInstance*) uf.createGI(GameInstanceTypeID::BAT, Player1_ID);
     bat1->assignPosition(22,15);
     BOOST_CHECK_EQUAL(bat1->showHP(), 10);
+
+    
     
     stateO.addGIM("units", ugim);
     stateO._GImanagers["units"]->add(bat1);
     BOOST_CHECK_EQUAL(ugim->getSize(), 1);
     ugim->selectObjective(bat1->getPosition());
+    BOOST_CHECK_EQUAL(bat1, stateO.getObjective());
+
+    int test_id = stateO.getGI(bat1->getX(), bat1->getY())->getID();
+    BOOST_CHECK_EQUAL(test_id, bat1->getID());
+
     ugim->remove(bat1);
     BOOST_CHECK_EQUAL(ugim->getSize(), 0);
 
+
     BOOST_CHECK_EQUAL(stateO.getObjective()->getID(), bat1->getID());
+    
   }
 
 

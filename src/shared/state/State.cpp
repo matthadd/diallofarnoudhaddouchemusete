@@ -29,7 +29,7 @@ namespace state{
         return Players[turn % Players.size()];
     }
 
-    bool state::State::isOver()
+    /*bool state::State::isOver()
     {
         if(!((status >> 4) ^ 0xF))
             return true;
@@ -40,7 +40,7 @@ namespace state{
         if(!isOver())
             return -1;
         return status & 0xF;
-    }
+    }*/
     void state::State::init()
     {
         CurrentMap = NULL;
