@@ -22,32 +22,59 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
   {
     GameInstance gi1 ("GI1", (GameInstanceTypeID) 1);
-    GameInstance gi2 ("GI2", (GameInstanceTypeID) 1);
-    BOOST_REQUIRE_EQUAL(gi1.getID(), 1);
-    BOOST_REQUIRE_EQUAL(gi2.getID(), 2);
-    BOOST_REQUIRE_EQUAL(gi1.getName(), "GI1");
-    BOOST_REQUIRE_EQUAL(gi2.getName(), "GI2");
-    BOOST_REQUIRE_EQUAL(gi1.getX(), 0);
+    BOOST_CHECK_EQUAL(gi1.getID(), 1);
+    BOOST_CHECK_EQUAL(gi1.getX(), 0);
+    BOOST_CHECK_EQUAL(gi1.getY(), 0);
+    BOOST_CHECK_EQUAL(gi1.getName(), "GI1");
+    GameInstance gi2 ((GameInstanceTypeID) 1);
+    BOOST_CHECK_EQUAL(gi2.getID(), 2);
+
+    std::vector<int> newPos = {2,3};
     gi1.assignPosition(1,0);
-    BOOST_REQUIRE_EQUAL(gi1.getX(), 1);
-    gi1.setPlayerID(1);
-    gi2.setPlayerID(2);
+    BOOST_CHECK_EQUAL(gi1.getX(), 1);
+    BOOST_CHECK_EQUAL(gi1.getY(), 0);
+    gi2.assignPosition(newPos);
+    BOOST_CHECK_EQUAL(gi2.getX(), 2);
+    BOOST_CHECK_EQUAL(gi2.getY(), 3);
+
+    gi1.select();
+    BOOST_CHECK_EQUAL(gi1.isSelected(), true);
+    gi1.unselect();
+    BOOST_CHECK_EQUAL(gi1.isSelected(), false);
+
+    gi1.setPlayerID(1); 
     BOOST_CHECK_EQUAL(gi1.getPlayerID(), 1);
+    gi2.setPlayerID(2);
     BOOST_CHECK_EQUAL(gi2.getPlayerID(), 2);
     
     State stateO;
+
     GameInstanceManager *ugim = new GameInstanceManager("units", 0);
+    BOOST_CHECK_EQUAL(ugim->getID(), 0);
+    BOOST_CHECK_EQUAL(ugim->getSize(), 0);
     
     UnitFactory uf;
     UnitInstance *bat1 = (UnitInstance*) uf.createGI(GameInstanceTypeID::BAT, Player1_ID);
     bat1->assignPosition(22,15);
     BOOST_CHECK_EQUAL(bat1->showHP(), 10);
+
+    
     
     stateO.addGIM("units", ugim);
     stateO._GImanagers["units"]->add(bat1);
+    BOOST_CHECK_EQUAL(ugim->getSize(), 1);
     ugim->selectObjective(bat1->getPosition());
+    BOOST_CHECK_EQUAL(bat1, stateO.getObjective());
+
+    int test_id = stateO.getGI(bat1->getX(), bat1->getY())->getID();
+    BOOST_CHECK_EQUAL(test_id, bat1->getID());
+
+    ugim->remove(bat1);
+    BOOST_CHECK_EQUAL(ugim->getSize(), 0);
+
 
     BOOST_CHECK_EQUAL(stateO.getObjective()->getID(), bat1->getID());
+    
   }
 
 
@@ -55,13 +82,14 @@ BOOST_AUTO_TEST_CASE(GameInstanceTest)
 BOOST_AUTO_TEST_CASE(TestStateEngine)
 {
   State state;
-
   state.init();
 
   //création dest joueurs 
   Player p1("player 1","red");
   p1.setID(1);
   Player p2("player 2","blues");
+  p2.setName("Player_2");
+  BOOST_CHECK_EQUAL(p2.getName(), "Player_2");
   p2.setID(2);
   p1.credit(100);
 
@@ -71,9 +99,11 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   BOOST_CHECK_EQUAL(state.Players.size(), 2);
 
   BOOST_CHECK_EQUAL(state.GetActivePlayer()->getID(), 1);
+
   //création des unités
   GameInstance *dwarf1 = new GameInstance("Dwarf_1", GameInstanceTypeID::DWARF);
   dwarf1->assignPosition(12,15);
+
   //BOOST_REQUIRE_EQUAL(dwarf1->getID(), 3);
   dwarf1->setPlayerID(1);
 
@@ -109,24 +139,28 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
 
   //Partie engine
   Engine engine(state);
-
   auto selecDwarf1 = std::make_shared<SelectionCommand>(12, 15);
+
   //auto attackDwarf1 = std::make_shared<AttackCommand>();
   auto moveDwarf1 = std::make_shared<MoveCommand>(13, 15);
   auto selecbuild = std::make_shared<SelectionCommand>(3, 3);
   auto buildDwarf1 = std::make_shared<BuildUnitCommand>(HQ1->getID(), GameInstanceTypeID::DWARF);
+
   //test de la séléction
   engine.addCommand(selecDwarf1);
   engine.processCommands();
   BOOST_CHECK_EQUAL(state.getSource()->getID(), dwarf1->getID());
+
   //test du déplacement 
   engine.addCommand(moveDwarf1);
   engine.processCommands();
   BOOST_CHECK_EQUAL(state.getSource()->getX(), 13);
+
   //test de sélection du bâtiment
   engine.addCommand(selecbuild);
   engine.processCommands();
   BOOST_CHECK_EQUAL(state.getSource()->getID(), HQ1->getID());
+
   //test de la production d'unité
   engine.addCommand(buildDwarf1);
   engine.processCommands();
@@ -154,6 +188,15 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   attck->process(state2);
   state::UnitInstance* ennemy= (state::UnitInstance*)dw2;
   BOOST_CHECK_EQUAL(ennemy->showHP(), 0);*/
+
+  //test d'incrémentation du tour
+  int cur_turn = state.turn;
+  state.onTurnBegin();
+  BOOST_CHECK_EQUAL(cur_turn, state.turn - 1);
+
+  //test de fin de jeu
+  BOOST_CHECK_EQUAL(state.isOver(), false);
+  BOOST_CHECK_EQUAL(state.WinnerID(), -1); //la méthode retourne -1 si persnne n'a gagné
 
 }
 

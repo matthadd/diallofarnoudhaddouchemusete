@@ -31,7 +31,7 @@ namespace state
         return _position;
     }
 
-    void GameInstance::assignPostion (std::vector<int> newPos)
+    void GameInstance::assignPosition (std::vector<int> newPos)
     {
         _position = newPos;
     }

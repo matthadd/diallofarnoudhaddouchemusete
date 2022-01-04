@@ -46,30 +46,7 @@ int state::GameInstanceManager::getSize()
     return i;
 }
 
-int *state::GameInstanceManager::getArrayFromElements(int *res, int sizeMap)
-{
-    // assume map is a square
-    int dimMap = (int)sqrt(sizeMap);
-    int map[dimMap][dimMap];
-    // int res[sizeMap] = {0}; // or whatever is the default value
-    int indice = 0;
-    std::vector<int> positionElement;
-    for (state::GameInstance *gameInstance : _GameInstances)
-    {
-        positionElement = gameInstance->getPosition();
-        map[positionElement[0]][positionElement[1]] = gameInstance->getTypeID();
-    }
-    for (int i = 0; i < dimMap; i++)
-    {
-        for (int j = 0; j < dimMap; j++)
-        {
-            res[indice] = map[i][j];
-            indice++;
-        }
-    }
 
-    return res;
-}
 
 void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
 {

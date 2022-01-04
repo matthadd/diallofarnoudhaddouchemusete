@@ -28,11 +28,8 @@ namespace state{
     {
         return Players[turn % Players.size()];
     }
-    state::Player* state::State::GetMyPlayer()
-    {
-        return Players[id];
-    }
-    bool state::State::isOver()
+
+    /*bool state::State::isOver()
     {
         if(!((status >> 4) ^ 0xF))
             return true;
@@ -43,7 +40,7 @@ namespace state{
         if(!isOver())
             return -1;
         return status & 0xF;
-    }
+    }*/
     void state::State::init()
     {
         CurrentMap = NULL;
@@ -82,17 +79,9 @@ namespace state{
 
     void state::State::addGIM(std::string key, GameInstanceManager* gim)
     {
-       try
-       {
-           _GImanagers.insert({key, gim});
-       }
-       catch(const std::exception& e)
-       {
-           std::cerr << e.what() << '\n';
-           _GImanagers[key] = gim;
-       }
-       
-        
+
+     _GImanagers[key] = gim;
+ 
     }
 
     void state::State::selectObjective(std::vector<int> unitPos)
