@@ -128,6 +128,37 @@ namespace state{
         return NULL;
     }
 
+    std::vector<GameInstance*> state::State::showAllies()
+    {
+        std::vector<GameInstance*> allies;
+        for(auto elt : _GImanagers["units"]->getGameInstances())
+        {
+            if(elt->getPlayerID() == GetActivePlayer()->getID())
+            {
+                allies.push_back(elt);
+            }
+        }
+        return allies;
+    }
+
+    std::vector< std::pair<int,int> > state::State::showEnemies()
+    {
+        std::vector< std::pair<int, int>> enemies;
+        for(auto gi : _GImanagers["units"]->getGameInstances()){
+            if(gi->getPlayerID() != GetActivePlayer()->getID())
+            {
+                enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+            }
+        }
+        for(auto gi : _GImanagers["buildings"]->getGameInstances()){
+            if(gi->getPlayerID() != GetActivePlayer()->getID())
+            {
+                enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+            }
+        }
+        return enemies;
+    } 
+
     /*
     SUBSCRIBERS ??
 
