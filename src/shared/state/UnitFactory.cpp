@@ -15,7 +15,7 @@ namespace state{
         }
         else if(typeID == GameInstanceTypeID::DWARF)
         {
-            return (GameInstance*) new UnitInstance(typeID, playerID, 50, 50, 1, 4, 50); 
+            return (GameInstance*) new UnitInstance(typeID, playerID, 50, 50, 1, 2, 50); 
         }
         else
         {

@@ -12,17 +12,18 @@ namespace ai{
         engine.processCommands();
     }
 
-    void HeuristicAI::GenCommands (engine::Engine& engine, state::State& state, int playerID) 
+    void HeuristicAI::GenCommands (engine::Engine& engine, state::State& state, int playerID, int length, int height) 
     {
-        PathsMap firstpaths(NULL,32,32);
+        PathsMap firstpaths(NULL,height,length);
         firstpaths.init();
         for (auto ally : state.showAllies())
         {
-            PathsMap* paths = new PathsMap((state::UnitInstance*) ally, 32, 32); 
-            if(Position* pos =paths->findClosestEnemy() != NULL)
+            PathsMap* paths = new PathsMap((state::UnitInstance*) ally, length, height); 
+            if(paths->findClosestEnemy(state) != std::pair<int,int>(-1, -1))
             {
                 engine.addCommand(std::make_shared<engine::SelectionCommand>(ally->getX(), ally->getY()));
-                engine.addCommand(std::make_shared<engine::MoveCommand>(paths->bestPositon().first, paths->bestPositon().second));
+                Position bestPosition = paths->bestPosition(state);
+                engine.addCommand(std::make_shared<engine::MoveCommand>(bestPosition.getX(), bestPosition.getY()));
             }
         }
     }

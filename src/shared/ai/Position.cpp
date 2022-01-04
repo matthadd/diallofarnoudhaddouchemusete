@@ -22,4 +22,8 @@ double Position::getScore () const
 {
     return _score;
 }
+void Position::setScore (double newScore) 
+{
+    _score = newScore;
+}
 
