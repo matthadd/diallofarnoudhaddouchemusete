@@ -49,28 +49,28 @@ namespace render{
         _sceneInfo = state;
     }
 
-    int Scene::render(int* warriors_arr)
-    {
-        sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
+    // int Scene::render2(int* warriors_arr)
+    // {
+    //     sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
    
-        while (window.isOpen())
-        {
-            sf::Event event;
-            while (window.pollEvent(event))
-            {
-                if(event.type == sf::Event::Closed)
-                    window.close();
-            }
-            window.clear();
-            for (render::Layer l : _Layers)
-            {              
-                window.draw(l);
-                window.display();
-            }
+    //     while (window.isOpen())
+    //     {
+    //         sf::Event event;
+    //         while (window.pollEvent(event))
+    //         {
+    //             if(event.type == sf::Event::Closed)
+    //                 window.close();
+    //         }
+    //         window.clear();
+    //         for (render::Layer l : _Layers)
+    //         {              
+    //             window.draw(l);
+    //             window.display();
+    //         }
 
            
-        }
-    }
+    //     }
+    // }
 
     int Scene::render2()
     {
