@@ -3,7 +3,7 @@
 using namespace std;
 using namespace ai;
 
-Position::Position(int x, int y, double score=0.0)
+Position::Position(int x, int y, double score)
 {
     _x = x;
     _y=y;

@@ -52,7 +52,7 @@ namespace state{
     int UnitInstance::cost() const
     {
         return _price;
-    }
+    };
     int UnitInstance::getDamage() 
     {
         return _damage;
@@ -60,6 +60,11 @@ namespace state{
     void UnitInstance::setDamage (int damage)
     {
         _HP-= damage;
+    }
+
+    int UnitInstance::getMoveRange()
+    {
+        return _moveRange;
     }
 
 };
