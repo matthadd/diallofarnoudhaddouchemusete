@@ -17,7 +17,14 @@ namespace state{
         {
             return (GameInstance*) new UnitInstance(typeID, playerID, 50, 50, 1, 2, 50); 
         }
-        else
+        else if(typeID == GameInstanceTypeID::CYCLOPS)
+        {
+            return (GameInstance*) new UnitInstance(typeID, playerID, 100, 100, 1, 1, 200);
+        }
+        else if(typeID == GameInstanceTypeID::WITCH)
+        {
+            return (GameInstance*) new UnitInstance(typeID, playerID, 30, 40, 2, 1, 70);
+        }
         {
             return NULL;
         }
