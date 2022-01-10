@@ -64,13 +64,13 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   dwarf3->setPlayerID(2);
 
   //création du bâtiment
-  GameInstanceManager *buildingGIM = new GameInstanceManager("Building's Manager", BUILDING_LAYER_ID);
+  GameInstanceManager *buildingGIM = new GameInstanceManager("Building's Manager", 2, ""); // macro BUILDING_LAYER_ID
   GameInstance *HQ1 = new GameInstance("HeadQuarter", GameInstanceTypeID::HEADQUARTER);
   HQ1->setPlayerID(1);
   HQ1->setPosition(3,3);
   buildingGIM->add(HQ1);
 
-  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", UNIT_LAYER_ID);
+  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", 3, ""); //macro UNIT_LAYER_ID
   unitGIM->add(dwarf1);
   unitGIM->add(dwarf2);
   unitGIM->add(dwarf3);
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   int initialXPosition = dwarfAI->getPosition().x;
   dwarfAI->setPlayerID(AI_ID);
 
-  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", UNIT_LAYER_ID);
+  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", 3, ""); // macro UNIT_LAYER_ID
   unitGIM->add(dwarfPlayer);
   unitGIM->add(dwarfAI);
 
