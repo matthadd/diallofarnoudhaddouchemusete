@@ -5,6 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include <unistd.h>
 #include "SFML/Window.hpp"
+#include <thread>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 {
 
     // tests state::GameInstance(std::string name, int id)
-    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID) 129);
+    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)129);
     warrior1->initIDCounter();
     cout << "Resource loaded" << endl;
 
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
     }
 
     // Process to create Unit and add it to GIM
-    state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID) 129);
+    state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID)129);
     warrior2->setPosition(2, 2);
     gim->add(warrior2);
 
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
     render::Layer warrior_l(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
     s.add(background_l);
     s.add(warrior_l);
-    s.render2();
+    std::thread t(&render::Scene::render2, &s);
     printf("------------------------------\n");
 
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)

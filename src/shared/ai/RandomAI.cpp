@@ -24,34 +24,34 @@ namespace ai
         return dist(rng);
     }
 
-    // Méthode de génération des commandes aléatoires
-    void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
-    {
-        state::GameInstanceManager *unit_gim = state._GImanagers;
-        int unit_layer_id = 2;
+    // // Méthode de génération des commandes aléatoires
+    // void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
+    // {
+    //     state::GameInstanceManager *unit_gim = state._GImanagers;
+    //     int unit_layer_id = 2;
 
-        for (state::GameInstanceManager *GIM : state._GImanagers)
-        {
-            if (GIM->getID() == unit_layer_id)
-            {
-                unit_gim = GIM;
-            }
-        }
+    //     for (state::GameInstanceManager *GIM : state._GImanagers)
+    //     {
+    //         if (GIM->getID() == unit_layer_id)
+    //         {
+    //             unit_gim = GIM;
+    //         }
+    //     }
 
-        for (state::GameInstance *GI : unit_gim->getGameInstances())
-        {
-            if (GI->getPlayerID() == playerID && GI->getTypeID() > 6)
-            {
-                int rand_value = RandomAI::GenRand(RandomAI::_unitActionRandRange);
-                std::cout << rand_value << std::endl;
-                if (rand_value == 1)
-                {
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16)));
-                    std::cout << "l'unité (id = " << GI->getID() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
-                }
-            }
-        }
-    }
+    //     for (state::GameInstance *GI : unit_gim->getGameInstances())
+    //     {
+    //         if (GI->getPlayerID() == playerID && GI->getTypeID() > 6)
+    //         {
+    //             int rand_value = RandomAI::GenRand(RandomAI::_unitActionRandRange);
+    //             std::cout << rand_value << std::endl;
+    //             if (rand_value == 1)
+    //             {
+    //                 engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16)));
+    //                 std::cout << "l'unité (id = " << GI->getID() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
+    //             }
+    //         }
+    //     }
+    // }
 
     void RandomAI::run(engine::Engine &engine)
     {

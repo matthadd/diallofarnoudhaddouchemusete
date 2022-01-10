@@ -100,44 +100,44 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
 
 }
 
-BOOST_AUTO_TEST_CASE(TetsAiEngine){
+// BOOST_AUTO_TEST_CASE(TetsAiEngine){
   
-  #define Player_ID 1
-  #define AI_ID 2
+//   #define Player_ID 1
+//   #define AI_ID 2
   
-  //Initialisation d'un état du jeu
-  State state;
+//   //Initialisation d'un état du jeu
+//   State state;
 
-  GameInstance *dwarfPlayer = new GameInstance("Dwarf_Player", GameInstanceTypeID::DWARF);
-  dwarfPlayer->initIDCounter();
-  dwarfPlayer->setPosition(sf::Vector2i(12,15));
-  dwarfPlayer->setPlayerID(Player_ID);
+//   GameInstance *dwarfPlayer = new GameInstance("Dwarf_Player", GameInstanceTypeID::DWARF);
+//   dwarfPlayer->initIDCounter();
+//   dwarfPlayer->setPosition(sf::Vector2i(12,15));
+//   dwarfPlayer->setPlayerID(Player_ID);
 
-  GameInstance *dwarfAI = new GameInstance("Dwarf_AI", GameInstanceTypeID::DWARF);
-  dwarfAI->setPosition(sf::Vector2i(12,16));
-  int initialXPosition = dwarfAI->getPosition().x;
-  dwarfAI->setPlayerID(AI_ID);
+//   GameInstance *dwarfAI = new GameInstance("Dwarf_AI", GameInstanceTypeID::DWARF);
+//   dwarfAI->setPosition(sf::Vector2i(12,16));
+//   int initialXPosition = dwarfAI->getPosition().x;
+//   dwarfAI->setPlayerID(AI_ID);
 
-  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", 3, ""); // macro UNIT_LAYER_ID
-  unitGIM->add(dwarfPlayer);
-  unitGIM->add(dwarfAI);
+//   GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", 3, ""); // macro UNIT_LAYER_ID
+//   unitGIM->add(dwarfPlayer);
+//   unitGIM->add(dwarfAI);
 
-  state._GImanagers.push_back(unitGIM);
+//   state._GImanagers.push_back(unitGIM);
 
-  //Création du moteur du jeu et instanciation de l'ia
-  Engine engine(state);
-  RandomAI randomAI;
+//   //Création du moteur du jeu et instanciation de l'ia
+//   Engine engine(state);
+//   RandomAI randomAI;
 
-  //Génération des commandes de l'IA aléatoire
-  randomAI.GenCommands(engine, state, AI_ID);
+//   //Génération des commandes de l'IA aléatoire
+//   randomAI.GenCommands(engine, state, AI_ID);
   
-  engine.processCommands();
-  state = engine.getState();
-  int newXPosition = dwarfAI->getPosition().x;
+//   engine.processCommands();
+//   state = engine.getState();
+//   int newXPosition = dwarfAI->getPosition().x;
   
   
-  BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
-  BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (dwarfAI->getID()) (dwarfPlayer->getID()));
+//   BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
+//   BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (dwarfAI->getID()) (dwarfPlayer->getID()));
   
-}
+// }
 
