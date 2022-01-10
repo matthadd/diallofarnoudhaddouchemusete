@@ -137,3 +137,19 @@ state::GameInstance *state::GameInstanceManager::getObjective()
 {
     return _objectiveSelected;
 }
+
+void state::GameInstanceManager::erase(state::GameInstance* gi)
+{
+    std::vector<state::GameInstance*>::iterator iter = _GameInstances.begin();
+    while (iter != _GameInstances.end())
+    {
+        if (*iter == gi)
+        {
+            iter = _GameInstances.erase(iter);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+}

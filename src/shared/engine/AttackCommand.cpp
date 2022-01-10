@@ -30,16 +30,30 @@ namespace engine
             int sourceY=_giSource->getPosition()[1];
             
             if(_giSource->getPlayerID()==_giTarget->getPlayerID()){
-                throw std::string("Error is an ally");}
+                throw std::string("Error the target is an ally");}
             
             if ((pow((targetX-sourceX),2)+pow((targetY-sourceY),2))>pow(_giSource->getSight(),2)){
-                   throw std::string("Error of sight");}
+                   throw std::string("Error the target is out of sigth range");}
 
 
-            _giTarget->setDamage(_giSource->getDamage());
-
+            _giTarget->receiveDamage(_giSource->giveDamage());
+            std::vector<GameInstance*> units = state._GImanagers["units"]->getGameInstances();
+            
+            if(_giTarget->isDead())
+            {
+                for(auto elt : state._GImanagers["units"]->getGameInstances())
+                {
+                    if(elt->getID() == _giTarget->getID())
+                        state._GImanagers["units"]->erase(elt);
+                }
+                return true;              
+            }
         }
-        catch(std::string strr){std::cout<<strr;}
+        catch(std::string strr)
+        {
+            std::cout<<strr;
+            return false;
+        }
     }
 
 

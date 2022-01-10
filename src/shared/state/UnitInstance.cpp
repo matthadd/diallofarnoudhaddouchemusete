@@ -1,4 +1,5 @@
 #include "UnitInstance.h"
+#include <iostream>
 
 namespace state{
     UnitInstance::UnitInstance ( GameInstanceTypeID gameInstanceTypeID, int playerID)
@@ -27,15 +28,6 @@ namespace state{
 
     UnitInstance::~UnitInstance(){}
 
-    void UnitInstance::init()
-    {
-        if(_typeID == GameInstanceTypeID::DWARF)
-        {
-            _HP = 5;
-            _damage = 6;
-        }
-    }
-
     int UnitInstance::showHP() const
     {
         return _HP;
@@ -53,13 +45,28 @@ namespace state{
     {
         return _price;
     };
-    int UnitInstance::getDamage() 
+    int UnitInstance::giveDamage() 
     {
+        if(_HP <= 0)
+        {
+            std::cout << "unit is dying...\n";
+            _isDead = true;
+        }
         return _damage;
     }
-    void UnitInstance::setDamage (int damage)
+    void UnitInstance::receiveDamage (int damage)
     {
-        _HP-= damage;
+        _HP -= damage;
+        if(_HP <= 0)
+        {
+            std::cout << "unit is dying...\n";
+            _isDead = true;
+        }
+    }
+
+    bool UnitInstance::isDead()
+    {
+        return _isDead;
     }
 
     int UnitInstance::getMoveRange()

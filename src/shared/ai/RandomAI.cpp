@@ -9,7 +9,11 @@
 namespace ai
 {
     // Constructeur vide
-    RandomAI::RandomAI() {}
+    RandomAI::RandomAI(int height, int length) 
+    {
+        _length = length;
+        _height  = height;
+    }
 
     // Destructeur
     RandomAI::~RandomAI() {}
@@ -27,16 +31,7 @@ namespace ai
     // Méthode de génération des commandes aléatoires
     void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
     {
-        state::GameInstanceManager *unit_gim;
-        for (auto x : state._GImanagers)
-        {
-            if (x.first == "units")
-            {
-                unit_gim = x.second;
-            }
-        }
-
-        for (state::GameInstance *GI : unit_gim->getGameInstances())
+        for (state::GameInstance *GI : state._GImanagers["units"]->getGameInstances())
         {
             if (GI->getPlayerID() == playerID && GI->getTypeID() > 6)
             {
@@ -44,7 +39,7 @@ namespace ai
                 std::cout << rand_value << std::endl;
                 if (rand_value == 1)
                 {
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(16), RandomAI::GenRand(16)));
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(_height), RandomAI::GenRand(_length)));
                     std::cout << "l'unité (id = " << GI->getID() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
                 }
             }

@@ -235,14 +235,14 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
 
   //Création du moteur du jeu et instanciation de l'ia
   Engine engine(state);
-  RandomAI randomAI;
+  RandomAI randomAI(16,16);
 
   //Génération des commandes de l'IA aléatoire
-  randomAI.GenCommands(engine, state, AI_ID);
+  /*randomAI.GenCommands(engine, state, AI_ID);
   
   engine.processCommands();
   state = engine.getState();
-  int newXPosition = dwarfAI->getX();
+  int newXPosition = dwarfAI->getX();*/
   
   
   //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
@@ -250,21 +250,57 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   
 }
 
+BOOST_AUTO_TEST_CASE(AttackCommandTest){
+  State state;
+  UnitFactory uf;
+  GameInstanceManager* units = new GameInstanceManager("units", UNIT_LAYER_ID);
+  state.addGIM("units", units); 
+  //création des unités et assignement des positions
+  UnitInstance* bat = (UnitInstance*) uf.createGI(BAT, Player1_ID);
+  bat->assignPosition(0,0);
+  state.addGI("units", bat);
+  UnitInstance* cyclop = (UnitInstance*) uf.createGI(CYCLOPS, Player2_ID);
+  cyclop->assignPosition(0,1);
+  state.addGI("units", cyclop);
+  //sélection de la cible et de la source
+  state.selectSource(cyclop->getPosition());
+  state.selectObjective(bat->getPosition());
+  //vérification de la taille du GIM des unités
+  BOOST_CHECK(bat->isDead()==false);
+  
+  //gestion de la commande
+  Engine engine(state);
+  engine.addCommand(std::make_shared<AttackCommand>());
+  engine.processCommands();
+  //vérification de la mort du bat
+  BOOST_CHECK(bat->isDead()==true);
+  BOOST_CHECK(units->getGameInstances().size() == 1);
+}
+
 BOOST_AUTO_TEST_CASE(HeuristicAiTest){
   #define HEURISTIC_ID 1
   #define RANDOM_ID 2
+  #define LENGTH 4
+  #define HEIGHT 4
+
+  State state;
   //Tests de l'IA Heuristic sur une petite map 4*4
   state::State heuristicAiState;
   //création de l'ia heuristique :
   ai::HeuristicAI heuristicAi(4,4);
   Player hAi("Heuristic AI", "red", HEURISTIC_ID);
   //création de l'ia random :
-  ai::RandomAI randomAi2;
+  ai::RandomAI randomAi(4,4);
   Player rAi("Random AI", "blue", RANDOM_ID);
 
+  state.Players.push_back(&hAi);
+  state.Players.push_back(&rAi);
 
-
-
+  //création des unités et bâtiments
+  GameInstanceManager* units = new GameInstanceManager("units", 1);
+  GameInstanceManager* buildings = new GameInstanceManager("building", 2);
+  state.addGIM("units", units); 
+  state.addGIM("buildings", buildings);
 
 }
 
