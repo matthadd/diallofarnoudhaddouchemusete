@@ -1,5 +1,6 @@
 #include "State.h"
 #include <iostream>
+#include <map>
 
 namespace state{
     state::State::State(){}
@@ -27,11 +28,8 @@ namespace state{
     {
         return Players[turn % Players.size()];
     }
-    state::Player* state::State::GetMyPlayer()
-    {
-        return Players[id];
-    }
-    bool state::State::isOver()
+
+    /*bool state::State::isOver()
     {
         if(!((status >> 4) ^ 0xF))
             return true;
@@ -42,7 +40,7 @@ namespace state{
         if(!isOver())
             return -1;
         return status & 0xF;
-    }
+    }*/
     void state::State::init()
     {
         CurrentMap = NULL;
@@ -63,6 +61,92 @@ namespace state{
         (*((std::function<void()>*)func))();
         return NULL;
     }
+
+    GameInstance *state::State::getSource()
+    {
+        return _GImanagers["units"]->getSource();
+    }
+
+    GameInstance *state::State::getObjective()
+    {
+        return _GImanagers["units"]->getObjective();
+    }
+
+    void state::State::addGI(std::string key, GameInstance *gi)
+    {
+        _GImanagers[key]->add(gi);
+    }
+
+    void state::State::addGIM(std::string key, GameInstanceManager* gim)
+    {
+
+     _GImanagers[key] = gim;
+ 
+    }
+
+    void state::State::selectObjective(std::vector<int> unitPos)
+    {
+        for(auto elt : _GImanagers)
+        {
+            elt.second->selectObjective(unitPos);
+        }
+    }
+
+    void state::State::selectSource(std::vector<int> unitPos)
+    {
+        for(auto elt : _GImanagers)
+        {
+            elt.second->selectSource(unitPos);
+        }
+    }
+
+    GameInstance* state::State::getGI(int x, int y)
+    {
+        std::vector<int> vec = {x,y};
+        for(auto elt : _GImanagers)
+        {
+            for(auto gi : elt.second->getGameInstances())
+            {
+                if(gi->getPosition() == vec)
+                {
+                    return gi;
+                    break;
+                }
+            }
+        }
+        return NULL;
+    }
+
+    std::vector<GameInstance*> state::State::showAllies()
+    {
+        std::vector<GameInstance*> allies;
+        for(auto elt : _GImanagers["units"]->getGameInstances())
+        {
+            if(elt->getPlayerID() == GetActivePlayer()->getID())
+            {
+                allies.push_back(elt);
+            }
+        }
+        return allies;
+    }
+
+    std::vector< std::pair<int,int> > state::State::showEnemies()
+    {
+        std::vector< std::pair<int, int>> enemies;
+        for(auto gi : _GImanagers["units"]->getGameInstances()){
+            if(gi->getPlayerID() != GetActivePlayer()->getID())
+            {
+                enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+            }
+        }
+        for(auto gi : _GImanagers["buildings"]->getGameInstances()){
+            if(gi->getPlayerID() != GetActivePlayer()->getID())
+            {
+                enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+            }
+        }
+        return enemies;
+    } 
 
     /*
     SUBSCRIBERS ??

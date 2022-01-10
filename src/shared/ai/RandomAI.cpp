@@ -27,14 +27,12 @@ namespace ai
     // Méthode de génération des commandes aléatoires
     void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
     {
-        state::GameInstanceManager *unit_gim = state._GImanagers;
-        int unit_layer_id = 2;
-
-        for (state::GameInstanceManager *GIM : state._GImanagers)
+        state::GameInstanceManager *unit_gim;
+        for (auto x : state._GImanagers)
         {
-            if (GIM->getID() == unit_layer_id)
+            if (x.first == "units")
             {
-                unit_gim = GIM;
+                unit_gim = x.second;
             }
         }
 

@@ -5,7 +5,17 @@
 using namespace std;
 using namespace sf;
 
+state::GameInstance *state::GameInstanceManager::_objectiveSelected = NULL;
+state::GameInstance *state::GameInstanceManager::_sourceSelected = NULL;
+
 state::GameInstanceManager::GameInstanceManager(std::string name, int id, std::string path)
+{
+    _name = name;
+    _id = id;
+    _GameManagers.push_back(this);
+}
+
+state::GameInstanceManager::GameInstanceManager(std::string name, int id)
 {
     _name = name;
     _id = id;
@@ -24,8 +34,8 @@ std::string state::GameInstanceManager::getRes()
 
 void state::GameInstanceManager::add(state::GameInstance *gameInstance)
 {
-    std::vector<state::GameInstance *> *v = &_GameInstances;
-    v->push_back(gameInstance);
+    //std::vector<state::GameInstance *> *v = &_GameInstances;
+    _GameInstances.push_back(gameInstance);
 }
 void state::GameInstanceManager::remove(state::GameInstance *gameInstance)
 {
@@ -49,30 +59,7 @@ int state::GameInstanceManager::getSize()
     return i;
 }
 
-int *state::GameInstanceManager::getArrayFromElements(int *res, int sizeMap)
-{
-    // assume map is a square
-    int dimMap = (int)sqrt(sizeMap);
-    int map[dimMap][dimMap];
-    // int res[sizeMap] = {0}; // or whatever is the default value
-    int indice = 0;
-    sf::Vector2i positionElement;
-    for (state::GameInstance *gameInstance : _GameInstances)
-    {
-        positionElement = gameInstance->getPosition();
-        map[positionElement.y][positionElement.x] = gameInstance->getTypeID();
-    }
-    for (int i = 0; i < dimMap; i++)
-    {
-        for (int j = 0; j < dimMap; j++)
-        {
-            res[indice] = map[i][j];
-            indice++;
-        }
-    }
 
-    return res;
-}
 
 void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
 {
@@ -81,7 +68,7 @@ void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
     int map[dimMap][dimMap];
     // int res[sizeMap] = {0}; // or whatever is the default value
     int indice = 0;
-    sf::Vector2i positionElement;
+    std::vector<int> positionElement;
     // ini map
     for (int i = 0; i < dimMap; i++)
     {
@@ -98,7 +85,7 @@ void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
     for (state::GameInstance *gameInstance : _GameInstances)
     {
         positionElement = gameInstance->getPosition();
-        map[positionElement.y][positionElement.x] = gameInstance->getTypeID();
+        map[positionElement[0]][positionElement[1]] = gameInstance->getTypeID();
     }
     for (int i = 0; i < dimMap; i++)
     {
@@ -113,4 +100,40 @@ void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
 std::vector<state::GameInstance *> state::GameInstanceManager::getGameInstances()
 {
     return _GameInstances;
+}
+
+void state::GameInstanceManager::selectObjective(std::vector<int> unitPos)
+{
+    for(auto gi : _GameInstances)
+    {
+        if(gi->getPosition() == unitPos)
+        {
+            _objectiveSelected = gi;
+            gi->select();
+            break;
+        }
+    }
+}
+
+void state::GameInstanceManager::selectSource(std::vector<int> unitPos)
+{
+    for(auto gi : _GameInstances)
+    {
+        if(gi->getPosition() == unitPos)
+        {
+            _sourceSelected = gi;
+            gi->select();
+            break;
+        }
+    }
+}
+
+state::GameInstance *state::GameInstanceManager::getSource()
+{
+    return _sourceSelected;
+}
+
+state::GameInstance *state::GameInstanceManager::getObjective()
+{
+    return _objectiveSelected;
 }

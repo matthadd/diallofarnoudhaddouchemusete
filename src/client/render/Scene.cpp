@@ -98,12 +98,12 @@ namespace render{
             while (!_Layers.empty()) {_Layers.pop_back();printf("tchunk-");}
 
             int array[32*32] = {0};
-            for (state::GameInstanceManager* gim : _sceneInfo._GImanagers)
-            {
-                printf("GIM ID : %d\n", gim->getID());
-                // "res/Tileset/png/Unit_Map_(32).png"
-                add(render::Layer((int)gim->getID(), gim->getRes(), sf::Vector2u(32, 32), array, 16, 16));
-            }
+                for(auto elt : _sceneInfo._GImanagers)     
+                {
+                    printf("GIM ID : %d\n", elt.second->getID());
+                    // "res/Tileset/png/Unit_Map_(32).png"
+                    add(render::Layer((int)elt.second->getID(), elt.second->getRes(), sf::Vector2u(32, 32), array, 16, 16));
+                }
         }
     }
 
