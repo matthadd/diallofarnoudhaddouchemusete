@@ -39,11 +39,7 @@ namespace engine
             _giTarget->receiveDamage(_giSource->giveDamage());
             std::vector<GameInstance*> units = state._GImanagers["units"]->getGameInstances();
             
-            if(_giTarget->isDead())
-            {
-                state._GImanagers["units"]->erase(state.getObjective());
-                return true;              
-            }
+            return true;
         }
         catch(std::string strr)
         {
