@@ -41,11 +41,7 @@ namespace engine
             
             if(_giTarget->isDead())
             {
-                for(auto elt : state._GImanagers["units"]->getGameInstances())
-                {
-                    if(elt->getID() == _giTarget->getID())
-                        state._GImanagers["units"]->erase(elt);
-                }
+                state._GImanagers["units"]->erase(state.getObjective());
                 return true;              
             }
         }
