@@ -40,10 +40,6 @@ BOOST_AUTO_TEST_CASE(GameInstanceConstructor2Test){
   BOOST_CHECK_EQUAL(gi.getTypeID(), BAT);//type BAT
 }
 
-BOOST_AUTO_TEST_CASE(GameInstanceInitIDCounterTest){
-
-}
-
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
   {
     GameInstance gi1 ("GI1", (GameInstanceTypeID) 1);
@@ -242,7 +238,6 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   state.Players.push_back(ai);
 
   GameInstance *dwarfPlayer = new GameInstance("Dwarf_Player", GameInstanceTypeID::DWARF);
-  dwarfPlayer->initIDCounter();
   dwarfPlayer->assignPosition(12,15);
   dwarfPlayer->setPlayerID(Player_ID);
 
