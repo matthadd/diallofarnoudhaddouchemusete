@@ -23,6 +23,19 @@ namespace state{
             _price = price;
     }
 
+    UnitInstance::UnitInstance (GameInstanceTypeID typeID, int playerID, int HP, int damage, int sight, int moveRange, int price, int x, int y)
+    {
+            _id = ++_idCounter;
+            _typeID = typeID;
+            _playerID = playerID;
+            _HP = HP;
+            _damage = damage;
+            _sight = sight;
+            _moveRange = moveRange;
+            _price = price;
+            this->assignPosition(x,y);
+    }
+
 
     UnitInstance::UnitInstance(){}
 
