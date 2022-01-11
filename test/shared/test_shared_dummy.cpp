@@ -17,6 +17,7 @@ using namespace ::ai;
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
   BOOST_CHECK(1);
+  int integer = 1;
 }
 
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
