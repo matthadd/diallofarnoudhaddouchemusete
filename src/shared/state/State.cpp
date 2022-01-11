@@ -147,7 +147,10 @@ namespace state{
         }
         return enemies;
     } 
-
+    
+    void state::State:: cleanUp (GameInstance* gi){
+        _GImanagers["units"]->deleteIfDead(gi);
+    }
     /*
     SUBSCRIBERS ??
 

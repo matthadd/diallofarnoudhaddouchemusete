@@ -1,7 +1,7 @@
 #include "GameInstanceManager.h"
 #include <SFML/Graphics.hpp>
 #include <math.h>
-
+#include "UnitInstance.h"
 using namespace std;
 using namespace sf;
 
@@ -153,3 +153,8 @@ void state::GameInstanceManager::erase(state::GameInstance* gi)
         }
     }
 }
+    
+void state::GameInstanceManager:: deleteIfDead (state::GameInstance* gi){
+    state::UnitInstance* gi_target =(state::UnitInstance*) gi;
+    if(gi_target->isDead()){erase(gi);}
+    }
