@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
 
     // tests state::GameInstance(std::string name, int id)
     state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)129);
-    warrior1->initIDCounter();
     cout << "Resource loaded" << endl;
 
     std::vector<int> pos = warrior1->getPosition();

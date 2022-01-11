@@ -17,18 +17,38 @@ using namespace ::ai;
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
   BOOST_CHECK(1);
-  int integer = 1;
+}
+
+//TESTS DE GAMEINSTANCE
+
+BOOST_AUTO_TEST_CASE(GameInstanceConstructor1Test){
+  //Test du premier constructeur de GameInstance
+  GameInstance gi = GameInstance("a dwarf", DWARF);
+  //Vérification des attributs attribués par le constructeur
+  BOOST_CHECK_EQUAL(gi.getName(), "a dwarf"); //nom
+  BOOST_CHECK_EQUAL(gi.getID(), 0); //ID
+  BOOST_CHECK_EQUAL(gi.getTypeID(), DWARF); //type DWARF
+  BOOST_CHECK_EQUAL(gi.getX(), 0); //position X
+  BOOST_CHECK_EQUAL(gi.getY(), 0); //position Y
+}
+
+BOOST_AUTO_TEST_CASE(GameInstanceConstructor2Test){
+  //Test du deuxième constructeur de GameInstance
+  GameInstance gi = GameInstance(BAT);
+  //Vérification des attributs attribués par le constructeur
+  BOOST_CHECK_EQUAL(gi.getID(), 1);//ID
+  BOOST_CHECK_EQUAL(gi.getTypeID(), BAT);//type BAT
 }
 
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
   {
     GameInstance gi1 ("GI1", (GameInstanceTypeID) 1);
-    BOOST_CHECK_EQUAL(gi1.getID(), 1);
+    //BOOST_CHECK_EQUAL(gi1.getID(), 1);
     BOOST_CHECK_EQUAL(gi1.getX(), 0);
     BOOST_CHECK_EQUAL(gi1.getY(), 0);
     BOOST_CHECK_EQUAL(gi1.getName(), "GI1");
     GameInstance gi2 ((GameInstanceTypeID) 1);
-    BOOST_CHECK_EQUAL(gi2.getID(), 2);
+    //BOOST_CHECK_EQUAL(gi2.getID(), 2);
 
     std::vector<int> newPos = {2,3};
     gi1.assignPosition(1,0);
@@ -218,7 +238,6 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   state.Players.push_back(ai);
 
   GameInstance *dwarfPlayer = new GameInstance("Dwarf_Player", GameInstanceTypeID::DWARF);
-  dwarfPlayer->initIDCounter();
   dwarfPlayer->assignPosition(12,15);
   dwarfPlayer->setPlayerID(Player_ID);
 
@@ -249,6 +268,17 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
   //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (dwarfAI->getID()) (dwarfPlayer->getID()));
   
+}
+
+BOOST_AUTO_TEST_CASE(BuildingFactoryTest){
+  BuildingFactory bf;
+  BuildingInstance* HQ = (BuildingInstance*) bf.createGI(GameInstanceTypeID::HEADQUARTER, Player1_ID);
+  BOOST_CHECK(!HQ->isBeignCaptured());
+  HQ->capturing(Player2_ID);
+  HQ->addCaptureCounter();
+  BOOST_CHECK(HQ->isBeignCaptured());
+  HQ->addCaptureCounter();
+  BOOST_CHECK(HQ->getPlayerID() == Player2_ID);
 }
 
 BOOST_AUTO_TEST_CASE(AttackCommandTest){

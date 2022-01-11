@@ -4,12 +4,11 @@
 using namespace sf;
 namespace state
 {
-    int GameInstance::_idCounter = 0;
-
+    int GameInstance::_idCounter = -1;
     GameInstance::GameInstance(std::string name, GameInstanceTypeID typeID)
     {
         _name = name;
-        _id = ++_idCounter;
+        _id = ++_idCounter; 
         _typeID = typeID;
         _position = std::vector<int> {0, 0};
     }
@@ -18,12 +17,6 @@ namespace state
     {
         _typeID = gameInstanceTypeID;
         _id = ++_idCounter;
-    }
-
-    void GameInstance::initIDCounter()
-    {
-        _idCounter = 0;
-        _id = _idCounter;
     }
 
     std::vector<int> GameInstance::getPosition()
