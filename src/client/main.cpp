@@ -5,6 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include <unistd.h>
 #include "SFML/Window.hpp"
+#include <thread>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 {
 
     // tests state::GameInstance(std::string name, int id)
-    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID) 129);
+    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)129);
     warrior1->initIDCounter();
     cout << "Resource loaded" << endl;
 
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
     }
 
     // Process to create Unit and add it to GIM
-    state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID) 129);
+    state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID)129);
     warrior2->assignPosition(2, 2);
     gim->add(warrior2);
 
@@ -82,9 +83,21 @@ int main(int argc, char *argv[])
     render::Layer warrior_l(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
     s.add(background_l);
     s.add(warrior_l);
-    s.render2();
-    printf("------------------------------\n");
 
+    std::thread t(&render::Scene::render2, &s);
+    printf("------------------------------\n");
+    while (1)
+    {
+        printf("[MAIN] add start\n");
+        s.add(background_l);
+        s.add(warrior_l);
+        sleep(1);
+        gim->getArrayFromElementsIP(warriors_arr, sizeMap);
+        warriors_arr[0] = 3;
+        s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
+        printf("[MAIN] add end\n");
+        sleep(1);
+    }
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     // test reference to own GIM
     state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); //unit
@@ -93,6 +106,6 @@ int main(int argc, char *argv[])
     {
         cout << g->getSize() << endl;
     }
-
+    t.join();
     return 0;
 }
