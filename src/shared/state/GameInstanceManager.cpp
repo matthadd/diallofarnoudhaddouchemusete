@@ -156,5 +156,10 @@ void state::GameInstanceManager::erase(state::GameInstance* gi)
     
 void state::GameInstanceManager:: deleteIfDead (state::GameInstance* gi){
     state::UnitInstance* gi_target =(state::UnitInstance*) gi;
+<<<<<<< HEAD
     if(gi_target->isDead()){erase(gi_target);}
 }
+=======
+    if(gi_target->isDead()){erase(gi);}
+    }
+>>>>>>> ec584f6bf3ca7ead912d0fb69f7b3560688e171a
