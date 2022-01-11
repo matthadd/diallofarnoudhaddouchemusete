@@ -20,6 +20,13 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
   int integer = 1;
 }
 
+BOOST_AUTO_TEST_CASE(GameInstanceConstructor1Test){
+  GameInstance gi = GameInstance("a dwarf", DWARF);
+  BOOST_CHECK_EQUAL(gi.getID(), 0);
+  GameInstance gi2 = GameInstance("another dwarf", DWARF);
+  BOOST_CHECK_EQUAL(gi2.getID(), 1);
+}
+
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
   {
     GameInstance gi1 ("GI1", (GameInstanceTypeID) 1);
