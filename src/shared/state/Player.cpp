@@ -21,7 +21,7 @@ namespace state
         return _name;
     }
 
-    char Player::getID()
+    int Player::getID()
     {
         return _id;
     }

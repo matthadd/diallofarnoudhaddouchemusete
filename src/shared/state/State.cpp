@@ -56,11 +56,6 @@ namespace state{
         instance = 0;
         status = 0;
     }
-    void* state::State::ProcessAllAsync(void* func)
-    {
-        (*((std::function<void()>*)func))();
-        return NULL;
-    }
 
     GameInstance *state::State::getSource()
     {
@@ -117,12 +112,12 @@ namespace state{
         return NULL;
     }
 
-    std::vector<GameInstance*> state::State::showAllies()
+    std::vector<GameInstance*> state::State::findPlayerAllies(int playerID)
     {
         std::vector<GameInstance*> allies;
         for(auto elt : _GImanagers["units"]->getGameInstances())
         {
-            if(elt->getPlayerID() == GetActivePlayer()->getID())
+            if(elt->getPlayerID() == playerID)
             {
                 allies.push_back(elt);
             }

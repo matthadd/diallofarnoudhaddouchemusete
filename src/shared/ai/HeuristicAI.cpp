@@ -20,7 +20,7 @@ namespace ai{
     {
         PathsMap firstpaths(NULL,_height,_length);
         firstpaths.init();
-        for (auto ally : state.showAllies())
+        for (auto ally : state.findPlayerAllies(state.GetActivePlayer()->getID()))
         {
             PathsMap* paths = new PathsMap((state::UnitInstance*) ally, _length, _height); 
             if(paths->findClosestEnemy(state) != std::pair<int,int>(-1, -1))
