@@ -85,17 +85,23 @@ int main(int argc, char *argv[])
 
     std::thread t(&render::Scene::render2, &s);
     printf("------------------------------\n");
+    int i = 0;
     while (1)
     {
         printf("[MAIN] add start\n");
-        s.add(background_l);
-        s.add(warrior_l);
-        sleep(1);
+
+        // update new positions with engine
+        warrior1->assignPosition(i % 16, i % 16);
+        i += 1;
         gim->getArrayFromElementsIP(warriors_arr, sizeMap);
-        warriors_arr[0] = 3;
+
+        // add map and other layers
+        s.add(background_l);
         s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
+
         printf("[MAIN] add end\n");
         sleep(1);
+        warriors_arr[0] = 0;
     }
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     // test reference to own GIM
