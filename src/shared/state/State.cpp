@@ -12,6 +12,24 @@ namespace state{
         return Players[turn % Players.size()];
     }
 
+    void state::State::endTurn(int playerID)
+    {
+        if(!playerID == state::State::GetActivePlayer()->getID())
+        {
+            std::cout << "It is not your turn !\n";
+        }
+        else
+        {
+            turn++;
+            if(state::State::GetActivePlayer()->getID() == state::Playing::PLAYER_1){
+                playing = state::Playing::PLAYER_1;
+            }           
+            else if(state::State::GetActivePlayer()->getID() == state::Playing::PLAYER_2){
+                playing = state::Playing::PLAYER_2;
+            }
+            std::cout << "turn  : " << turn << "\n";
+        }
+    }
     
     void state::State::init()
     {
