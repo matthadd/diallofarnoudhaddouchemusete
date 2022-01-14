@@ -7,40 +7,12 @@ namespace state{
 
     state::State::~State(){}
 
-    void state::State::onTurnBegin()
-    {
-        state::State::turn++;
-        std::cout << "ON_TURN_BEGIN_STATE" << std::endl;
-    }
-    void state::State::onTurnBeginAsync()
-    {
-        std::cout << "ON_TURN_BEGIN_ASYNC_STATE" << std::endl;
-    }
-    void state::State::onTurnEnd()
-    {
-        std::cout << "ON_TURN_END_STATE" << std::endl;
-    }
-    void state::State::onTurnEndAsync()
-    {
-        std::cout << "ON_TURN_END_ASYNC_WH" << std::endl;
-    }
     state::Player* state::State::GetActivePlayer()
     {
         return Players[turn % Players.size()];
     }
 
-    /*bool state::State::isOver()
-    {
-        if(!((status >> 4) ^ 0xF))
-            return true;
-        return false;
-    }
-    char state::State::WinnerID()
-    {
-        if(!isOver())
-            return -1;
-        return status & 0xF;
-    }*/
+    
     void state::State::init()
     {
         CurrentMap = NULL;
