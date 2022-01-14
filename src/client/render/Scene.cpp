@@ -96,11 +96,7 @@ namespace render
 
             window.clear();
 
-            while (!_Layers.empty())
-            {
-                _Layers.pop_back();
-                printf("[RENDER] _Layers.pop_back();\n");
-            }
+            while (!_Layers.empty()) _Layers.pop_back();
             printf("[RENDER] OUT OF EMPTY LOOP\n");
             sleep(1); // put macro here for frame rate
 

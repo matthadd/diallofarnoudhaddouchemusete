@@ -7,40 +7,30 @@ namespace state{
 
     state::State::~State(){}
 
-    void state::State::onTurnBegin()
-    {
-        state::State::turn++;
-        std::cout << "ON_TURN_BEGIN_STATE" << std::endl;
-    }
-    void state::State::onTurnBeginAsync()
-    {
-        std::cout << "ON_TURN_BEGIN_ASYNC_STATE" << std::endl;
-    }
-    void state::State::onTurnEnd()
-    {
-        std::cout << "ON_TURN_END_STATE" << std::endl;
-    }
-    void state::State::onTurnEndAsync()
-    {
-        std::cout << "ON_TURN_END_ASYNC_WH" << std::endl;
-    }
     state::Player* state::State::GetActivePlayer()
     {
         return Players[turn % Players.size()];
     }
 
-    /*bool state::State::isOver()
+    void state::State::endTurn(int playerID)
     {
-        if(!((status >> 4) ^ 0xF))
-            return true;
-        return false;
+        if(!playerID == state::State::GetActivePlayer()->getID())
+        {
+            std::cout << "It is not your turn !\n";
+        }
+        else
+        {
+            turn++;
+            if(state::State::GetActivePlayer()->getID() == state::Playing::PLAYER_1){
+                playing = state::Playing::PLAYER_1;
+            }           
+            else if(state::State::GetActivePlayer()->getID() == state::Playing::PLAYER_2){
+                playing = state::Playing::PLAYER_2;
+            }
+            std::cout << "turn  : " << turn << "\n";
+        }
     }
-    char state::State::WinnerID()
-    {
-        if(!isOver())
-            return -1;
-        return status & 0xF;
-    }*/
+    
     void state::State::init()
     {
         CurrentMap = NULL;
@@ -55,11 +45,6 @@ namespace state{
         turn = 0;
         instance = 0;
         status = 0;
-    }
-    void* state::State::ProcessAllAsync(void* func)
-    {
-        (*((std::function<void()>*)func))();
-        return NULL;
     }
 
     GameInstance *state::State::getSource()
@@ -117,12 +102,12 @@ namespace state{
         return NULL;
     }
 
-    std::vector<GameInstance*> state::State::showAllies()
+    std::vector<GameInstance*> state::State::findPlayerAllies(int playerID)
     {
         std::vector<GameInstance*> allies;
         for(auto elt : _GImanagers["units"]->getGameInstances())
         {
-            if(elt->getPlayerID() == GetActivePlayer()->getID())
+            if(elt->getPlayerID() == playerID)
             {
                 allies.push_back(elt);
             }

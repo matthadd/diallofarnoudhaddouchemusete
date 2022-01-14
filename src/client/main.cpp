@@ -41,15 +41,7 @@ int main(int argc, char *argv[])
     // tests void state::GameInstanceManager::getArrayFromElements(int* array, int sizeMap)
     int sizeMap = 16 * 16;
     int array[sizeMap] = {0}; // or whatever is the default value
-    for (int k = 0; k < 50; k++)
-    {
-        // cout << "array[" << k <<"] = "<< array[k] << endl;
-    }
     gim->getArrayFromElementsIP(array, sizeMap);
-    for (int k = 0; k < 50; k++)
-    {
-        // cout << "array[" << k <<"] = "<< array[k] << endl;
-    }
 
     // Process to create Unit and add it to GIM
     state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID)129);
@@ -105,7 +97,7 @@ int main(int argc, char *argv[])
     }
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
     // test reference to own GIM
-    state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); //unit
+    state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); // unit
 
     for (state::GameInstanceManager *g : gim->_GameManagers)
     {
