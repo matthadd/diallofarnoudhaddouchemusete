@@ -5,9 +5,9 @@
 #include "../../src/shared/ai.h"
 
 
-using namespace ::state;
-using namespace ::engine;
-using namespace ::ai;
+using namespace state;
+using namespace engine;
+using namespace ai;
 
 #define Player1_ID 1
 #define Player2_ID 2
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 
 //TESTS DE GAMEINSTANCE
 
-BOOST_AUTO_TEST_CASE(GameInstanceConstructor1Test){
+BOOST_AUTO_TEST_CASE(GameInstance_Constructor1_Test){
   //Test du premier constructeur de GameInstance
   GameInstance gi = GameInstance("a dwarf", DWARF);
   //Vérification des attributs attribués par le constructeur
@@ -32,12 +32,27 @@ BOOST_AUTO_TEST_CASE(GameInstanceConstructor1Test){
   BOOST_CHECK_EQUAL(gi.getY(), 0); //position Y
 }
 
-BOOST_AUTO_TEST_CASE(GameInstanceConstructor2Test){
+BOOST_AUTO_TEST_CASE(GameInstance_Constructor2_Test){
   //Test du deuxième constructeur de GameInstance
   GameInstance gi = GameInstance(BAT);
   //Vérification des attributs attribués par le constructeur
   BOOST_CHECK_EQUAL(gi.getID(), 1);//ID
   BOOST_CHECK_EQUAL(gi.getTypeID(), BAT);//type BAT
+}
+
+
+//TEST DE UNITINSTANCE
+
+
+//TESTS DE STATE
+BOOST_AUTO_TEST_CASE(State_findPlayerAllies_Test){
+  //Test de la méthode findPlayerAllies de State
+
+  State state;
+  UnitInstance unit1 = UnitInstance(BAT, Player1_ID);
+  //state.Game
+
+  
 }
 
 BOOST_AUTO_TEST_CASE(GameInstanceTest)
@@ -209,11 +224,6 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   attck->process(state2);
   state::UnitInstance* ennemy= (state::UnitInstance*)dw2;
   BOOST_CHECK_EQUAL(ennemy->showHP(), 0);*/
-
-  //test d'incrémentation du tour
-  int cur_turn = state.turn;
-  state.onTurnBegin();
-  BOOST_CHECK_EQUAL(cur_turn, state.turn - 1);
 
   //test de fin de jeu
   //BOOST_CHECK_EQUAL(state.isOver, false);
