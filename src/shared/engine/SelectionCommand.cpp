@@ -3,7 +3,7 @@
 
 namespace engine
 {
-
+    
     SelectionCommand::SelectionCommand(int x, int y)
     {
         _selectedPositionX = x;
@@ -15,8 +15,13 @@ namespace engine
 
     bool SelectionCommand::process(state::State &state)
     {
-        state.selectSource(std::vector<int> {_selectedPositionX, _selectedPositionY});    
-        return true;       
+  
+            if(state.getSource()!=NULL){state.cleanUp(state.getSource());}
+        
+            state.selectSource(std::vector<int> {_selectedPositionX, _selectedPositionY});    
+            return true;       
+
+    
     }
 
     state::GameInstance *SelectionCommand::getGameInstance()

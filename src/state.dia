@@ -661,7 +661,7 @@
             <dia:string>#prevSelectedGI#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::queue&lt;GameInstance*&gt;#</dia:string>
+            <dia:string>#GameInstance*#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
