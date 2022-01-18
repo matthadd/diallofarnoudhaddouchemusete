@@ -14,7 +14,6 @@ namespace engine
 
     bool MoveCommand::process(state::State &state)
     {
-
         // Vérification de la règle
         bool res = true;
         try
