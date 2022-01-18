@@ -316,6 +316,32 @@ BOOST_AUTO_TEST_CASE(AttackCommandTest){
   BOOST_CHECK(units->getGameInstances().size() == 1);
 }
 
+BOOST_AUTO_TEST_CASE(EndTurnTest){
+  State *state_ptr = new State();
+  state_ptr->init();
+  Player p1("player 1","red");
+  p1.setID((int) PLAYER_1);
+  Player p2("player 2","blues");
+  p2.setID((int) PLAYER_2);
+  state_ptr->Players.push_back(&p1);
+  state_ptr->Players.push_back(&p2);
+
+  BOOST_CHECK_EQUAL(state_ptr->whoIsPlaying(), PLAYER_1);
+  BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 0);
+  
+  Engine engine(state_ptr);
+  //the player 2 cannot use this command
+  engine.addCommand(std::make_shared<EndTurnCommand>(PLAYER_2));
+  BOOST_CHECK_THROW(engine.processCommands(), std::runtime_error);
+  //testing the command with player 1
+  BOOST_CHECK_EQUAL(state_ptr->whoIsPlaying(), PLAYER_1);
+  auto et = std::make_shared<EndTurnCommand>(PLAYER_1);
+  engine.addCommand(et);
+  //BOOST_CHECK_NO_THROW(et->process(&state));
+  BOOST_CHECK_NO_THROW(engine.processCommands());
+  BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 1);
+}
+
 BOOST_AUTO_TEST_CASE(HeuristicAiTest){
   #define HEURISTIC_ID 1
   #define RANDOM_ID 2
