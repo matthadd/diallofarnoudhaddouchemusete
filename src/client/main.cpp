@@ -7,6 +7,7 @@
 
 #include <state.h>
 #include <render.h>
+#include <engine.h>
 #include <ai.h>
 
 #define Player_ID 1
