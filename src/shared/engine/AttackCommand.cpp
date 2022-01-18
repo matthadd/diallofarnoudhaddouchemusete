@@ -17,11 +17,12 @@ namespace engine
 
     }
 
-    bool AttackCommand::process(state::State& state){
+    bool AttackCommand::process(state::State *state){
         
         try{
-            state::UnitInstance* _giSource =(state::UnitInstance*) state.getSource();
-            state::UnitInstance* _giTarget=(state::UnitInstance*) state.getObjective();
+            state::UnitInstance* _giSource =(state::UnitInstance*) state->getSource();
+            state::UnitInstance* _giTarget=(state::UnitInstance*) state->getObjective();
+            //_giTarget = state.getObjective();
             
             int targetX=_giTarget->getPosition()[0];
             int targetY=_giTarget->getPosition()[1];
@@ -36,8 +37,8 @@ namespace engine
 
 
             _giTarget->receiveDamage(_giSource->giveDamage());
-            std::vector<GameInstance*> units = state._GImanagers["units"]->getGameInstances();
-            state.cleanUp(_giTarget);
+            std::vector<GameInstance*> units = state->_GImanagers["units"]->getGameInstances();
+            state->cleanUp(_giTarget);
             
             return true;
         }

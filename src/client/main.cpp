@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         state.addGIM("units", unitGIM);
 
         //Création du moteur du jeu 
-        engine::Engine engine(state);
+        engine::Engine engine(&state);
 
         //Génération des commandes de l'IA aléatoire
         state.selectObjective(OtherUnit->getPosition());

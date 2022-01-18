@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   BOOST_CHECK_EQUAL(unitGIM->getGameInstances().size(), 3);
 
   //Partie engine
-  Engine engine(state);
+  Engine engine(&state);
   auto selecDwarf1 = std::make_shared<SelectionCommand>(12, 15);
 
   //auto attackDwarf1 = std::make_shared<AttackCommand>();
@@ -263,14 +263,13 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   //state.addGIM("units",unitGIM);
 
   //Création du moteur du jeu et instanciation de l'ia
-  Engine engine(state);
+  Engine engine(&state);
   RandomAI randomAI(16,16);
 
   //Génération des commandes de l'IA aléatoire
   randomAI.GenCommands(engine, state, AI_ID);
   
   engine.processCommands();
-  state = engine.getState();
   int newXPosition = dwarfAI->getX();
   
   
@@ -309,7 +308,7 @@ BOOST_AUTO_TEST_CASE(AttackCommandTest){
   BOOST_CHECK(bat->isDead()==false);
   
   //gestion de la commande
-  Engine engine(state);
+  Engine engine(&state);
   engine.addCommand(std::make_shared<AttackCommand>());
   engine.processCommands();
   //vérification de la mort du bat
