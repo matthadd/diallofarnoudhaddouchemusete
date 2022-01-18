@@ -7,9 +7,9 @@
 
 namespace engine
 {
-    Engine::Engine(state::State &state)
+    Engine::Engine(state::State *state_ptr)
     {
-        _currentState = state;
+        _currentState = state_ptr;
     }
 
     Engine::~Engine() {}
@@ -28,7 +28,7 @@ namespace engine
         }
     }
 
-    state::State &Engine::getState()
+    state::State *Engine::getState()
     {
         return _currentState;
     }
