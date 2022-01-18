@@ -12,22 +12,29 @@ namespace state{
         return Players[turn % Players.size()];
     }
 
+    Playing state::State::whoIsPlaying() const {
+        return playing;
+    }
+
+    int state::State::showTurnNumber () const {
+        return turn;
+    }
+
     void state::State::endTurn(int playerID)
     {
-        if(!playerID == state::State::GetActivePlayer()->getID())
+        turn++;
+        if(playing != NO_PLAYER || playing != END_GAME)
         {
-            std::cout << "It is not your turn !\n";
-        }
+            if(playing == PLAYER_1){
+                playing = PLAYER_2;
+            }
+            else if(playing == PLAYER_2){
+                playing = PLAYER_1;
+            }
+        }           
         else
         {
-            turn++;
-            if(state::State::GetActivePlayer()->getID() == state::Playing::PLAYER_1){
-                playing = state::Playing::PLAYER_1;
-            }           
-            else if(state::State::GetActivePlayer()->getID() == state::Playing::PLAYER_2){
-                playing = state::Playing::PLAYER_2;
-            }
-            std::cout << "turn  : " << turn << "\n";
+            throw std::logic_error("No one can currently play");
         }
     }
     
@@ -37,6 +44,7 @@ namespace state{
         turn = 0;
         instance = 0;
         status = 0;
+        playing = PLAYER_1;
         printf("Initialisation done ... \n");
     }
     void state::State::init(Map* map)

@@ -62,6 +62,7 @@ namespace state{
             std::cout << "unit is dying...\n";
             _isDead = true;
         }
+        std::cout << "l'objectif a été attaqué" << std::endl;
     }
 
     bool UnitInstance::isDead()

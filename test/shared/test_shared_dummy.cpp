@@ -50,7 +50,6 @@ BOOST_AUTO_TEST_CASE(State_findPlayerAllies_Test){
 
   State state;
   UnitInstance unit1 = UnitInstance(BAT, Player1_ID);
-  //state.Game
 
   
 }
@@ -235,7 +234,7 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   
   #define Player_ID 1
   #define AI_ID 2
-  
+ 
   //Initialisation d'un état du jeu
   State state;
   Player* player = new Player("player", "red", Player1_ID);
@@ -268,11 +267,10 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   RandomAI randomAI(16,16);
 
   //Génération des commandes de l'IA aléatoire
-  /*randomAI.GenCommands(engine, state, AI_ID);
+  randomAI.GenCommands(engine, state, AI_ID);
   
   engine.processCommands();
-  state = engine.getState();
-  int newXPosition = dwarfAI->getX();*/
+  int newXPosition = dwarfAI->getX();
   
   
   //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
