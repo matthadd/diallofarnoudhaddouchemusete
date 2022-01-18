@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         printf("[MAIN] add start\n");
 
         // update new positions with engine
-        warrior1->assignPosition(i % 16, i % 16);
+        warrior1->assignPosition(4, i%16);
         i += 1;
         gim->getArrayFromElementsIP(warriors_arr, sizeMap);
 
@@ -92,7 +92,9 @@ int main(int argc, char *argv[])
         s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
 
         printf("[MAIN] add end\n");
-        sleep(1);
+        s.updateLayout = true;
+        sleep(2);
+
         warriors_arr[0] = 0;
     }
     // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)

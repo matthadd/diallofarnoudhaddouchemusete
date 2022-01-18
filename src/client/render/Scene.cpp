@@ -52,27 +52,6 @@ namespace render
         _sceneInfo = state;
     }
 
-    int Scene::render(int *warriors_arr)
-    {
-        sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
-
-        while (window.isOpen())
-        {
-            sf::Event event;
-            while (window.pollEvent(event))
-            {
-                if (event.type == sf::Event::Closed)
-                    window.close();
-            }
-            window.clear();
-            for (render::Layer l : _Layers)
-            {
-                window.draw(l);
-                window.display();
-            }
-        }
-    }
-
     int Scene::render2()
     {
         sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
@@ -82,54 +61,65 @@ namespace render
             sf::Event event;
             while (window.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed)
+                int xCellSize = 32;
+                int yCellSize = 32;
+                int xNbCells = 10;
+                int yNbCells = 10;
+
+                bool selection = false;
+                std::vector<int> pos;
+                // pos[0] = 0;
+                // pos[1] = 0;
+
+                switch (event.type)
+                {
+                case sf::Event::Closed:
                     window.close();
+                    break;
+
+                case sf::Event::MouseButtonPressed:
+                    if (event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
+                        printf("x:%3d\ny:%3d \n", pos[0], pos[1]);
+                        selection = !selection;
+                    }
+                    break;
+
+                // do not handle other event types
+                default:
+                    break;
+                }
             }
 
-            for (render::Layer l : _Layers)
+            // render on time
+            if (updateLayout)
             {
-                printf("[RENDER] for (render::Layer l : _Layers)\n");
-                l.load();
-                window.draw(l);
-                window.display();
-            }
 
-            window.clear();
+                for (render::Layer l : _Layers)
+                {
+                    printf("[RENDER] for (render::Layer l : _Layers)\n");
+                    l.load();
+                    window.draw(l);
+                    window.display();
+                }
 
-            while (!_Layers.empty()) _Layers.pop_back();
-            printf("[RENDER] OUT OF EMPTY LOOP\n");
-            sleep(1); // put macro here for frame rate
+                window.clear();
 
-            int array[32 * 32] = {0};
-            for (auto element : _sceneInfo._GImanagers)
-            {
-                printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
-                printf("GIM ID : %d\n", element.second->getID());
-                // "res/Tileset/png/Unit_Map_(32).png"
-                add(render::Layer((int)element.second->getID(), element.second->getRes(), sf::Vector2u(32, 32), array, 16, 16));
+                while (!_Layers.empty())
+                    _Layers.pop_back();
+                printf("[RENDER] OUT OF EMPTY LOOP\n");
+                sleep(1); // put macro here for frame rate
+
+                int array[32 * 32] = {0};
+                for (auto element : _sceneInfo._GImanagers)
+                {
+                    printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
+                    printf("GIM ID : %d\n", element.second->getID());
+                    add(render::Layer((int)element.second->getID(), element.second->getRes(), sf::Vector2u(32, 32), array, 16, 16));
+                }
+                // updateLayout = false;
             }
         }
     }
-
-    // int Scene::render(int* warriors_arr) // take input as GIMs
-    // {
-    // sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
-    // render::Layer warriors(render::MOVABLE, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
-    // if (!warriors.load())
-    //     return -1;
-
-    // /*while (window.isOpen())
-    // {
-    //     sf::Event event;
-    //     while (window.pollEvent(event))
-    //     {
-    //         if(event.type == sf::Event::Closed)
-    //             window.close();
-    //     }
-    //     window.clear();
-    //     window.draw(warriors);
-    //     window.display();
-    // }*/
-
-    // }
 }
