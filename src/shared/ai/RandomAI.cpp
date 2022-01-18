@@ -37,10 +37,44 @@ namespace ai
             {
                 int rand_value = RandomAI::GenRand(RandomAI::_unitActionRandRange);
                 std::cout << rand_value << std::endl;
-                if (rand_value == 1)
-                {
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(RandomAI::GenRand(_height), RandomAI::GenRand(_length)));
-                    std::cout << "l'unité (id = " << GI->getID() << " de l'IA (player_ID = " << GI->getPlayerID() << " a été déplacée";
+                if (rand_value == 1){
+                    //commande de sélection
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
+
+                    //commande de déplacement
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(11, 11));
+                    std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
+                    << GI->getPlayerID() << ") a été déplacée" << std::endl;
+                }
+                else if(rand_value == 2){
+                    //comande de sélection
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
+
+                    //commande d'attaque (à revoir une fois la sélection de l'objective possible avec
+                    //la commande de sélection)
+                    engine.addCommand(std::make_shared<engine::AttackCommand>());
+                    std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
+                    << GI->getPlayerID() << ") a attaqué" << std::endl;
+                }
+                else if(rand_value == 3){
+                    //commande de sélection
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
+                    std::cout << "l'unité a été sélectionnée pour être déplacée" << std::endl;
+
+                    //commande de déplacement
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(11, 11));
+                    std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
+                    << GI->getPlayerID() << ") a été déplacée" << std::endl;
+
+                    //commande de sélection
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
+                    std::cout<< "lunité a été resélecionnée pour attaquer" << std::endl;
+
+                    //commande d'attaque (à revoir une fois la sélection de l'objective possible avec
+                    //la commande de sélection)
+                    engine.addCommand(std::make_shared<engine::AttackCommand>());
+                    std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
+                    << GI->getPlayerID() << ") a attaqué" << std::endl;
                 }
             }
         }
