@@ -13,9 +13,9 @@ namespace engine
 
     SelectionCommand::~SelectionCommand() {}
 
-    bool SelectionCommand::process(state::State &state)
+    bool SelectionCommand::process(state::State *state)
     {
-        state.selectSource(std::vector<int> {_selectedPositionX, _selectedPositionY});    
+        state->selectSource(std::vector<int> {_selectedPositionX, _selectedPositionY});    
         return true;       
     }
 

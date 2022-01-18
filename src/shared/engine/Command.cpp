@@ -8,5 +8,5 @@ namespace engine{
         return _commandTypeID;
     }
 
-    bool Command::process(state::State& state){}
+    bool Command::process(state::State *state){}
 }
