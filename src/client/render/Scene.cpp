@@ -94,15 +94,11 @@ namespace render
                 window.display();
             }
 
+            window.clear();
+
+            while (!_Layers.empty()) _Layers.pop_back();
+            printf("[RENDER] OUT OF EMPTY LOOP\n");
             sleep(1); // put macro here for frame rate
-                        window.clear();
-
-
-            while (!_Layers.empty())
-            {
-                _Layers.pop_back();
-                printf("[RENDER] _Layers.pop_back();\n");
-            }
 
             int array[32 * 32] = {0};
             for (auto element : _sceneInfo._GImanagers)

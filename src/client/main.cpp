@@ -49,6 +49,10 @@ int main(int argc, char *argv[])
         unitGIM->add(AIunit);
         unitGIM->add(OtherUnit);
         state.addGIM("units", unitGIM);
+        // tests void state::GameInstanceManager::getArrayFromElements(int* array, int sizeMap)
+        int sizeMap = 16 * 16;
+        int array[sizeMap] = {0}; // or whatever is the default value
+        gim->getArrayFromElementsIP(array, sizeMap);
 
         //Création du moteur du jeu et instanciation de l'ia
         Engine engine(state);
@@ -132,31 +136,54 @@ int main(int argc, char *argv[])
         render::Layer warrior_l(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
         s.add(background_l);
         s.add(warrior_l);
-
         std::thread t(&render::Scene::render2, &s);
         printf("------------------------------\n");
+        int i = 0;
         while (1)
         {
             printf("[MAIN] add start\n");
-            s.add(background_l);
-            s.add(warrior_l);
-            sleep(1);
+
+            // update new positions with engine
+            warrior1->assignPosition(i % 16, i % 16);
+            i += 1;
             gim->getArrayFromElementsIP(warriors_arr, sizeMap);
-            warriors_arr[0] = 3;
+
+            // add map and other layers
+            s.add(background_l);
             s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
+
             printf("[MAIN] add end\n");
             sleep(1);
+            warriors_arr[0] = 0;
         }
         // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
         // test reference to own GIM
-        state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); //unit
+        state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); // unit
 
-        for (state::GameInstanceManager *g : gim->_GameManagers)
-        {
-            cout << g->getSize() << endl;
+            std::thread t(&render::Scene::render2, &s);
+            printf("------------------------------\n");
+            while (1)
+            {
+                printf("[MAIN] add start\n");
+                s.add(background_l);
+                s.add(warrior_l);
+                sleep(1);
+                gim->getArrayFromElementsIP(warriors_arr, sizeMap);
+                warriors_arr[0] = 3;
+                s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
+                printf("[MAIN] add end\n");
+                sleep(1);
+            }
+            // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
+            // test reference to own GIM
+            state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); //unit
+
+            for (state::GameInstanceManager *g : gim->_GameManagers)
+            {
+                cout << g->getSize() << endl;
+            }
+            t.join();
         }
-        t.join();
-    }
 
     return 0;
 }

@@ -50,7 +50,6 @@ BOOST_AUTO_TEST_CASE(State_findPlayerAllies_Test){
 
   State state;
   UnitInstance unit1 = UnitInstance(BAT, Player1_ID);
-  //state.Game
 
   
 }
