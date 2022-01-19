@@ -32,9 +32,14 @@ std::string state::GameInstanceManager::getRes()
     return _path;
 }
 
+void state::GameInstanceManager::setRes(std::string path)
+{
+     _path = path;
+}
+
 void state::GameInstanceManager::add(state::GameInstance *gameInstance)
 {
-    //std::vector<state::GameInstance *> *v = &_GameInstances;
+    // std::vector<state::GameInstance *> *v = &_GameInstances;
     _GameInstances.push_back(gameInstance);
 }
 void state::GameInstanceManager::remove(state::GameInstance *gameInstance)

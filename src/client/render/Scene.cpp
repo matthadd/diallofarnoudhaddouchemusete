@@ -1,24 +1,19 @@
 #include "Scene.h"
 #include <unistd.h>
 
+#include "engine.h"
+#include "state/GameInstance.h"
+#include <mutex>
+#include <iostream>
+
+using namespace std;
 using namespace sf;
 namespace render
 {
-    Scene::Scene(SceneID id, state::State &state, int windowWidth, int windowHeight, std::string title) : _sceneInfo(state)
+    Scene::Scene(SceneID id, state::State *state, int windowWidth, int windowHeight, std::string title)
     {
-        _id = id;
-        /*sf::RenderWindow _window(sf::VideoMode(windowWidth, windowHeight), title);
-
-        // on gère les évènements
-        while(_window.isOpen()){
-            sf::Event event;
-            while (_window.pollEvent(event))
-            {
-                if(event.type == sf::Event::Closed)
-                    _window.close();
-            }
-
-        }*/
+        _sceneInfo = state;
+        id = _id;
     }
 
     Scene::~Scene(){};
@@ -47,14 +42,14 @@ namespace render
         _window.display();
     }*/
 
-    void Scene::setSceneInfo(state::State &state)
+    void Scene::setSceneInfo(state::State *state)
     {
         _sceneInfo = state;
     }
 
     int Scene::render2()
     {
-        sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
+        sf::RenderWindow window(sf::VideoMode(512, 512), "Tactical Wars");
         int xCellSize = 32;
         int yCellSize = 32;
         int xNbCells = 10;
@@ -62,6 +57,8 @@ namespace render
 
         std::vector<int> pos;
         bool selection = false;
+
+        engine::Engine engine(_sceneInfo);
 
         while (window.isOpen())
         {
@@ -80,6 +77,9 @@ namespace render
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
                         printf("x:%3d\ny:%3d \nsel: %d\n", pos[0], pos[1], selection);
+                        // engine.addCommand(std::make_shared<engine::SelectionCommand>(pos[0], pos[1]));
+                        // engine.addCommand(std::make_shared<engine::MoveCommand>(pos[0] + 1, pos[1]));
+                        // engine.processCommands();
                     }
                     break;
 
@@ -109,10 +109,11 @@ namespace render
                 sleep(1); // put macro here for frame rate
 
                 int array[32 * 32] = {0};
-                for (auto element : _sceneInfo._GImanagers)
+
+                for (auto element : _sceneInfo->_GImanagers)
                 {
                     printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
-                    printf("GIM ID : %d\n", element.second->getID());
+                    std::cout << " id :" << element.second->getID() << " res : " << element.second->getRes() << std::endl;
                     add(render::Layer((int)element.second->getID(), element.second->getRes(), sf::Vector2u(32, 32), array, 16, 16));
                 }
                 // updateLayout = false;
