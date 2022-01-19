@@ -10,15 +10,13 @@ namespace engine
     Engine::Engine(state::State *state_ptr)
     {
         _currentState = state_ptr;
-        //_commandQueue.clear();
     }
 
     Engine::~Engine() {}
 
     void Engine::addCommand(std::shared_ptr<Command> ptr_incomingCmd)
     {
-        std::shared_ptr<Command> ptr_cmd(ptr_incomingCmd);
-        _commandQueue.push_back(ptr_cmd);
+        _commandQueue.push_back(ptr_incomingCmd);
     }
 
     void Engine::processCommands()
