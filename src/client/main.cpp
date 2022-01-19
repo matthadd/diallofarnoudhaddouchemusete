@@ -76,59 +76,12 @@ int main(int argc, char *argv[])
         while (1)
         {
 
-            warrior->assignPosition(0, 0);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(4);
-            warrior->assignPosition(1, 0);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(4);
-            warrior->assignPosition(2, 0);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(2);
-            warrior->assignPosition(3, 0);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(2);
-
-            warrior->assignPosition(0, 1);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(2);
-            warrior->assignPosition(0, 2);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(2);
-            warrior->assignPosition(0, 3);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(2);
-            warrior->assignPosition(0, 4);
-
-            std::cout << "[START] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
-            sleep(2);
-
-            break;
-
-            std::cout << "[MAIN] START" << std::endl;
-
             std::cout << "[START] "
                       << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
             engine.addCommand(std::make_shared<engine::SelectionCommand>(warrior->getX(), warrior->getY()));
             engine.addCommand(std::make_shared<engine::MoveCommand>((warrior->getX() + 1) % 16, warrior->getY()));
             engine.processCommands();
 
-            std::cout << "[MAIN] END" << std::endl;
             sleep(3);
         }
         render_thread.join();
