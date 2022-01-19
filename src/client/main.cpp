@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 {
 
     // tests state::GameInstance(std::string name, int id)
-    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)129);
+    state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)19);
     cout << "Resource loaded" << endl;
 
     std::vector<int> pos = warrior1->getPosition();
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     cout << "x:" << pos[0] << " y:" << pos[1] << endl;
 
     // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-    state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", 3, "res/Tileset/png/Unit_Map_(32).png"); // unit
+    state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", 3, "res/Tileset/png/Static_Global_Tileset_(32).png"); // unit
 
     // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
     gim->add(warrior1);
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     render::Layer l;
 
     // tests render::Layer(args) construct
-    render::Layer warrior_layer(0, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
+    render::Layer warrior_layer(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
 
     // test instance state
     state::State state;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     // tests int Scene::render2(int* arr)
     int background_arr[32 * 32] = {0};
     render::Layer background_l(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), background_arr, 16, 16);
-    render::Layer warrior_l(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
+    render::Layer warrior_l(1, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
     s.add(background_l);
     s.add(warrior_l);
 
