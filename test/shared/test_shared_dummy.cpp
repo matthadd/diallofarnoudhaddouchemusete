@@ -3,7 +3,8 @@
 #include "../../src/shared/state/UnitFactory.h"
 #include "../../src/shared/engine.h"
 #include "../../src/shared/ai.h"
-
+#include <memory>
+#include <iostream>
 
 using namespace state;
 using namespace engine;
@@ -329,16 +330,17 @@ BOOST_AUTO_TEST_CASE(EndTurnTest){
   BOOST_CHECK_EQUAL(state_ptr->whoIsPlaying(), PLAYER_1);
   BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 0);
   
-  Engine engine(state_ptr);
+  Engine e(state_ptr);
   //the player 2 cannot use this command
-  engine.addCommand(std::make_shared<EndTurnCommand>(PLAYER_2));
-  BOOST_CHECK_THROW(engine.processCommands(), std::runtime_error);
+  std::shared_ptr<EndTurnCommand> et2(new EndTurnCommand(PLAYER_2));
+  e.addCommand(et2);
+  e.processCommands();
   //testing the command with player 1
   BOOST_CHECK_EQUAL(state_ptr->whoIsPlaying(), PLAYER_1);
-  auto et = std::make_shared<EndTurnCommand>(PLAYER_1);
-  engine.addCommand(et);
+  std::shared_ptr<EndTurnCommand> et1(new EndTurnCommand(PLAYER_1));
+  e.addCommand(et1);
   //BOOST_CHECK_NO_THROW(et->process(&state));
-  BOOST_CHECK_NO_THROW(engine.processCommands());
+  BOOST_CHECK_NO_THROW(e.processCommands());
   BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 1);
 }
 

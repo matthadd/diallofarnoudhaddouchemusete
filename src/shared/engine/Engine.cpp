@@ -10,21 +10,32 @@ namespace engine
     Engine::Engine(state::State *state_ptr)
     {
         _currentState = state_ptr;
+        //_commandQueue.clear();
     }
 
     Engine::~Engine() {}
 
-    void Engine::addCommand(std::shared_ptr<Command> ptr_cmd)
+    void Engine::addCommand(std::shared_ptr<Command> ptr_incomingCmd)
     {
-        _commandQueue.push(ptr_cmd);
+        std::shared_ptr<Command> ptr_cmd(ptr_incomingCmd);
+        _commandQueue.push_back(ptr_cmd);
     }
 
     void Engine::processCommands()
     {
         while (_commandQueue.size() != 0)
         {
-            _commandQueue.front()->process(_currentState);
-            _commandQueue.pop();
+            try
+            {
+                _commandQueue.front()->process(_currentState);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                _commandQueue.pop_front();
+                continue;
+            }
+            _commandQueue.pop_front();    
         }
     }
 
