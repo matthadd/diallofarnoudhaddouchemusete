@@ -8,7 +8,7 @@ namespace render
     {
         _id = id;
         /*sf::RenderWindow _window(sf::VideoMode(windowWidth, windowHeight), title);
-    
+
         // on gère les évènements
         while(_window.isOpen()){
             sf::Event event;
@@ -17,7 +17,7 @@ namespace render
                 if(event.type == sf::Event::Closed)
                     _window.close();
             }
-        
+
         }*/
     }
 
@@ -34,7 +34,7 @@ namespace render
     /*void Scene::drawScene (){
         std::vector<state::GameInstanceManager*> GIMlist;
         GIMlist = _sceneInfo._GImaganagers;
-        
+
         // on dessine le state
         _window.clear();
         for(std::size_t i=0; i<GIMlist.size(); i++){
@@ -55,21 +55,19 @@ namespace render
     int Scene::render2()
     {
         sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
+        int xCellSize = 32;
+        int yCellSize = 32;
+        int xNbCells = 10;
+        int yNbCells = 10;
+
+        std::vector<int> pos;
+        bool selection = false;
 
         while (window.isOpen())
         {
             sf::Event event;
             while (window.pollEvent(event))
             {
-                int xCellSize = 32;
-                int yCellSize = 32;
-                int xNbCells = 10;
-                int yNbCells = 10;
-
-                bool selection = false;
-                std::vector<int> pos;
-                // pos[0] = 0;
-                // pos[1] = 0;
 
                 switch (event.type)
                 {
@@ -81,8 +79,7 @@ namespace render
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
-                        printf("x:%3d\ny:%3d \n", pos[0], pos[1]);
-                        selection = !selection;
+                        printf("x:%3d\ny:%3d \nsel: %d\n", pos[0], pos[1], selection);
                     }
                     break;
 
