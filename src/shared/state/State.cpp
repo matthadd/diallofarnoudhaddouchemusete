@@ -96,15 +96,21 @@ namespace state{
     GameInstance* state::State::getGI(int x, int y)
     {
         std::vector<int> vec = {x,y};
-        for(auto elt : _GImanagers)
+        for(auto gi : _GImanagers["units"]->getGameInstances())
         {
-            for(auto gi : elt.second->getGameInstances())
+            if(gi->getPosition() == vec)
             {
-                if(gi->getPosition() == vec)
-                {
-                    return gi;
-                    break;
-                }
+                return gi;
+                break;
+            }
+        }
+
+        for(auto elt : _GImanagers["buildings"]->getGameInstances())
+        {
+            if(elt->getPosition() == vec)
+            {
+                return elt;
+                break;
             }
         }
         return NULL;

@@ -35,4 +35,14 @@ namespace state{
         _playerCapturing = playerCapturing;
     }
 
+    bool BuildingInstance::isUnit()
+    {
+        return true;
+    }
+
+    bool BuildingInstance::isBuilding()
+    {
+        return false;
+    }
+
 }

@@ -21,9 +21,9 @@ namespace engine
             {
                 state->getSource()->assignPosition(_newPositionX, _newPositionY);
             }
-            else if(state->getGI(_newPositionX, _newPositionY)->getTypeID() > 6)
+            else if(state->getGI(_newPositionX, _newPositionY)->isUnit())
             {
-                throw std::string("This cell is already occupied");
+                throw std::runtime_error("This cell is already occupied");
                 res = false;
             }
             else

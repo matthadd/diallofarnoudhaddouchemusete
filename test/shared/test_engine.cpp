@@ -20,101 +20,6 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
   BOOST_CHECK(1);
 }
 
-//TESTS DE GAMEINSTANCE
-
-BOOST_AUTO_TEST_CASE(GameInstance_Constructor1_Test){
-  //Test du premier constructeur de GameInstance
-  GameInstance gi = GameInstance("a dwarf", DWARF);
-  //Vérification des attributs attribués par le constructeur
-  BOOST_CHECK_EQUAL(gi.getName(), "a dwarf"); //nom
-  BOOST_CHECK_EQUAL(gi.getID(), 0); //ID
-  BOOST_CHECK_EQUAL(gi.getTypeID(), DWARF); //type DWARF
-  BOOST_CHECK_EQUAL(gi.getX(), 0); //position X
-  BOOST_CHECK_EQUAL(gi.getY(), 0); //position Y
-}
-
-BOOST_AUTO_TEST_CASE(GameInstance_Constructor2_Test){
-  //Test du deuxième constructeur de GameInstance
-  GameInstance gi = GameInstance(BAT);
-  //Vérification des attributs attribués par le constructeur
-  BOOST_CHECK_EQUAL(gi.getID(), 1);//ID
-  BOOST_CHECK_EQUAL(gi.getTypeID(), BAT);//type BAT
-}
-
-
-//TEST DE UNITINSTANCE
-
-
-//TESTS DE STATE
-BOOST_AUTO_TEST_CASE(State_findPlayerAllies_Test){
-  //Test de la méthode findPlayerAllies de State
-
-  State state;
-  UnitInstance unit1 = UnitInstance(BAT, Player1_ID);
-
-  
-}
-
-BOOST_AUTO_TEST_CASE(GameInstanceTest)
-  {
-    GameInstance gi1 ("GI1", (GameInstanceTypeID) 1);
-    //BOOST_CHECK_EQUAL(gi1.getID(), 1);
-    BOOST_CHECK_EQUAL(gi1.getX(), 0);
-    BOOST_CHECK_EQUAL(gi1.getY(), 0);
-    BOOST_CHECK_EQUAL(gi1.getName(), "GI1");
-    GameInstance gi2 ((GameInstanceTypeID) 1);
-    //BOOST_CHECK_EQUAL(gi2.getID(), 2);
-
-    std::vector<int> newPos = {2,3};
-    gi1.assignPosition(1,0);
-    BOOST_CHECK_EQUAL(gi1.getX(), 1);
-    BOOST_CHECK_EQUAL(gi1.getY(), 0);
-    gi2.assignPosition(newPos);
-    BOOST_CHECK_EQUAL(gi2.getX(), 2);
-    BOOST_CHECK_EQUAL(gi2.getY(), 3);
-
-    gi1.select();
-    BOOST_CHECK_EQUAL(gi1.isSelected(), true);
-    gi1.unselect();
-    BOOST_CHECK_EQUAL(gi1.isSelected(), false);
-
-    gi1.setPlayerID(1); 
-    BOOST_CHECK_EQUAL(gi1.getPlayerID(), 1);
-    gi2.setPlayerID(2);
-    BOOST_CHECK_EQUAL(gi2.getPlayerID(), 2);
-    
-    State stateO;
-
-    GameInstanceManager *ugim = new GameInstanceManager("units", 0);
-    BOOST_CHECK_EQUAL(ugim->getID(), 0);
-    BOOST_CHECK_EQUAL(ugim->getSize(), 0);
-    
-    UnitFactory uf;
-    UnitInstance *bat1 = (UnitInstance*) uf.createGI(GameInstanceTypeID::BAT, Player1_ID);
-    bat1->assignPosition(22,15);
-    BOOST_CHECK_EQUAL(bat1->showHP(), 10);
-
-    
-    
-    stateO.addGIM("units", ugim);
-    stateO._GImanagers["units"]->add(bat1);
-    BOOST_CHECK_EQUAL(ugim->getSize(), 1);
-    ugim->selectObjective(bat1->getPosition());
-    BOOST_CHECK_EQUAL(bat1, stateO.getObjective());
-
-    int test_id = stateO.getGI(bat1->getX(), bat1->getY())->getID();
-    BOOST_CHECK_EQUAL(test_id, bat1->getID());
-
-    ugim->remove(bat1);
-    BOOST_CHECK_EQUAL(ugim->getSize(), 0);
-
-
-    BOOST_CHECK_EQUAL(stateO.getObjective()->getID(), bat1->getID());
-    
-  }
-
-
-
 BOOST_AUTO_TEST_CASE(TestStateEngine)
 {
   State state;
@@ -231,65 +136,6 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
 
 }
 
-BOOST_AUTO_TEST_CASE(TetsAiEngine){
-  
-  #define Player_ID 1
-  #define AI_ID 2
- 
-  //Initialisation d'un état du jeu
-  State state;
-  Player* player = new Player("player", "red", Player1_ID);
-  Player* ai = new Player("ai", "blue" ,AI_ID);
-
-  player->credit(200);
-  ai->credit(200);
-
-  state.Players.push_back(player);
-  state.Players.push_back(ai);
-
-  GameInstance *dwarfPlayer = new GameInstance("Dwarf_Player", GameInstanceTypeID::DWARF);
-  dwarfPlayer->assignPosition(12,15);
-  dwarfPlayer->setPlayerID(Player_ID);
-
-  GameInstance *dwarfAI = new GameInstance("Dwarf_AI", GameInstanceTypeID::DWARF);
-  dwarfAI->assignPosition(12,16);
-  int initialXPosition = dwarfAI->getX();
-  dwarfAI->setPlayerID(AI_ID);
-
-  GameInstanceManager *unitGIM = new GameInstanceManager("Unit's Manager", UNIT_LAYER_ID);
-  state._GImanagers["units"] = unitGIM;
-  unitGIM->add(dwarfPlayer);
-  unitGIM->add(dwarfAI);
-
-  //state.addGIM("units",unitGIM);
-
-  //Création du moteur du jeu et instanciation de l'ia
-  Engine engine(&state);
-  RandomAI randomAI(16,16);
-
-  //Génération des commandes de l'IA aléatoire
-  randomAI.GenCommands(engine, state, AI_ID);
-  
-  engine.processCommands();
-  int newXPosition = dwarfAI->getX();
-  
-  
-  //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (initialXPosition) (newXPosition));
-  //BOOST_CHECK_PREDICATE(std::not_equal_to<int>(), (dwarfAI->getID()) (dwarfPlayer->getID()));
-  
-}
-
-BOOST_AUTO_TEST_CASE(BuildingFactoryTest){
-  BuildingFactory bf;
-  BuildingInstance* HQ = (BuildingInstance*) bf.createGI(GameInstanceTypeID::HEADQUARTER, Player1_ID);
-  BOOST_CHECK(!HQ->isBeignCaptured());
-  HQ->capturing(Player2_ID);
-  HQ->addCaptureCounter();
-  BOOST_CHECK(HQ->isBeignCaptured());
-  HQ->addCaptureCounter();
-  BOOST_CHECK(HQ->getPlayerID() == Player2_ID);
-}
-
 BOOST_AUTO_TEST_CASE(AttackCommandTest){
   State state;
   UnitFactory uf;
@@ -315,6 +161,46 @@ BOOST_AUTO_TEST_CASE(AttackCommandTest){
   //vérification de la mort du bat
   BOOST_CHECK(bat->isDead()==true);
   BOOST_CHECK(units->getGameInstances().size() == 1);
+}
+
+BOOST_AUTO_TEST_CASE(MoveCommandTest)
+{
+  //création du state
+  State *state_ptr = new State();
+
+  //création du bâtiment
+  BuildingFactory bf;
+  BuildingInstance* HQ = (BuildingInstance*) bf.createGI(HEADQUARTER, PLAYER_1);
+  state_ptr->addGIM("buildings", new GameInstanceManager("buildings", BUILDING_LAYER_ID));
+  HQ->assignPosition(2,0);
+
+  //création des unités
+  UnitFactory uf;
+  state_ptr->addGIM("units", new GameInstanceManager("units", UNIT_LAYER_ID));
+  GameInstance* dwarf = uf.createGI(DWARF,PLAYER_1);
+  dwarf->assignPosition(0,0);
+  state_ptr->addGI("units", dwarf);
+  UnitInstance* cyclop = (UnitInstance*) uf.createGI(CYCLOPS,PLAYER_2);
+  cyclop->assignPosition(1,0);
+  state_ptr->addGI("units", cyclop);
+
+  //création des commandes
+  Engine engine(state_ptr);
+  std::shared_ptr<SelectionCommand> s1(new SelectionCommand(cyclop->getX(), cyclop->getY()));
+  std::shared_ptr<MoveCommand> mv1(new MoveCommand(dwarf->getX(), dwarf->getY()));
+
+  //test du conflit de deux unité sur la même case
+  engine.addCommand(s1);
+  engine.addCommand(mv1);
+  engine.processCommands();
+  BOOST_CHECK(cyclop == state_ptr->getSource());
+  BOOST_CHECK_EQUAL(cyclop->getX(),1);
+
+  //test avec un bâtiment
+  std::shared_ptr<MoveCommand> mv2(new MoveCommand(HQ->getX(), HQ->getY()));
+  engine.addCommand(mv2);
+  engine.processCommands();
+  BOOST_CHECK_EQUAL(cyclop->getX(),2);
 }
 
 BOOST_AUTO_TEST_CASE(EndTurnTest){
@@ -344,30 +230,4 @@ BOOST_AUTO_TEST_CASE(EndTurnTest){
   BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 1);
 }
 
-BOOST_AUTO_TEST_CASE(HeuristicAiTest){
-  #define HEURISTIC_ID 1
-  #define RANDOM_ID 2
-  #define LENGTH 4
-  #define HEIGHT 4
-
-  State state;
-  //Tests de l'IA Heuristic sur une petite map 4*4
-  state::State heuristicAiState;
-  //création de l'ia heuristique :
-  ai::HeuristicAI heuristicAi(4,4);
-  Player hAi("Heuristic AI", "red", HEURISTIC_ID);
-  //création de l'ia random :
-  ai::RandomAI randomAi(4,4);
-  Player rAi("Random AI", "blue", RANDOM_ID);
-
-  state.Players.push_back(&hAi);
-  state.Players.push_back(&rAi);
-
-  //création des unités et bâtiments
-  GameInstanceManager* units = new GameInstanceManager("units", 1);
-  GameInstanceManager* buildings = new GameInstanceManager("building", 2);
-  state.addGIM("units", units); 
-  state.addGIM("buildings", buildings);
-
-}
 

@@ -52,9 +52,9 @@ namespace ai
 
                     //commande d'attaque (à revoir une fois la sélection de l'objective possible avec
                     //la commande de sélection)
-                    engine.addCommand(std::make_shared<engine::AttackCommand>());
+                    /*engine.addCommand(std::make_shared<engine::AttackCommand>());
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
-                    << GI->getPlayerID() << ") a attaqué" << std::endl;
+                    << GI->getPlayerID() << ") a attaqué" << std::endl;*/
                 }
                 else if(rand_value == 3){
                     //commande de sélection
@@ -72,9 +72,9 @@ namespace ai
 
                     //commande d'attaque (à revoir une fois la sélection de l'objective possible avec
                     //la commande de sélection)
-                    engine.addCommand(std::make_shared<engine::AttackCommand>());
+                    /*engine.addCommand(std::make_shared<engine::AttackCommand>());
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
-                    << GI->getPlayerID() << ") a attaqué" << std::endl;
+                    << GI->getPlayerID() << ") a attaqué" << std::endl;*/
                 }
             }
         }

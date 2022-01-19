@@ -82,6 +82,9 @@ namespace state
         return _position[1];
     }
 
+    bool GameInstance::isUnit (){}
+    bool GameInstance::isBuilding (){} 
+
     GameInstance::~GameInstance() {}
     GameInstance::GameInstance() {}
 }

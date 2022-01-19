@@ -41,6 +41,11 @@ namespace state{
         return true;
     }
 
+    bool UnitInstance::isBuilding()
+    {
+        return false;
+    }
+
     int UnitInstance::cost() const
     {
         return _price;
@@ -49,6 +54,7 @@ namespace state{
     {
         if(_HP <= 0)
         {
+            _HP =0;
             std::cout << "unit is dying...\n";
             _isDead = true;
         }
