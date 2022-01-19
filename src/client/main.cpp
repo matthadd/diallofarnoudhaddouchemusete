@@ -54,136 +54,84 @@ int main(int argc, char *argv[])
         randomAI.GenCommands(engine, state, ai->getID());
         randomAI.run(engine);
 
-        cout << "La nouvelle position de l'unité est (" << AIunit->getX()
+        cout << "The new unit position (" << AIunit->getX()
              << "," << AIunit->getY() << ")" << endl;
     }
     else
     {
-
-        // tests state::GameInstance(std::string name, int id)
-        state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)129);
-        cout << "Resource loaded" << endl;
-
-        std::vector<int> pos = warrior1->getPosition();
-        cout << "x:" << pos[0] << " y:" << pos[1] << endl;
-
-        // test void state::GameInstance::setPosition(sf::Vector2i v)
-        warrior1->assignPosition(0, 1);
-        pos = warrior1->getPosition();
-        cout << "x:" << pos[0] << " y:" << pos[1] << endl;
-
-        // tests void state::GameInstance::setPosition(int x, int y)
-        warrior1->assignPosition(15, 0);
-        pos = warrior1->getPosition();
-        cout << "x:" << pos[0] << " y:" << pos[1] << endl;
-
-        // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-        state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", 3, "res/Tileset/png/Unit_Map_(32).png"); // unit
-
-        // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
-        gim->add(warrior1);
-
-        // tests void state::GameInstanceManager::getArrayFromElements(int* array, int sizeMap)
-        int sizeMap = 16 * 16;
-        int array[sizeMap] = {0}; // or whatever is the default value
-        gim->getArrayFromElementsIP(array, sizeMap);
-
-        // Process to create Unit and add it to GIM
-        state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID)129);
-        warrior2->assignPosition(2, 2);
-        gim->add(warrior2);
-
-        // Process to add GIM to Layer
-        int warriors_arr[sizeMap] = {0};
-        // for (int i = 0; i < sizeMap; i++){ warriors_arr[i] = 0;}
-        gim->getArrayFromElementsIP(warriors_arr, sizeMap);
-
-        // tests render::Layer construct
-        render::Layer l;
-
-        // tests render::Layer(args) construct
-        render::Layer warrior_layer(0, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
-
-        // test instance state
         state::State state;
-
-        state.addGIM("units", gim);
-
-        state.turn = 10;
-
-        // test instance state with args
         render::Scene s(render::MENU, &state, 32, 32, "title");
-
-        // tests int Scene::render(int* warriors_arr)
-        // s.render(warriors_arr);
-
-        // tests int Scene::render2(int* arr)
-        int background_arr[32 * 32] = {0};
-        render::Layer background_l(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), background_arr, 16, 16);
-        render::Layer warrior_l(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
-        s.add(background_l);
-        s.add(warrior_l);
-
-        std::thread t(&render::Scene::render2, &s);
-        printf("------------------------------\n");
-        int i = 0;
         engine::Engine engine(&state);
-        warrior1->assignPosition(4, 0);
 
-        // while (1)
-        // {
-        //     printf("[MAIN] add start\n");
+        state::GameInstance *warrior = new state::GameInstance("warrior", (state::GameInstanceTypeID)23);
+        state::GameInstanceManager *gim_warriors = new state::GameInstanceManager("GIM_1", 3, "res/Tileset/png/Static_Global_Tileset_2_(32).png");
 
-        //     // update new positions with engine
+        // test if order matter
+        warrior->assignPosition(0, 0);
+        gim_warriors->add(warrior);
+        state.addGIM("units", gim_warriors);
 
-        //     engine.addCommand(std::make_shared<engine::SelectionCommand>(warrior1->getX(), warrior1->getY()));
-        //     engine.processCommands();
-        //     engine.addCommand(std::make_shared<engine::MoveCommand>(warrior1->getX() + 1, warrior1->getY()));
-        //     engine.processCommands();
-
-        //     i += 1;
-        //     gim->getArrayFromElementsIP(warriors_arr, sizeMap);
-
-        //     // add map and other layers
-        //     s.add(background_l);
-        //     s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
-
-        //     printf("[MAIN] add end\n");
-        //     s.updateLayout = true;
-        //     sleep(2);
-
-        //     warriors_arr[0] = 0;
-        // }
+        std::thread render_thread(&render::Scene::render2, &s);
 
         while (1)
         {
-            printf("[MAIN] add start\n");
 
-            // update new positions with engine
-            engine.addCommand(std::make_shared<engine::SelectionCommand>(warrior1->getX(), warrior1->getY()));
-            engine.processCommands();
-            engine.addCommand(std::make_shared<engine::MoveCommand>(warrior1->getX() + 1, warrior1->getY()));
-            engine.processCommands();
+            warrior->assignPosition(0, 0);
 
-            i += 1;
-            gim->getArrayFromElementsIP(warriors_arr, sizeMap);
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(4);
+            warrior->assignPosition(1, 0);
 
-            // add map and other layers
-            s.add(background_l);
-            s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(4);
+            warrior->assignPosition(2, 0);
 
-            printf("[MAIN] add end\n");
-            s.updateLayout = true;
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(2);
+            warrior->assignPosition(3, 0);
+
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
             sleep(2);
 
-            warriors_arr[0] = 0;
-        }
+            warrior->assignPosition(0, 1);
 
-        for (state::GameInstanceManager *g : gim->_GameManagers)
-        {
-            cout << g->getSize() << endl;
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(2);
+            warrior->assignPosition(0, 2);
+
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(2);
+            warrior->assignPosition(0, 3);
+
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(2);
+            warrior->assignPosition(0, 4);
+
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            sleep(2);
+
+            break;
+
+            std::cout << "[MAIN] START" << std::endl;
+
+            std::cout << "[START] "
+                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
+            engine.addCommand(std::make_shared<engine::SelectionCommand>(warrior->getX(), warrior->getY()));
+            engine.addCommand(std::make_shared<engine::MoveCommand>((warrior->getX() + 1) % 16, warrior->getY()));
+            engine.processCommands();
+
+            std::cout << "[MAIN] END" << std::endl;
+            sleep(3);
         }
-        t.join();
+        render_thread.join();
     }
 
     return 0;

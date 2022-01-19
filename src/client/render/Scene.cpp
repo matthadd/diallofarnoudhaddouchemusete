@@ -88,10 +88,32 @@ namespace render
                     break;
                 }
             }
+            int sizeMap = 16*16;
 
             // render on time
             if (updateLayout)
             {
+                while (!_Layers.empty())
+                    _Layers.pop_back();
+                printf("[RENDER] OUT OF EMPTY LOOP\n");
+
+                int array[sizeMap] = {0};
+                for (int i = 0; i < sizeMap; i++)
+                    array[i] = 0;
+                render::Layer l(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), array, 16, 16);
+
+                _Layers.push_back(l);
+
+                for (auto element : _sceneInfo->_GImanagers)
+                {
+                    printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
+                    // std::cout << " id :" << element.second->getID() << " res : " << element.second->getRes() << std::endl;
+                    element.second->getArrayFromElementsIP(array, sizeMap);
+                    // for (int i = 0; i < sizeMap; i++)
+                    //     std::cout <<  i << "-" << array[i]<< " ";
+                    render::Layer l((int)element.second->getID(), "res/Tileset/png/Static_Global_Tileset_2_(32).png", sf::Vector2u(32, 32), array, 16, 16);
+                    _Layers.push_back(l);
+                }
 
                 for (render::Layer l : _Layers)
                 {
@@ -101,22 +123,9 @@ namespace render
                     window.display();
                 }
 
+                sleep(2);
+
                 window.clear();
-
-                while (!_Layers.empty())
-                    _Layers.pop_back();
-                printf("[RENDER] OUT OF EMPTY LOOP\n");
-                sleep(1); // put macro here for frame rate
-
-                int array[32 * 32] = {0};
-
-                for (auto element : _sceneInfo->_GImanagers)
-                {
-                    printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
-                    std::cout << " id :" << element.second->getID() << " res : " << element.second->getRes() << std::endl;
-                    add(render::Layer((int)element.second->getID(), element.second->getRes(), sf::Vector2u(32, 32), array, 16, 16));
-                }
-                // updateLayout = false;
             }
         }
     }

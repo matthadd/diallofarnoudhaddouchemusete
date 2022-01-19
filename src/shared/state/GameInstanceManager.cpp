@@ -34,7 +34,7 @@ std::string state::GameInstanceManager::getRes()
 
 void state::GameInstanceManager::setRes(std::string path)
 {
-     _path = path;
+    _path = path;
 }
 
 void state::GameInstanceManager::add(state::GameInstance *gameInstance)
@@ -64,14 +64,11 @@ int state::GameInstanceManager::getSize()
     return i;
 }
 
-
-
 void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
 {
     // assume map is a square
     int dimMap = (int)sqrt(sizeMap);
     int map[dimMap][dimMap];
-    // int res[sizeMap] = {0}; // or whatever is the default value
     int indice = 0;
     std::vector<int> positionElement;
     // ini map
@@ -79,7 +76,7 @@ void state::GameInstanceManager::getArrayFromElementsIP(int *res, int sizeMap)
     {
         for (int j = 0; j < dimMap; j++)
         {
-            map[i][j] = 4 * 16;
+            map[i][j] = 0;
         }
     }
     // ini res
@@ -109,9 +106,9 @@ std::vector<state::GameInstance *> state::GameInstanceManager::getGameInstances(
 
 void state::GameInstanceManager::selectObjective(std::vector<int> unitPos)
 {
-    for(auto gi : _GameInstances)
+    for (auto gi : _GameInstances)
     {
-        if(gi->getPosition() == unitPos)
+        if (gi->getPosition() == unitPos)
         {
             _objectiveSelected = gi;
             gi->select();
@@ -122,9 +119,9 @@ void state::GameInstanceManager::selectObjective(std::vector<int> unitPos)
 
 void state::GameInstanceManager::selectSource(std::vector<int> unitPos)
 {
-    for(auto gi : _GameInstances)
+    for (auto gi : _GameInstances)
     {
-        if(gi->getPosition() == unitPos)
+        if (gi->getPosition() == unitPos)
         {
             _sourceSelected = gi;
             gi->select();
@@ -143,9 +140,9 @@ state::GameInstance *state::GameInstanceManager::getObjective()
     return _objectiveSelected;
 }
 
-void state::GameInstanceManager::erase(state::GameInstance* gi)
+void state::GameInstanceManager::erase(state::GameInstance *gi)
 {
-    std::vector<state::GameInstance*>::iterator iter = _GameInstances.begin();
+    std::vector<state::GameInstance *>::iterator iter = _GameInstances.begin();
     while (iter != _GameInstances.end())
     {
         if (*iter == gi)
@@ -158,8 +155,12 @@ void state::GameInstanceManager::erase(state::GameInstance* gi)
         }
     }
 }
-    
-void state::GameInstanceManager:: deleteIfDead (state::GameInstance* gi){
-    state::UnitInstance* gi_target =(state::UnitInstance*) gi;
-    if(gi_target->isDead()){erase(gi_target);}
+
+void state::GameInstanceManager::deleteIfDead(state::GameInstance *gi)
+{
+    state::UnitInstance *gi_target = (state::UnitInstance *)gi;
+    if (gi_target->isDead())
+    {
+        erase(gi_target);
+    }
 }
