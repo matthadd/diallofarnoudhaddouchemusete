@@ -72,17 +72,19 @@ int main(int argc, char *argv[])
         state.addGIM("units", gim_warriors);
 
         std::thread render_thread(&render::Scene::render2, &s);
+        state.turn = 3;
 
         while (1)
         {
+            std::cout << "[MAIN GAME] " << state.turn;
 
-            std::cout << "[MAIN-WARRIOR] "
-                      << "x: " << warrior->getX() << " y: " << warrior->getY() << std::endl;
 
-            engine.addCommand(std::make_shared<engine::MoveCommand>((warrior->getX() + 1) % 16, warrior->getY()));
-            engine.processCommands();
+            // turn player begin : wait for two inputs
 
-            sleep(10000);
+
+
+
+
         }
         render_thread.join();
     }

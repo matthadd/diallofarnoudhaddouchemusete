@@ -44,6 +44,8 @@ namespace render
 
         while (window.isOpen())
         {
+            window.clear();
+
             sf::Event event;
             while (window.pollEvent(event))
             {
@@ -59,9 +61,12 @@ namespace render
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
                         std::cout << "x:  " << pos[0] << "  y:  " << pos[1] << std::endl;
-                        engine.addCommand(std::make_shared<engine::SelectionCommand>(pos[0], pos[1]));
-                        // engine.addCommand(std::make_shared<engine::MoveCommand>(pos[0] + 1, pos[1]));
-                        engine.processCommands();
+                        // engine.addCommand(std::make_shared<engine::SelectionCommand>(pos[0], pos[1]));
+                        // engine.addCommand(std::make_shared<engine::MoveCommand>(pos[0] + 1, 1));
+                        // engine.processCommands();
+                        _state->turn = 10;
+                        std::cout << "RENDER : " << _state->turn << std::endl;
+                        _state->updateRender = true;
                     }
                     break;
 
@@ -72,7 +77,7 @@ namespace render
             }
 
             // render on time
-            if (updateLayout)
+            if (_state->updateRender)
             {
                 while (!_Layers.empty())
                     _Layers.pop_back();
@@ -95,9 +100,9 @@ namespace render
                     window.draw(l);
                     window.display();
                 }
-                window.clear();
+
+                _state->updateRender = false;
             }
-            sleep(0.5);
         }
     }
 }
