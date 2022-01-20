@@ -78,12 +78,23 @@ int main(int argc, char *argv[])
         {
             std::cout << "[MAIN GAME] " << state.turn;
 
+            // BEFORE TURN
+            // activePlayer = turn % 2
 
-            // turn player begin : wait for two inputs
+            
 
 
+            // TURN BEGIN
+            // wait for two coord inputs from render
+            // loop while updateOnClick != true. Go true if 1 input are in
 
+              // selection command with engine : check if 1 input are legit if not go TURN BEGIN
 
+                // if yes choose if MOVE or ATTACK 
+
+                // else goto END TURN
+            
+            // END TURN : turn++
 
         }
         render_thread.join();
