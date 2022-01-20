@@ -62,9 +62,10 @@ namespace state
         return _selected;
     }
 
-    void GameInstance::select()
+    bool GameInstance::select()
     {
         _selected = true;
+        return true;
     }
 
     void GameInstance::unselect()

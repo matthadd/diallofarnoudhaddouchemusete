@@ -61,11 +61,16 @@ namespace render
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
                         std::cout << "x:  " << pos[0] << "  y:  " << pos[1] << std::endl;
-                        // engine.addCommand(std::make_shared<engine::SelectionCommand>(pos[0], pos[1]));
-                        // engine.addCommand(std::make_shared<engine::MoveCommand>(pos[0] + 1, 1));
-                        // engine.processCommands();
-                        _state->turn = 10;
-                        std::cout << "RENDER : " << _state->turn << std::endl;
+                        _state->setPrevSelect(pos);
+
+                        _state->updateRender = true;
+                    }
+
+                    if (event.mouseButton.button == sf::Mouse::Right)
+                    {
+                        // TURN END
+                        _state->turn++;
+
                         _state->updateRender = true;
                     }
                     break;

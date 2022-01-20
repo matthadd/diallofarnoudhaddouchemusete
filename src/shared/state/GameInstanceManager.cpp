@@ -7,6 +7,7 @@ using namespace sf;
 
 state::GameInstance *state::GameInstanceManager::_objectiveSelected = NULL;
 state::GameInstance *state::GameInstanceManager::_sourceSelected = NULL;
+std::vector<int> state::GameInstanceManager::objectiveCoord = {-1,-1};
 
 state::GameInstanceManager::GameInstanceManager(std::string name, int id, std::string path)
 {
@@ -111,28 +112,35 @@ void state::GameInstanceManager::selectObjective(std::vector<int> unitPos)
         if (gi->getPosition() == unitPos)
         {
             _objectiveSelected = gi;
+            if (gi->select()) return;
+        }
+    }
+
+    // if code cant find a GI here then fill the coords
+    objectiveCoord = unitPos;
+    _objectiveSelected = NULL;
+}
+
+void state::GameInstanceManager::selectSource(std::vector<int> sourcePosition, int idPlayer)
+{
+    GameInstance *run;
+    for (auto gi : _GameInstances)
+    {
+        if (gi->getPosition() == sourcePosition)
+        {
+
+            if (gi->getPlayerID() == idPlayer)
+            {
+                _sourceSelected = gi;
+            }
+            else
+            {
+                _objectiveSelected = gi;
+            }
             gi->select();
             break;
         }
     }
-}
-
-void state::GameInstanceManager:: selectSource (std::vector<int> sourcePosition, int idPlayer)
-{   
-    GameInstance* run;
-    for (auto gi : _GameInstances)
-    {
-        if (gi->getPosition() == sourcePosition )
-        {
-            
-            if( gi->getPlayerID()==idPlayer){ _sourceSelected=gi;}
-            else{_objectiveSelected=gi;}
-            gi->select();
-            break;
-        }
-
-    }        
-
 }
 
 state::GameInstance *state::GameInstanceManager::getSource()
