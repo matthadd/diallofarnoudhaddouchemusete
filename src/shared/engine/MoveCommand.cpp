@@ -45,8 +45,8 @@ namespace engine
             {   
                 std::cout<<"je suis dedans";
                 if ((pow((targetX-sourceX),2)+pow((targetY-sourceY),2))<pow(_giSource->getMoveRange(),2)){
-                throw std::string("is in range");
-                state->getSource()->assignPosition(state->getPrevSelect());
+                    std::cout<<"je suis rentré";
+                    state->getSource()->assignPosition(state->getPrevSelect());
                 }
                 
             }
