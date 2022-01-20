@@ -1,55 +1,37 @@
 #include "Scene.h"
 #include <unistd.h>
+#include <iostream>
 
 #include "engine.h"
 #include "state/GameInstance.h"
 #include <mutex>
-#include <iostream>
+
+#include "macro.hpp"
 
 using namespace std;
 using namespace sf;
 namespace render
 {
-    Scene::Scene(SceneID id, state::State *state, int windowWidth, int windowHeight, std::string title)
+    Scene::Scene(SceneID id, state::State *state, int windowWidth, int windowHeight)
     {
-        _sceneInfo = state;
-        id = _id;
+        _state = state;
+        _id = id;
     }
-
     Scene::~Scene(){};
-
-    // std::vector<Layer*> _Layers;
 
     void Scene::add(render::Layer l)
     {
-        // std::vector<render::Layer> v = _Layers;
         _Layers.push_back(l);
     }
 
-    /*void Scene::drawScene (){
-        std::vector<state::GameInstanceManager*> GIMlist;
-        GIMlist = _sceneInfo._GImaganagers;
-
-        // on dessine le state
-        _window.clear();
-        for(std::size_t i=0; i<GIMlist.size(); i++){
-            if(GIMlist[i]->getID() == _layers[i]->get_layerID())
-            {
-                _layers[i]->getArray(GIMlist[i]->getGameInstances());
-                _window.draw(*_layers[i]);
-            }
-        }
-        _window.display();
-    }*/
-
     void Scene::setSceneInfo(state::State *state)
     {
-        _sceneInfo = state;
+        _state = state;
     }
 
     int Scene::render2()
     {
-        sf::RenderWindow window(sf::VideoMode(512, 512), "Tactical Wars");
+        sf::RenderWindow window(sf::VideoMode(512, 512), GAME_NAME);
         int xCellSize = 32;
         int yCellSize = 32;
         int xNbCells = 10;
@@ -58,7 +40,7 @@ namespace render
         std::vector<int> pos;
         bool selection = false;
 
-        engine::Engine engine(_sceneInfo);
+        engine::Engine engine(_state);
 
         while (window.isOpen())
         {
@@ -76,10 +58,10 @@ namespace render
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
-                        printf("x:%3d\ny:%3d \nsel: %d\n", pos[0], pos[1], selection);
-                        // engine.addCommand(std::make_shared<engine::SelectionCommand>(pos[0], pos[1]));
+                        std::cout << "x:  " << pos[0] << "  y:  " << pos[1] << std::endl;
+                        engine.addCommand(std::make_shared<engine::SelectionCommand>(pos[0], pos[1]));
                         // engine.addCommand(std::make_shared<engine::MoveCommand>(pos[0] + 1, pos[1]));
-                        // engine.processCommands();
+                        engine.processCommands();
                     }
                     break;
 
@@ -88,45 +70,34 @@ namespace render
                     break;
                 }
             }
-            int sizeMap = 16*16;
 
             // render on time
             if (updateLayout)
             {
                 while (!_Layers.empty())
                     _Layers.pop_back();
-                printf("[RENDER] OUT OF EMPTY LOOP\n");
 
-                int array[sizeMap] = {0};
-                for (int i = 0; i < sizeMap; i++)
-                    array[i] = 0;
-                render::Layer l(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), array, 16, 16);
+                int array[SIZE_MAP] = {0};
+                render::Layer l(0, PATH_BACKGROUND, sf::Vector2u(32, 32), array, 16, 16);
 
                 _Layers.push_back(l);
 
-                for (auto element : _sceneInfo->_GImanagers)
+                for (auto element : _state->_GImanagers)
                 {
-                    printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
-                    // std::cout << " id :" << element.second->getID() << " res : " << element.second->getRes() << std::endl;
-                    element.second->getArrayFromElementsIP(array, sizeMap);
-                    // for (int i = 0; i < sizeMap; i++)
-                    //     std::cout <<  i << "-" << array[i]<< " ";
-                    render::Layer l((int)element.second->getID(), "res/Tileset/png/Static_Global_Tileset_2_(32).png", sf::Vector2u(32, 32), array, 16, 16);
+                    element.second->getArrayFromElementsIP(array, SIZE_MAP);
+                    render::Layer l((int)element.second->getID(), PATH_UNITS, sf::Vector2u(32, 32), array, 16, 16);
                     _Layers.push_back(l);
                 }
 
                 for (render::Layer l : _Layers)
                 {
-                    printf("[RENDER] for (render::Layer l : _Layers)\n");
                     l.load();
                     window.draw(l);
                     window.display();
                 }
-
-                sleep(2);
-
                 window.clear();
             }
+            sleep(0.5);
         }
     }
 }
