@@ -1,6 +1,10 @@
 #define GAME_NAME "TACTICAL WARS"
 
 #define PLAYER_ID 1
+
+#define PLAYER_1_ID 1
+#define PLAYER_2_ID 2
+
 #define AI_ID 2
 #define SIZE_MAP 16*16
 

@@ -63,39 +63,85 @@ int main(int argc, char *argv[])
         render::Scene s(render::MENU, &state, 32, 32);
         engine::Engine engine(&state);
 
-        state::GameInstance *warrior = new state::GameInstance("warrior", (state::GameInstanceTypeID)23);
+        state::UnitFactory *unitfact = new state::UnitFactory();
+        state::GameInstance *warrior = unitfact->createGI((state::GameInstanceTypeID)23, PLAYER_1_ID);
+        // state::GameInstance *warrior = new state::GameInstance("warrior", (state::GameInstanceTypeID)23);
+
         state::GameInstanceManager *gim_warriors = new state::GameInstanceManager("GIM_1", 3, PATH_UNITS);
 
         // test if order matter
-        warrior->assignPosition(0, 0);
         gim_warriors->add(warrior);
+        warrior->assignPosition(0, 0);
+
         state.addGIM("units", gim_warriors);
 
         std::thread render_thread(&render::Scene::render2, &s);
-        state.turn = 3;
+        state.turn = 0;
+
+        state::Player P1(PLAYER_1_ID);
+        state::Player P2(PLAYER_2_ID);
+        state.activePlayer = &P1;
 
         while (1)
         {
-            std::cout << "[MAIN GAME] " << state.turn;
 
-            // BEFORE TURN
-            // activePlayer = turn % 2
+            int current_turn = state.turn;
 
-            
+            while (current_turn == state.turn)
+            {
+                // std::cout << "[MAIN GAME] " << state.turn;
 
+                // BEFORE TURN
 
-            // TURN BEGIN
-            // wait for two coord inputs from render
-            // loop while updateOnClick != true. Go true if 1 input are in
+                // 1 - choose active player
+                if (state.turn % 2 == 0)
+                {
+                    state.activePlayer = &P1;
+                }
+                else
+                {
+                    state.activePlayer = &P2;
+                }
 
-              // selection command with engine : check if 1 input are legit if not go TURN BEGIN
+                // TURN BEGIN
 
-                // if yes choose if MOVE or ATTACK 
+                // ProcessTurnBegin() from Tim
+                // state.ProcessTurnBegin(); // absurd -> prevSelectedGI
+                state.prevSelectedGI = {-1, -1};
 
-                // else goto END TURN
-            
-            // END TURN : turn++
+                std::vector<int> prev = state.prevSelectedGI;
 
+                // wait for two coord inputs from render
+                while (prev[0] == state.prevSelectedGI[0] && prev[1] == state.prevSelectedGI[1])
+                // while getPrevSelect doesnt change -> wait
+                {
+                }
+                std::cout << "sel before : " << warrior->_selected << std::endl;
+
+                auto sel = std::make_shared<SelectionCommand>(state.getPrevSelect()[0], state.getPrevSelect()[1]);
+                engine.addCommand(sel);
+                engine.processCommands();
+
+                std::cout << "x : " <<state.getPrevSelect()[0]<< " y: "<<state.getPrevSelect()[1]<< std::endl;
+                std::cout << "sel after : " << warrior->_selected << std::endl;
+
+                // struct {source[GI], target:[GI, pos]}
+
+                // SelectionCommand FAILED : outside map, pos save but no GI
+                // SelectionCommand PASS : f(GI)  = source
+
+                // MOVE
+
+                auto move = std::make_shared<MoveCommand>();
+                engine.addCommand(move);
+                engine.processCommands();
+
+                // ATTACK
+
+                auto attack = std::make_shared<AttackCommand>();
+                engine.addCommand(attack);
+                engine.processCommands();
+            }
         }
         render_thread.join();
     }

@@ -23,6 +23,8 @@ namespace engine
             state::UnitInstance* _giSource =(state::UnitInstance*) state->getSource();
             state::UnitInstance* _giTarget=(state::UnitInstance*) state->getObjective();
             //_giTarget = state.getObjective();
+
+            if(_giTarget == NULL) return false;
             
             int targetX=_giTarget->getPosition()[0];
             int targetY=_giTarget->getPosition()[1];

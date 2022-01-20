@@ -225,6 +225,13 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
     //test du déplacement moussa 
   state.selectSource(dw1->getPosition());
   state.selectSource(std::vector<int>{1,2});
+  BOOST_CHECK_EQUAL(state.getPrevSelect()[0], 1);
+  BOOST_CHECK_EQUAL(state.getPrevSelect()[1], 2);
+  BOOST_CHECK_EQUAL(state.getSource()->getPosition()[0], dw1->getPosition()[0]);
+  BOOST_CHECK_EQUAL(state.getSource()->getPosition()[1], dw1->getPosition()[1]);
+   // state.selectSource(dw2->getPosition());
+  
+  //auto moveDwarftest = std::make_shared<MoveCommand>(1, 2);
   auto moveDwarftest = std::make_shared<MoveCommand>(1, 2);
   engine.addCommand(moveDwarftest);
   engine.processCommands();
