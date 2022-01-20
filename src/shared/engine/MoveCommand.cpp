@@ -42,9 +42,12 @@ namespace engine
            
             
             if(!state->getGI(state->getPrevSelect()[0], state->getPrevSelect()[1])||state->getGI(state->getPrevSelect()[0], state->getPrevSelect()[1])->getTypeID() < 6)
-            {
-                if ((pow((targetX-sourceX),2)+pow((targetY-sourceY),2))<pow(_giSource->getMoveRange(),2)){
-                state->getSource()->assignPosition(targetX, targetY);}
+            {   
+                std::cout<<"je suis dedans";
+                /*if ((pow((targetX-sourceX),2)+pow((targetY-sourceY),2))<pow(_giSource->getMoveRange(),2)){
+                throw std::string("is in range");
+                }*/
+                state->getSource()->assignPosition(state->getPrevSelect());
             }
             else{res=false;}
             
