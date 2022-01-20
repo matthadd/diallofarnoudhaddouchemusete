@@ -50,6 +50,11 @@ namespace state
         status = 0;
     }
 
+    void ProcessTurnBegin()
+    {
+       
+    }
+
     GameInstance *state::State::getSource()
     {
         return _GImanagers["units"]->getSource();
@@ -152,30 +157,5 @@ namespace state
     {
         prevSelectedGI = v;
     }
-    /*
-    SUBSCRIBERS ??
-
-
-    template <class T>
-    void state::State::subscribeTurnBegin()
-    {
-        TurnBeginEvents.push_back(T::onTurnBegin);
-    }
-    template <class T>
-    void state::State::subscribeTurnBeginAsync()
-    {
-        TurnBeginEvents.push_back(T::onTurnBeginAsync);
-    }
-    template <class T>
-    void state::State::subscribeTurnEnd()
-    {
-        TurnEndEvents.push_back(T::onTurnEnd);
-    }
-    template <class T>
-    void state::State::subscribeTurnEndAsync()
-    {
-        TurnEndEvents.push_back(T::onTurnEndAsync);
-    }
-
-    */
+       
 }

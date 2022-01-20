@@ -64,14 +64,19 @@ int main(int argc, char *argv[])
         engine::Engine engine(&state);
 
         state::UnitFactory *unitfact = new state::UnitFactory();
-        state::GameInstance *warrior = unitfact->createGI((state::GameInstanceTypeID)23, PLAYER_1_ID);
-        // state::GameInstance *warrior = new state::GameInstance("warrior", (state::GameInstanceTypeID)23);
+        state::GameInstance *warrior1 = unitfact->createGI((state::GameInstanceTypeID)23, PLAYER_1_ID);
+        state::GameInstance *warrior2 = unitfact->createGI((state::GameInstanceTypeID)23, PLAYER_2_ID);
+
+        // state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)23);
 
         state::GameInstanceManager *gim_warriors = new state::GameInstanceManager("GIM_1", 3, PATH_UNITS);
 
         // test if order matter
-        gim_warriors->add(warrior);
-        warrior->assignPosition(0, 0);
+        gim_warriors->add(warrior1);
+        gim_warriors->add(warrior2);
+
+        warrior1->assignPosition(0, 0);
+        warrior2->assignPosition(15, 15);
 
         state.addGIM("units", gim_warriors);
 
@@ -81,6 +86,8 @@ int main(int argc, char *argv[])
         state::Player P1(PLAYER_1_ID);
         state::Player P2(PLAYER_2_ID);
         state.activePlayer = &P1;
+
+        state.updateRender = true;
 
         while (1)
         {
@@ -96,19 +103,20 @@ int main(int argc, char *argv[])
                 // 1 - choose active player
                 if (state.turn % 2 == 0)
                 {
+                    std::cout << "PLAYER 1 TURN" << std::endl;
                     state.activePlayer = &P1;
                 }
                 else
                 {
+                    std::cout << "PLAYER 2 TURN" << std::endl;
                     state.activePlayer = &P2;
                 }
 
                 // TURN BEGIN
 
                 // ProcessTurnBegin() from Tim
-                // state.ProcessTurnBegin(); // absurd -> prevSelectedGI
+                // state.ProcessTurnBegin();
                 state.prevSelectedGI = {-1, -1};
-
                 std::vector<int> prev = state.prevSelectedGI;
 
                 // wait for two coord inputs from render
@@ -116,15 +124,14 @@ int main(int argc, char *argv[])
                 // while getPrevSelect doesnt change -> wait
                 {
                 }
-                std::cout << "sel before : " << warrior->_selected << std::endl;
+                state.updateRender = true;
 
                 auto sel = std::make_shared<SelectionCommand>(state.getPrevSelect()[0], state.getPrevSelect()[1]);
                 engine.addCommand(sel);
                 engine.processCommands();
 
-                std::cout << "x : " <<state.getPrevSelect()[0]<< " y: "<<state.getPrevSelect()[1]<< std::endl;
-                std::cout << "sel after : " << warrior->_selected << std::endl;
-
+                std::cout << "[MAIN] x : " << state.getPrevSelect()[0] << " y: " << state.getPrevSelect()[1] << std::endl;
+                std::cout << "[WARRIOR 1] x : " << warrior1->getPosition()[0] << " y: " << warrior1->getPosition()[0] << std::endl;
                 // struct {source[GI], target:[GI, pos]}
 
                 // SelectionCommand FAILED : outside map, pos save but no GI
@@ -135,12 +142,15 @@ int main(int argc, char *argv[])
                 auto move = std::make_shared<MoveCommand>();
                 engine.addCommand(move);
                 engine.processCommands();
+                state.updateRender = true;
 
                 // ATTACK
 
                 auto attack = std::make_shared<AttackCommand>();
                 engine.addCommand(attack);
                 engine.processCommands();
+
+                state.updateRender = true;
             }
         }
         render_thread.join();

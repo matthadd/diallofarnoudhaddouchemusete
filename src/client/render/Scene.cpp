@@ -60,13 +60,17 @@ namespace render
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
-                        _state->setPrevSelect(pos);                        
+                        std::cout << "[CLICK] x : " << pos[0] << " y: " << pos[1] << std::endl;
+
+                        _state->setPrevSelect(pos);
                         _state->updateRender = true;
                     }
                     if (event.mouseButton.button == sf::Mouse::Right)
                     // finish turn
                     {
                         _state->turn++;
+                        std::cout << "[RENDER] turn : " << _state->turn << std::endl;
+
                     }
                     break;
 

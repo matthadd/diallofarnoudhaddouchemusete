@@ -21,27 +21,14 @@ namespace engine
 
     bool MoveCommand::process(state::State *state)
     {
-        // Vérification de la règle
         bool res = true;
-        /*
-         if(!state->getGI(_newPositionX, _newPositionY))
-         {
-             state->getSource()->assignPosition(_newPositionX, _newPositionY);
-         }
-         else if(state->getGI(_newPositionX, _newPositionY)->getTypeID() > 6)
-         {
-             throw std::string("This cell is already occupied");
-             res = false;
-         }
-         else
-         {
-             state->getSource()->assignPosition(_newPositionX, _newPositionY);
-         }
-*/
-
         try
         {
             state::UnitInstance *_giSource = (state::UnitInstance *)state->getSource();
+
+            if (_giSource == NULL)
+                return false;
+
             int sourceX = state->getSource()->getPosition()[0];
             int sourceY = state->getSource()->getPosition()[1];
             int targetX = state->getPrevSelect()[0];
@@ -49,12 +36,18 @@ namespace engine
 
             if (!state->getGI(state->getPrevSelect()[0], state->getPrevSelect()[1]) || state->getGI(state->getPrevSelect()[0], state->getPrevSelect()[1])->getTypeID() < 6)
             {
-                std::cout << "je suis dedans";
+                // std::cout << "je suis dedans" << std::endl;
+
                 if ((pow((targetX - sourceX), 2) + pow((targetY - sourceY), 2)) < pow(_giSource->getMoveRange(), 2))
                 {
-                    std::cout << "je suis rentré";
+                    // std::cout << "je suis rentré" << std::endl;
+                    std::cout << "[ENGINE] MOVE" << std::endl;
                     state->getSource()->assignPosition(state->getPrevSelect());
+                    std::cout << "[ENGINE] getPrevSelect : " << state->getPrevSelect()[0] << "-" << state->getPrevSelect()[1] << std::endl;
+
+                    return true;
                 }
+                std::cout << "[ENGINE] NO UNIT HERE" << std::endl;
             }
             else
             {
