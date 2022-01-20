@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(TetsAiEngine){
   RandomAI randomAI(16,16);
 
   //Génération des commandes de l'IA aléatoire
-  randomAI.GenCommands(engine, state, AI_ID);
+  randomAI.GenCommands(engine, &state, AI_ID);
   
   engine.processCommands();
   int newXPosition = dwarfAI->getX();
@@ -98,6 +98,8 @@ BOOST_AUTO_TEST_CASE(HeuristicAiTest){
 
   hqH->assignPosition(0,2);
   hqR->assignPosition(2,0);
+  state.addGI("buildings",hqH);
+  state.addGI("buildings",hqR);
 
   //mise en place des unités
 
@@ -105,21 +107,29 @@ BOOST_AUTO_TEST_CASE(HeuristicAiTest){
   auto batH = (UnitInstance*) uf.createGI(BAT, HEURISTIC_ID);
   auto batR = (BuildingInstance*) uf.createGI(BAT, RANDOM_ID);
   batH->assignPosition(0,1);
-  batR->assignPosition(2,2);
+  batR->assignPosition(1,1);
+  state.addGI("units",batH);
+  state.addGI("units",batR);
 
   Engine engine(&state);
   
-  
-  heuristicAi.GenCommands(engine, state, HEURISTIC_ID);
-  heuristicAi.run(engine);
-  randomAi.GenCommands(engine, state, RANDOM_ID);
-  randomAi.run(engine);
+  while(state.playing != END_GAME)
+  {
+    std::cout<< "HEURISTIC TURN\n"<<std::endl;
+    heuristicAi.GenCommands(engine, &state, HEURISTIC_ID);
+    heuristicAi.run(engine);
+    std::cout << "batH is at : (" << batH->getX() << "," << batH->getY() << ")\n" << std::endl; 
+    
+    std::cout<< "RANDOM TURN\n"<<std::endl;
+    randomAi.GenCommands(engine, &state, RANDOM_ID); 
+    randomAi.run(engine);
+    std::cout << "batR is at : (" << batR->getX() << "," << batR->getY() << ")\n" << std::endl;
 
-
-  if(state.winner == PLAYER_1)
+    if(state.winner == PLAYER_1)
     winCounter_H++;
-  else if(state.winner == PLAYER_2)
-    winCounter_R++; 
+    else if(state.winner == PLAYER_2)
+      winCounter_R++; 
+  }
 
   std::cout << "heuristic win rate : " << winCounter_H/20 << std::endl;
   std::cout << "random win rate : " << winCounter_R/20 << std::endl;

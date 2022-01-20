@@ -29,9 +29,9 @@ namespace ai
     }
 
     // Méthode de génération des commandes aléatoires
-    void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
+    void RandomAI::GenCommands(engine::Engine &engine, state::State *state, int playerID)
     {
-        for (state::GameInstance *GI : state._GImanagers["units"]->getGameInstances())
+        for (state::GameInstance *GI : state->_GImanagers["units"]->getGameInstances())
         {
             if (GI->getPlayerID() == playerID && GI->getTypeID() > 6)
             {

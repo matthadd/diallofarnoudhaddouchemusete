@@ -54,7 +54,7 @@ namespace state{
                     building2->capturing(unit->getPlayerID());
                     building2->addCaptureCounter();
                     //checking if the game is over
-                    if(building2->wasCaptured() && building2->getTypeID()==HEADQUARTER){
+                    if(building2->wasCaptured() && building2->getTypeID()==HEADQUARTER && building2->getPlayerID() != unit->getPlayerID()){
                         isOver =true;
                         playing = END_GAME;
                         winner = (Playing) (building2->getPlayerID()%2 + 1);
@@ -179,11 +179,15 @@ namespace state{
     std::vector<GameInstance*> state::State::findPlayerAllies(int playerID)
     {
         std::vector<GameInstance*> allies;
-        for(auto elt : _GImanagers["units"]->getGameInstances())
+        for(auto elt : _GImanagers)
         {
-            if(elt->getPlayerID() == playerID)
+            for(auto gi : elt.second->getGameInstances())
             {
-                allies.push_back(elt);
+                if(gi->getPlayerID() == playerID)
+                {
+                    auto gi2 = gi;
+                    allies.push_back(gi2);
+                }
             }
         }
         return allies;
@@ -192,16 +196,13 @@ namespace state{
     std::vector< std::pair<int,int> > state::State::showEnemies()
     {
         std::vector< std::pair<int, int>> enemies;
-        for(auto gi : _GImanagers["units"]->getGameInstances()){
-            if(gi->getPlayerID() != (int) playing)
+        for(auto elt : _GImanagers){
+            for(auto gi : elt.second->getGameInstances())
             {
-                enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
-            }
-        }
-        for(auto gi : _GImanagers["buildings"]->getGameInstances()){
-            if(gi->getPlayerID() != (int) playing)
-            {
-                enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+                if(gi->getPlayerID() != (int) playing)
+                {
+                    enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+                }
             }
         }
         return enemies;

@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
         //Génération des commandes de l'IA aléatoire
         state.selectObjective(OtherUnit->getPosition());
-        randomAI.GenCommands(engine, state, ai->getID());
+        randomAI.GenCommands(engine, &state, ai->getID());
         randomAI.run(engine);
 
         cout<< "La nouvelle position de l'unité est (" << AIunit->getX() 
@@ -108,9 +108,9 @@ int main(int argc, char *argv[])
             
             while(state.playing != END_GAME)
             {
-                heuristicAi.GenCommands(engine, state, HEURISTIC_ID);
+                heuristicAi.GenCommands(engine, &state, HEURISTIC_ID);
                 heuristicAi.run(engine);
-                randomAi.GenCommands(engine, state, RANDOM_ID);
+                randomAi.GenCommands(engine, &state, RANDOM_ID);
                 randomAi.run(engine);
                 }
 
