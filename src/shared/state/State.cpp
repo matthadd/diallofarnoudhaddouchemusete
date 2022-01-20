@@ -77,12 +77,15 @@ namespace state{
         }
     }
 
-    void state::State::selectSource(std::vector<int> unitPos)
-    {
+    void state::State::selectSource(std::vector<int> unitPos )
+    {   
+        prevSelectedGI=unitPos;
         for(auto elt : _GImanagers)
         {
-            elt.second->selectSource(unitPos);
+            elt.second->selectSource(unitPos,1/*GetActivePlayer()->getID()*/);
         }
+
+        
     }
 
     GameInstance* state::State::getGI(int x, int y)
@@ -135,6 +138,12 @@ namespace state{
     
     void state::State:: cleanUp (GameInstance* gi){
         _GImanagers["units"]->deleteIfDead(gi);
+
+    }
+    
+    std::vector<int>  state::State:: getPrevSelect (){
+        return prevSelectedGI;
+
     }
     /*
     SUBSCRIBERS ??

@@ -1,6 +1,7 @@
 #include "MoveCommand.h"
 #include <iostream>
-
+#include <math.h>
+#include "../state.h"
 namespace engine
 {
     MoveCommand::MoveCommand(int newPositionX, int newPositionY)
@@ -16,7 +17,7 @@ namespace engine
     {
         // Vérification de la règle
         bool res = true;
-        
+           /* 
             if(!state->getGI(_newPositionX, _newPositionY))
             {
                 state->getSource()->assignPosition(_newPositionX, _newPositionY);
@@ -30,7 +31,29 @@ namespace engine
             {
                 state->getSource()->assignPosition(_newPositionX, _newPositionY);
             }
+*/            
 
+         try{
+            state::UnitInstance* _giSource =(state::UnitInstance*) state->getSource();
+            int targetX=state->getSource()->getPosition()[0];
+            int targetY=state->getSource()->getPosition()[1];
+            int sourceX=state->getPrevSelect()[0];
+            int sourceY=state->getPrevSelect()[0];
+           
+            
+            if(!state->getGI(state->getPrevSelect()[0], state->getPrevSelect()[1])||state->getGI(state->getPrevSelect()[0], state->getPrevSelect()[1])->getTypeID() < 6)
+            {
+                if ((pow((targetX-sourceX),2)+pow((targetY-sourceY),2))<pow(_giSource->getMoveRange(),2)){
+                state->getSource()->assignPosition(_newPositionX, _newPositionY);}
+            }
+            else{res=false;}
+            
+         }
+        catch(std::string strr)
+        {
+            std::cout<<strr;
+            return false;
+        }
         return res;
     }
 

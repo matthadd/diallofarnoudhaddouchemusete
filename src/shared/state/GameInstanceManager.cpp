@@ -117,17 +117,22 @@ void state::GameInstanceManager::selectObjective(std::vector<int> unitPos)
     }
 }
 
-void state::GameInstanceManager::selectSource(std::vector<int> unitPos)
-{
+void state::GameInstanceManager:: selectSource (std::vector<int> sourcePosition, int idPlayer)
+{   
+    GameInstance* run;
     for (auto gi : _GameInstances)
     {
-        if (gi->getPosition() == unitPos)
+        if (gi->getPosition() == sourcePosition )
         {
-            _sourceSelected = gi;
+            
+            if( gi->getPlayerID()==idPlayer){ _sourceSelected=gi;}
+            else{_objectiveSelected=gi;}
             gi->select();
             break;
         }
-    }
+
+    }        
+
 }
 
 state::GameInstance *state::GameInstanceManager::getSource()
