@@ -1,75 +1,54 @@
 #include "Scene.h"
 #include <unistd.h>
+#include <iostream>
 
+#include "engine.h"
+#include "state/GameInstance.h"
+#include <mutex>
+
+#include "macro.hpp"
+
+using namespace std;
 using namespace sf;
 namespace render
 {
-    Scene::Scene(SceneID id, state::State &state, int windowWidth, int windowHeight, std::string title) : _sceneInfo(state)
+    Scene::Scene(SceneID id, state::State *state, int windowWidth, int windowHeight)
     {
+        _state = state;
         _id = id;
-        /*sf::RenderWindow _window(sf::VideoMode(windowWidth, windowHeight), title);
-    
-        // on gère les évènements
-        while(_window.isOpen()){
-            sf::Event event;
-            while (_window.pollEvent(event))
-            {
-                if(event.type == sf::Event::Closed)
-                    _window.close();
-            }
-        
-        }*/
     }
-
     Scene::~Scene(){};
-
-    // std::vector<Layer*> _Layers;
 
     void Scene::add(render::Layer l)
     {
-        // std::vector<render::Layer> v = _Layers;
         _Layers.push_back(l);
     }
 
-    /*void Scene::drawScene (){
-        std::vector<state::GameInstanceManager*> GIMlist;
-        GIMlist = _sceneInfo._GImaganagers;
-        
-        // on dessine le state
-        _window.clear();
-        for(std::size_t i=0; i<GIMlist.size(); i++){
-            if(GIMlist[i]->getID() == _layers[i]->get_layerID())
-            {
-                _layers[i]->getArray(GIMlist[i]->getGameInstances());
-                _window.draw(*_layers[i]);
-            }
-        }
-        _window.display();
-    }*/
-
-    void Scene::setSceneInfo(state::State &state)
+    void Scene::setSceneInfo(state::State *state)
     {
-        _sceneInfo = state;
+        _state = state;
     }
 
     int Scene::render2()
     {
-        sf::RenderWindow window(sf::VideoMode(512, 512), "MLB");
+        sf::RenderWindow window(sf::VideoMode(512, 512), GAME_NAME);
+        int xCellSize = 32;
+        int yCellSize = 32;
+        int xNbCells = 10;
+        int yNbCells = 10;
+
+        std::vector<int> pos;
+        bool selection = false;
+
+        engine::Engine engine(_state);
 
         while (window.isOpen())
         {
+            window.clear();
+
             sf::Event event;
             while (window.pollEvent(event))
             {
-                int xCellSize = 32;
-                int yCellSize = 32;
-                int xNbCells = 10;
-                int yNbCells = 10;
-
-                bool selection = false;
-                std::vector<int> pos;
-                // pos[0] = 0;
-                // pos[1] = 0;
 
                 switch (event.type)
                 {
@@ -81,8 +60,17 @@ namespace render
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         pos = {event.mouseButton.x / xCellSize, event.mouseButton.y / yCellSize};
-                        printf("x:%3d\ny:%3d \n", pos[0], pos[1]);
-                        selection = !selection;
+                        std::cout << "[CLICK] x : " << pos[0] << " y: " << pos[1] << std::endl;
+
+                        _state->setPrevSelect(pos);
+                        _state->updateRender = true;
+                    }
+                    if (event.mouseButton.button == sf::Mouse::Right)
+                    // finish turn
+                    {
+                        _state->turn++;
+                        std::cout << "[RENDER] turn : " << _state->turn << std::endl;
+
                     }
                     break;
 
@@ -93,32 +81,31 @@ namespace render
             }
 
             // render on time
-            if (updateLayout)
+            if (_state->updateRender)
             {
+                while (!_Layers.empty())
+                    _Layers.pop_back();
+
+                int array[SIZE_MAP] = {0};
+                render::Layer l(0, PATH_BACKGROUND, sf::Vector2u(32, 32), array, 16, 16);
+
+                _Layers.push_back(l);
+
+                for (auto element : _state->_GImanagers)
+                {
+                    element.second->getArrayFromElementsIP(array, SIZE_MAP);
+                    render::Layer l((int)element.second->getID(), PATH_UNITS, sf::Vector2u(32, 32), array, 16, 16);
+                    _Layers.push_back(l);
+                }
 
                 for (render::Layer l : _Layers)
                 {
-                    printf("[RENDER] for (render::Layer l : _Layers)\n");
                     l.load();
                     window.draw(l);
                     window.display();
                 }
 
-                window.clear();
-
-                while (!_Layers.empty())
-                    _Layers.pop_back();
-                printf("[RENDER] OUT OF EMPTY LOOP\n");
-                sleep(1); // put macro here for frame rate
-
-                int array[32 * 32] = {0};
-                for (auto element : _sceneInfo._GImanagers)
-                {
-                    printf("[RENDER] for (auto element : _sceneInfo._GImanagers);\n");
-                    printf("GIM ID : %d\n", element.second->getID());
-                    add(render::Layer((int)element.second->getID(), element.second->getRes(), sf::Vector2u(32, 32), array, 16, 16));
-                }
-                // updateLayout = false;
+                _state->updateRender = false;
             }
         }
     }

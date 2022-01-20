@@ -2,6 +2,7 @@
 
 namespace state
 {
+    Player::Player(int id) : _id(id) {}
 
     Player::Player(std::string name, std::string color, int mana)
     {
