@@ -27,7 +27,7 @@ namespace engine
             {
                 _commandQueue.front()->process(_currentState);
             }
-            catch(const std::runtime_error& e)
+            catch(std::exception& e)
             {
                 std::cerr << e.what() << '\n';
                 _commandQueue.pop_front();

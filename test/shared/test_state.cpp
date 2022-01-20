@@ -132,4 +132,30 @@ BOOST_AUTO_TEST_CASE(BuildingFactoryTest){
   BOOST_CHECK(HQ->isBeignCaptured());
   HQ->addCaptureCounter();
   BOOST_CHECK(HQ->getPlayerID() == Player2_ID);
+  BOOST_CHECK(HQ->isBuilding());
+}
+
+BOOST_AUTO_TEST_CASE(CaptureBuildingTest){
+  BuildingFactory bf;
+  BuildingInstance* HQ = (BuildingInstance*) bf.createGI(GameInstanceTypeID::HEADQUARTER, PLAYER_1);
+  UnitFactory uf;
+  UnitInstance* D1 = (UnitInstance*) uf.createGI(GameInstanceTypeID::DWARF, PLAYER_2);
+  State *state_ptr = new State();
+  state_ptr->init();
+  auto gim_unit = new GameInstanceManager("units", UNIT_LAYER_ID);
+  auto gim_building = new GameInstanceManager("buildings", BUILDING_LAYER_ID);
+  state_ptr->addGIM("units", gim_unit);
+  state_ptr->addGIM("buildings", gim_building);
+  state_ptr->addGI("units",D1);
+  state_ptr->addGI("buildings", HQ);
+
+  BOOST_CHECK(!HQ->isBeignCaptured());
+
+  HQ->assignPosition(0,0);
+  D1->assignPosition(0,0);
+
+  state_ptr->endTurn();
+  state_ptr->endTurn();
+  BOOST_CHECK(HQ->wasCaptured());
+  
 }

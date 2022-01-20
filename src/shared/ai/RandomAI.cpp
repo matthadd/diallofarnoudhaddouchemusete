@@ -77,7 +77,9 @@ namespace ai
                     << GI->getPlayerID() << ") a attaqué" << std::endl;*/
                 }
             }
+            run(engine);
         }
+        engine.addCommand(std::make_shared<engine::EndTurnCommand>((state::Playing) playerID));
     }
 
     void RandomAI::run(engine::Engine &engine)

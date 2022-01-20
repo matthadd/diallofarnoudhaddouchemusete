@@ -69,8 +69,12 @@ BOOST_AUTO_TEST_CASE(HeuristicAiTest){
   #define RANDOM_ID 2
   #define LENGTH 4
   #define HEIGHT 4
+  int winCounter_H = 0;
+  int winCounter_R = 0;
+
 
   State state;
+  state.init();
   //Tests de l'IA Heuristic sur une petite map 4*4
   state::State heuristicAiState;
   //création de l'ia heuristique :
@@ -84,10 +88,41 @@ BOOST_AUTO_TEST_CASE(HeuristicAiTest){
   state.Players.push_back(&rAi);
 
   //création des unités et bâtiments
-  GameInstanceManager* units = new GameInstanceManager("units", 1);
-  GameInstanceManager* buildings = new GameInstanceManager("building", 2);
-  state.addGIM("units", units); 
-  state.addGIM("buildings", buildings);
+  state.addGIM("units", new GameInstanceManager("units", UNIT_LAYER_ID)); 
+  state.addGIM("buildings", new GameInstanceManager("building", BUILDING_LAYER_ID));
 
+  //mise en place des quartiers généraux
+  BuildingFactory bf;
+  auto hqH = (BuildingInstance*) bf.createGI(HEADQUARTER, HEURISTIC_ID);
+  auto hqR = (BuildingInstance*) bf.createGI(HEADQUARTER, RANDOM_ID);
+
+  hqH->assignPosition(0,2);
+  hqR->assignPosition(2,0);
+
+  //mise en place des unités
+
+  UnitFactory uf;
+  auto batH = (UnitInstance*) uf.createGI(BAT, HEURISTIC_ID);
+  auto batR = (BuildingInstance*) uf.createGI(BAT, RANDOM_ID);
+  batH->assignPosition(0,1);
+  batR->assignPosition(2,2);
+
+  Engine engine(&state);
+  
+  
+  heuristicAi.GenCommands(engine, state, HEURISTIC_ID);
+  heuristicAi.run(engine);
+  randomAi.GenCommands(engine, state, RANDOM_ID);
+  randomAi.run(engine);
+
+
+  if(state.winner == PLAYER_1)
+    winCounter_H++;
+  else if(state.winner == PLAYER_2)
+    winCounter_R++; 
+
+  std::cout << "heuristic win rate : " << winCounter_H/20 << std::endl;
+  std::cout << "random win rate : " << winCounter_R/20 << std::endl;
+  
 }
 

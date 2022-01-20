@@ -23,13 +23,16 @@ namespace ai{
         for (auto ally : state.findPlayerAllies(state.GetActivePlayer()->getID()))
         {
             PathsMap* paths = new PathsMap((state::UnitInstance*) ally, _length, _height); 
-            if(paths->findClosestEnemy(state) != std::pair<int,int>(-1, -1))
+            auto closestEnemy = paths->findClosestEnemy(state);
+            if( closestEnemy != std::pair<int,int>(-1, -1))
             {
                 engine.addCommand(std::make_shared<engine::SelectionCommand>(ally->getX(), ally->getY()));
-                Position bestPosition = paths->bestPosition(state);
+                Position bestPosition = paths->giveBestPosition(state, closestEnemy);
                 engine.addCommand(std::make_shared<engine::MoveCommand>(bestPosition.getX(), bestPosition.getY()));
+                run(engine);
             }
         }
+        engine.addCommand(std::make_shared<engine::EndTurnCommand>((state::Playing) playerID));
     }
 
     

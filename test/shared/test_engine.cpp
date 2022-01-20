@@ -20,6 +20,22 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
   BOOST_CHECK(1);
 }
 
+BOOST_AUTO_TEST_CASE(Move)
+{
+  State state;
+  state.addGIM("units", new GameInstanceManager("units", UNIT_LAYER_ID));
+  UnitFactory uf;
+  auto gi = uf.createGI(DWARF, PLAYER_1);
+  state.addGI("units", gi);
+  gi->assignPosition(0,0);
+  Engine engine(&state);
+  engine.addCommand(std::make_shared<SelectionCommand>(gi->getX(), gi->getY()));
+  engine.addCommand(std::make_shared<MoveCommand>(11, 11));
+  engine.processCommands();
+  auto vec = std::vector<int> {11,11};
+  BOOST_CHECK(gi->getPosition() == vec);
+}
+
 BOOST_AUTO_TEST_CASE(TestStateEngine)
 {
   State state;
@@ -171,8 +187,12 @@ BOOST_AUTO_TEST_CASE(MoveCommandTest)
   //création du bâtiment
   BuildingFactory bf;
   BuildingInstance* HQ = (BuildingInstance*) bf.createGI(HEADQUARTER, PLAYER_1);
+  BuildingInstance* TC = (BuildingInstance*) bf.createGI(TRAININGCAMP, PLAYER_2);
   state_ptr->addGIM("buildings", new GameInstanceManager("buildings", BUILDING_LAYER_ID));
+  state_ptr->addGI("buildings", HQ);
+  state_ptr->addGI("buildings", TC);
   HQ->assignPosition(2,0);
+  TC->assignPosition(3,0);
 
   //création des unités
   UnitFactory uf;
@@ -188,6 +208,8 @@ BOOST_AUTO_TEST_CASE(MoveCommandTest)
   Engine engine(state_ptr);
   std::shared_ptr<SelectionCommand> s1(new SelectionCommand(cyclop->getX(), cyclop->getY()));
   std::shared_ptr<MoveCommand> mv1(new MoveCommand(dwarf->getX(), dwarf->getY()));
+  std::shared_ptr<MoveCommand> mv2(new MoveCommand(HQ->getX(), HQ->getY()));
+  std::shared_ptr<MoveCommand> mv3(new MoveCommand(TC->getX(), TC->getY()));
 
   //test du conflit de deux unité sur la même case
   engine.addCommand(s1);
@@ -197,22 +219,39 @@ BOOST_AUTO_TEST_CASE(MoveCommandTest)
   BOOST_CHECK_EQUAL(cyclop->getX(),1);
 
   //test avec un bâtiment
-  std::shared_ptr<MoveCommand> mv2(new MoveCommand(HQ->getX(), HQ->getY()));
+  engine.addCommand(s1);
   engine.addCommand(mv2);
   engine.processCommands();
   BOOST_CHECK_EQUAL(cyclop->getX(),2);
+
+  engine.addCommand(s1);
+  engine.addCommand(mv3);
+  engine.processCommands();
+  BOOST_CHECK_EQUAL(cyclop->getX(),TC->getX());
 }
 
 BOOST_AUTO_TEST_CASE(EndTurnTest){
   State *state_ptr = new State();
-  state_ptr->init();
+  //initialisation
   Player p1("player 1","red");
   p1.setID((int) PLAYER_1);
   Player p2("player 2","blues");
   p2.setID((int) PLAYER_2);
   state_ptr->Players.push_back(&p1);
   state_ptr->Players.push_back(&p2);
+  state_ptr->init();
 
+  //mise en place du plateau
+  state_ptr->addGIM("units",new GameInstanceManager("units", UNIT_LAYER_ID));
+  state_ptr->addGIM("buildings",new GameInstanceManager("buildings", BUILDING_LAYER_ID));
+  BuildingFactory bf;
+  UnitFactory uf;
+  auto u = (UnitInstance*) uf.createGI(DWARF, PLAYER_1);
+  auto b = (BuildingInstance*) bf.createGI(MANAMINE, PLAYER_2);
+  state_ptr->addGI("units", u);
+  state_ptr->addGI("buildings", b);
+  u->assignPosition(0,0);
+  b->assignPosition(0,0);
   BOOST_CHECK_EQUAL(state_ptr->whoIsPlaying(), PLAYER_1);
   BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 0);
   

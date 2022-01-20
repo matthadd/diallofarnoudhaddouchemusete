@@ -6,6 +6,8 @@ namespace state{
         _playerID = playerID;
         _hpGenRate = hpGeneration;
         _manaGenRate = manaGeneration;
+        _isCaptured = false;
+        _captureCounter = 0;
     }
 
     BuildingInstance::~BuildingInstance (){}
@@ -23,6 +25,7 @@ namespace state{
         {
             _captureCounter = 0;
             _playerID = _playerCapturing;
+            _isCaptured = true;
 
         }
 
@@ -35,14 +38,32 @@ namespace state{
         _playerCapturing = playerCapturing;
     }
 
+    int BuildingInstance::showCaptureCounter() const{
+        return _captureCounter;
+    }
+
     bool BuildingInstance::isUnit()
     {
-        return true;
+        return false;
     }
 
     bool BuildingInstance::isBuilding()
     {
-        return false;
+        return true;
+    }
+
+    void state::BuildingInstance::resetCaptureCounter(){
+        _captureCounter =0;
+    }
+
+    bool state::BuildingInstance::wasCaptured()
+    {
+        return _isCaptured;
+    }
+
+    GameInstanceTypeID state::BuildingInstance::getTypeID()
+    {
+        return _typeID;
     }
 
 }

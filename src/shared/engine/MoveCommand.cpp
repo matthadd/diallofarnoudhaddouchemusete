@@ -16,20 +16,21 @@ namespace engine
     {
         // Vérification de la règle
         bool res = true;
-        
-            if(!state->getGI(_newPositionX, _newPositionY))
-            {
-                state->getSource()->assignPosition(_newPositionX, _newPositionY);
-            }
-            else if(state->getGI(_newPositionX, _newPositionY)->isUnit())
-            {
-                throw std::runtime_error("This cell is already occupied");
-                res = false;
-            }
-            else
-            {
-                state->getSource()->assignPosition(_newPositionX, _newPositionY);
-            }
+        _gameInstanceSelected = state->getSource();
+        state::GameInstance* target = state->getGI(_newPositionX, _newPositionY);
+        if(target == NULL)
+        {
+            _gameInstanceSelected->assignPosition(_newPositionX, _newPositionY);
+        }
+        else if(target->getTypeID() > 6)
+        {
+            throw std::runtime_error("This cell is already occupied");
+            res = false;
+        }
+        else
+        {
+            _gameInstanceSelected->assignPosition(_newPositionX, _newPositionY);
+        }
 
         return res;
     }
