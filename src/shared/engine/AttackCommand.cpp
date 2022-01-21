@@ -25,6 +25,7 @@ namespace engine
             //_giTarget = state.getObjective();
 
             if(_giTarget == NULL) return false;
+            if(_giSource == NULL) return false;
             
             int targetX=_giTarget->getPosition()[0];
             int targetY=_giTarget->getPosition()[1];

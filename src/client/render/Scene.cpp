@@ -31,7 +31,7 @@ namespace render
 
     int Scene::render2()
     {
-        sf::RenderWindow window(sf::VideoMode(512, 512), GAME_NAME);
+        sf::RenderWindow window(sf::VideoMode(VIDEO_MODE, VIDEO_MODE), GAME_NAME);
         int xCellSize = 32;
         int yCellSize = 32;
         int xNbCells = 10;
@@ -70,7 +70,6 @@ namespace render
                     {
                         _state->turn++;
                         std::cout << "[RENDER] turn : " << _state->turn << std::endl;
-
                     }
                     break;
 
@@ -87,14 +86,15 @@ namespace render
                     _Layers.pop_back();
 
                 int array[SIZE_MAP] = {0};
-                render::Layer l(0, PATH_BACKGROUND, sf::Vector2u(32, 32), array, 16, 16);
+                render::Layer l(0, PATH_BACKGROUND, sf::Vector2u(SIZE_TILES, SIZE_TILES), array, HEIGHT_WITDH, HEIGHT_WITDH);
 
                 _Layers.push_back(l);
 
                 for (auto element : _state->_GImanagers)
                 {
+                    std::cout << element.second->getID() << std::endl;
                     element.second->getArrayFromElementsIP(array, SIZE_MAP);
-                    render::Layer l((int)element.second->getID(), PATH_UNITS, sf::Vector2u(32, 32), array, 16, 16);
+                    render::Layer l((int)element.second->getID(), PATH_UNITS, sf::Vector2u(SIZE_TILES, SIZE_TILES), array, HEIGHT_WITDH, HEIGHT_WITDH);
                     _Layers.push_back(l);
                 }
 
