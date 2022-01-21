@@ -92,7 +92,6 @@ namespace render
 
                 for (auto element : _state->_GImanagers)
                 {
-                    std::cout << element.second->getID() << std::endl;
                     element.second->getArrayFromElementsIP(array, SIZE_MAP);
                     render::Layer l((int)element.second->getID(), PATH_UNITS, sf::Vector2u(SIZE_TILES, SIZE_TILES), array, HEIGHT_WITDH, HEIGHT_WITDH);
                     _Layers.push_back(l);

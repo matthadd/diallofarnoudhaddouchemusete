@@ -64,24 +64,38 @@ int main(int argc, char *argv[])
         engine::Engine engine(&state);
 
         state::UnitFactory *unitfact = new state::UnitFactory();
-        state::GameInstance *warrior1 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_DWARF, PLAYER_1_ID);
-        state::GameInstance *warrior2 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_HUMAN, PLAYER_2_ID);
+        state::GameInstance *warrior1 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_DWARF_1, PLAYER_1_ID);
+        state::GameInstance *warrior2 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_HUMAN_1, PLAYER_2_ID);
 
         state::BuildingFactory *buildingFactory = new state::BuildingFactory();
         state::GameInstance *HQ = buildingFactory->createGI((state::GameInstanceTypeID)6, PLAYER_1_ID);
-        state::GameInstanceManager *gim_building = new state::GameInstanceManager("GIM_2", 4, PATH_UNITS);
+        state::GameInstance *HQ2 = buildingFactory->createGI((state::GameInstanceTypeID)6, PLAYER_1_ID);
+        state::GameInstanceManager *gim_building = new state::GameInstanceManager("GIM_2", 2, PATH_UNITS);
 
         state::GameInstanceManager *gim_warriors = new state::GameInstanceManager("GIM_1", 3, PATH_UNITS);
 
-        // test if order matter
-        gim_warriors->add(warrior1);
-        gim_warriors->add(warrior2);
+        // gim_warriors->add(warrior1);
+        // gim_warriors->add(warrior2);
         gim_warriors->add(HQ);
+        gim_warriors->add(HQ2);
 
-        warrior1->assignPosition(0, 0);
-        warrior2->assignPosition(15, 15);
-        HQ->assignPosition(1,1);
+        // warrior1->assignPosition(0, 0);
+        // warrior2->assignPosition(15, 15);
+        HQ->assignPosition(1, 1);
+        HQ2->assignPosition(9, 17);
 
+        for (int i = 0; i < 10; i++)
+        {
+            state::GameInstance *w1 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_DWARF_1, PLAYER_1_ID);
+            gim_warriors->add(w1);
+            w1->assignPosition(i, 2);
+
+            state::GameInstance *w2 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_GOLEM_2, PLAYER_2_ID);
+            gim_warriors->add(w2);
+            w2->assignPosition(i+2, 16);
+        }
+
+        // state.addGIM("buildings", gim_building);
         state.addGIM("units", gim_warriors);
 
         std::thread render_thread(&render::Scene::render2, &s);
