@@ -30,18 +30,20 @@ namespace ai{
                 {
                     //sélection de l'unité
                     engine.addCommand(std::make_shared<engine::SelectionCommand>(ally->getX(), ally->getY()));
-                    Position* bestPosition = paths->giveBestPosition(*state, closestEnemy);
+                    Position* bestPosition = paths->giveBestPosition(state, closestEnemy);
 
                     // si l'unité ennemi est à portée d'attaque
-                    if(paths->distance(closestEnemy, std::pair<int, int>(ally->getX(), ally->getY()))==1 && 
+                    std::pair<int, int> ally_position = {ally->getX(), ally->getY()};
+                    if(paths->distance(closestEnemy, ally_position)==1 && 
                         state->getGI(closestEnemy.first, closestEnemy.second)->getTypeID()>6)
                     {
-                        state->selectObjective(std::vector<int>{closestEnemy.first, closestEnemy.second});
+                        std::vector<int> p = {closestEnemy.first, closestEnemy.second};
+                        state->selectObjective(p);
                         engine.addCommand(std::make_shared<engine::AttackCommand>());
                     }
 
                     //si le bâtiment ennemi est à  1 case
-                    else if(paths->distance(closestEnemy, std::pair<int, int>(ally->getX(), ally->getY()))<=1 && 
+                    else if(paths->distance(closestEnemy, ally_position)<=1 && 
                             state->getGI(closestEnemy.first, closestEnemy.second)->getTypeID()<7)
                     {
                         engine.addCommand(std::make_shared<engine::MoveCommand>(closestEnemy.first, closestEnemy.second));

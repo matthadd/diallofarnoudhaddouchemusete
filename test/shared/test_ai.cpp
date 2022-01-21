@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(HeuristicAiTest){
   #define HEIGHT 4
   int winCounter_H = 0;
   int winCounter_R = 0;
-  int nb_turn = 100;
+  int nb_turn = 1;
 
   for(int j = 0; j<nb_turn; j++){
     State state;

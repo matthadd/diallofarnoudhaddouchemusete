@@ -79,11 +79,11 @@ std::pair<int,int> PathsMap::findClosestEnemy(state::State& state)
     return closestEnemyPosition;
 }
 
-Position* PathsMap::giveBestPosition(state::State& state, std::pair <int,int> closestEnemy)
+Position* PathsMap::giveBestPosition(state::State *state, std::pair <int,int> closestEnemy)
 {
     Position* bestPosition;
     int value;
-    auto enemy = state.getGI(closestEnemy.first, closestEnemy.second);
+    auto enemy = state->getGI(closestEnemy.first, closestEnemy.second);
     if (enemy->getTypeID() > 6)
     {
         value = ENEMY_COEF;
