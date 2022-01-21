@@ -47,24 +47,22 @@ namespace state{
         for(auto building : _GImanagers["buildings"]->getGameInstances())
         {
             auto unit = findUnit(building->getX(), building->getY());
+            auto building2 = (BuildingInstance*) building;
             if(unit)
-                if(unit->isUnit())
-                {
-                    state::BuildingInstance* building2 = (BuildingInstance*) building;
+                if(unit->getPlayerID() != building->getPlayerID())
+                {  
                     building2->capturing(unit->getPlayerID());
                     building2->addCaptureCounter();
-                    //checking if the game is over
-                    if(building2->wasCaptured() && building2->getTypeID()==HEADQUARTER && building2->getPlayerID() != unit->getPlayerID()){
-                        isOver =true;
-                        playing = END_GAME;
-                        winner = (Playing) (building2->getPlayerID()%2 + 1);
-                    }
                 }
-                else
-                {
-                    auto building2 = (BuildingInstance*) building;
-                    building2->resetCaptureCounter();
-                }
+            else  
+                building2->resetCaptureCounter();  
+
+            /*//checking endgame           
+            if(building2->getPlayerID()==HEADQUARTER && building2->wasCaptured()){
+                this->winner = (Playing) unit->getPlayerID();
+                this->playing = (Playing) unit->getPlayerID();
+            }*/
+
         }
     }
     

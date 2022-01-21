@@ -41,7 +41,7 @@ namespace ai{
                     }
 
                     //si le bâtiment ennemi est à  1 case
-                    else if(paths->distance(closestEnemy, std::pair<int, int>(ally->getX(), ally->getY()))<1 && 
+                    else if(paths->distance(closestEnemy, std::pair<int, int>(ally->getX(), ally->getY()))<=1 && 
                             state->getGI(closestEnemy.first, closestEnemy.second)->getTypeID()<7)
                     {
                         engine.addCommand(std::make_shared<engine::MoveCommand>(closestEnemy.first, closestEnemy.second));

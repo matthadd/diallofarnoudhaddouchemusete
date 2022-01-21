@@ -42,7 +42,7 @@ namespace ai
                     engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
 
                     //commande de déplacement
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(11, 11));
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(GenRand(_height), GenRand(_length)));
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
                     << GI->getPlayerID() << ") a été déplacée" << std::endl;
                 }
@@ -62,7 +62,7 @@ namespace ai
                     std::cout << "l'unité a été sélectionnée pour être déplacée" << std::endl;
 
                     //commande de déplacement
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(11, 11));
+                    engine.addCommand(std::make_shared<engine::MoveCommand>(GenRand(_height), GenRand(_length)));
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
                     << GI->getPlayerID() << ") a été déplacée" << std::endl;
 
