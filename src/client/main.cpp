@@ -10,8 +10,8 @@
 #include <engine.h>
 #include <ai.h>
 
-#define Player_ID 1
-#define AI_ID 2
+#include "macro.hpp"
+
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 using namespace std;
@@ -26,133 +26,152 @@ int main(int argc, char *argv[])
     if (argc == 2 && argv[1] == string("random"))
     {
         state::State state;
-        state::UnitInstance* AIunit = new UnitInstance(DWARF, AI_ID);
-        state::UnitInstance* OtherUnit = new UnitInstance(BAT, Player_ID);
+        state::UnitInstance *AIunit = new UnitInstance(DWARF, AI_ID);
+        state::UnitInstance *OtherUnit = new UnitInstance(BAT, PLAYER_ID);
         AIunit->setPlayerID(AI_ID);
 
         ai::RandomAI randomAI;
-        
-        //Initialisation d'un état du jeu
-        state::Player* ai = new Player("ai", "blue", 0);
+
+        // Initialisation d'un état du jeu
+        state::Player *ai = new Player("ai", "blue", 0);
         ai->setID(AI_ID);
 
         state.Players.push_back(ai);
 
-        AIunit->assignPosition(10,10);
-        OtherUnit->assignPosition(24,24);
+        AIunit->assignPosition(10, 10);
+        OtherUnit->assignPosition(24, 24);
 
-
-        state::GameInstanceManager* unitGIM = new GameInstanceManager("Units' Manager", 2);
+        state::GameInstanceManager *unitGIM = new GameInstanceManager("Units' Manager", 2);
         unitGIM->add(AIunit);
         unitGIM->add(OtherUnit);
         state.addGIM("units", unitGIM);
 
-        //Création du moteur du jeu 
+        // Création du moteur du jeu
         engine::Engine engine(&state);
 
-        //Génération des commandes de l'IA aléatoire
+        // Génération des commandes de l'IA aléatoire
         state.selectObjective(OtherUnit->getPosition());
         randomAI.GenCommands(engine, state, ai->getID());
         randomAI.run(engine);
 
-        cout<< "La nouvelle position de l'unité est (" << AIunit->getX() 
-        << "," << AIunit->getY() << ")" << endl;
-        
+        cout << "The new unit position (" << AIunit->getX()
+             << "," << AIunit->getY() << ")" << endl;
     }
-    else{
-
-    
-        // tests state::GameInstance(std::string name, int id)
-        state::GameInstance *warrior1 = new state::GameInstance("warrior1", (state::GameInstanceTypeID)129);
-        cout << "Resource loaded" << endl;
-
-        std::vector<int> pos = warrior1->getPosition();
-        cout << "x:" << pos[0] << " y:" << pos[1] << endl;
-
-        // test void state::GameInstance::setPosition(sf::Vector2i v)
-        warrior1->assignPosition(0, 1);
-        pos = warrior1->getPosition();
-        cout << "x:" << pos[0] << " y:" << pos[1] << endl;
-
-        // tests void state::GameInstance::setPosition(int x, int y)
-        warrior1->assignPosition(15, 0);
-        pos = warrior1->getPosition();
-        cout << "x:" << pos[0] << " y:" << pos[1] << endl;
-
-        // tests state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-        state::GameInstanceManager *gim = new state::GameInstanceManager("GIM_1", 3, "res/Tileset/png/Unit_Map_(32).png"); // unit
-
-        // test void state::GameInstanceManager::add(state::GameInstance* gameInstance)
-        gim->add(warrior1);
-
-        // tests void state::GameInstanceManager::getArrayFromElements(int* array, int sizeMap)
-        int sizeMap = 16 * 16;
-        int array[sizeMap] = {0}; // or whatever is the default value
-        gim->getArrayFromElementsIP(array, sizeMap);
-
-        // Process to create Unit and add it to GIM
-        state::GameInstance *warrior2 = new state::GameInstance("warrior2", (state::GameInstanceTypeID)129);
-        warrior2->assignPosition(2, 2);
-        gim->add(warrior2);
-
-        // Process to add GIM to Layer
-        int warriors_arr[sizeMap] = {0};
-        // for (int i = 0; i < sizeMap; i++){ warriors_arr[i] = 0;}
-        gim->getArrayFromElementsIP(warriors_arr, sizeMap);
-
-        // tests render::Layer construct
-        render::Layer l;
-
-        // tests render::Layer(args) construct
-        render::Layer warrior_layer(0, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
-
-        // test instance state
+    else
+    {
         state::State state;
+        render::Scene s(render::MENU, &state, 32, 32);
+        engine::Engine engine(&state);
 
-        // test instance state with args
-        render::Scene s(render::MENU, state, 32, 32, "title");
+        state::UnitFactory *unitfact = new state::UnitFactory();
+        state::GameInstance *warrior1 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_DWARF_1, PLAYER_1_ID);
+        state::GameInstance *warrior2 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_HUMAN_1, PLAYER_2_ID);
 
-        // tests int Scene::render(int* warriors_arr)
-        // s.render(warriors_arr);
+        state::BuildingFactory *buildingFactory = new state::BuildingFactory();
+        state::GameInstance *HQ = buildingFactory->createGI((state::GameInstanceTypeID)6, PLAYER_1_ID);
+        state::GameInstance *HQ2 = buildingFactory->createGI((state::GameInstanceTypeID)6, PLAYER_1_ID);
+        state::GameInstanceManager *gim_building = new state::GameInstanceManager("GIM_2", 2, PATH_UNITS);
 
-        // tests int Scene::render2(int* arr)
-        int background_arr[32 * 32] = {0};
-        render::Layer background_l(0, "res/Tileset/png/Static_Global_Tileset_(32).png", sf::Vector2u(32, 32), background_arr, 16, 16);
-        render::Layer warrior_l(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16);
-        s.add(background_l);
-        s.add(warrior_l);
+        state::GameInstanceManager *gim_warriors = new state::GameInstanceManager("GIM_1", 3, PATH_UNITS);
 
-        std::thread t(&render::Scene::render2, &s);
-        printf("------------------------------\n");
-        int i = 0;
+        // gim_warriors->add(warrior1);
+        // gim_warriors->add(warrior2);
+        gim_warriors->add(HQ);
+        gim_warriors->add(HQ2);
+
+        // warrior1->assignPosition(0, 0);
+        // warrior2->assignPosition(15, 15);
+        HQ->assignPosition(1, 1);
+        HQ2->assignPosition(9, 17);
+
+        for (int i = 0; i < 10; i++)
+        {
+            state::GameInstance *w1 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_DWARF_1, PLAYER_1_ID);
+            gim_warriors->add(w1);
+            w1->assignPosition(i, 2);
+
+            state::GameInstance *w2 = unitfact->createGI((state::GameInstanceTypeID)WARRIOR_GOLEM_2, PLAYER_2_ID);
+            gim_warriors->add(w2);
+            w2->assignPosition(i+2, 16);
+        }
+
+        // state.addGIM("buildings", gim_building);
+        state.addGIM("units", gim_warriors);
+
+        std::thread render_thread(&render::Scene::render2, &s);
+        state.turn = 0;
+
+        state::Player P1(PLAYER_1_ID);
+        state::Player P2(PLAYER_2_ID);
+        state.activePlayer = &P1;
+
+        state.updateRender = true;
+
         while (1)
         {
-            printf("[MAIN] add start\n");
 
-            // update new positions with engine
-            warrior1->assignPosition(4, i%16);
-            i += 1;
-            gim->getArrayFromElementsIP(warriors_arr, sizeMap);
+            int current_turn = state.turn;
 
-            // add map and other layers
-            s.add(background_l);
-            s.add(render::Layer(1, "res/Tileset/png/Unit_Map_(32).png", sf::Vector2u(32, 32), warriors_arr, 16, 16));
+            while (current_turn == state.turn)
+            {
+                state.updateRender = true;
 
-            printf("[MAIN] add end\n");
-            s.updateLayout = true;
-            sleep(2);
+                // std::cout << "[MAIN GAME] " << state.turn;
 
-            warriors_arr[0] = 0;
+                // BEFORE TURN
+
+                // 1 - choose active player
+                if (state.turn % 2 == 0)
+                {
+                    std::cout << "PLAYER 1 TURN" << std::endl;
+                    state.activePlayer = &P1;
+                }
+                else
+                {
+                    std::cout << "PLAYER 2 TURN" << std::endl;
+                    state.activePlayer = &P2;
+                }
+
+                // TURN BEGIN
+
+                // ProcessTurnBegin() from Tim
+                // state.ProcessTurnBegin();
+                state.prevSelectedGI = {-1, -1};
+                std::vector<int> prev = state.prevSelectedGI;
+
+                // wait for two coord inputs from render
+                while (prev[0] == state.prevSelectedGI[0] && prev[1] == state.prevSelectedGI[1])
+                // while getPrevSelect doesnt change -> wait
+                {
+                }
+                state.updateRender = true;
+
+                auto sel = std::make_shared<SelectionCommand>(state.getPrevSelect()[1], state.getPrevSelect()[0]);
+                engine.addCommand(sel);
+                engine.processCommands();
+
+                std::cout << "[MAIN] x : " << state.getPrevSelect()[0] << " y: " << state.getPrevSelect()[1] << std::endl;
+                std::cout << "[WARRIOR 1] x : " << warrior1->getPosition()[0] << " y: " << warrior1->getPosition()[0] << std::endl;
+
+                // MOVE
+                auto move = std::make_shared<MoveCommand>();
+                engine.addCommand(move);
+                engine.processCommands();
+
+                // warrior1->assignPosition(state.getPrevSelect()[0], state.getPrevSelect()[1]);
+                state.updateRender = true;
+                std::cout << "[WARRIOR 1 AFTER] x : " << warrior1->getPosition()[0] << " y: " << warrior1->getPosition()[0] << std::endl;
+
+                // ATTACK
+
+                auto attack = std::make_shared<AttackCommand>();
+                engine.addCommand(attack);
+                engine.processCommands();
+
+                state.updateRender = true;
+            }
         }
-        // test state::GameInstanceManager::GameInstanceManager (std::string name, int id)
-        // test reference to own GIM
-        state::GameInstanceManager *gim2 = new state::GameInstanceManager("GIM_0", 3, ""); // unit
-
-        for (state::GameInstanceManager *g : gim->_GameManagers)
-        {
-            cout << g->getSize() << endl;
-        }
-        t.join();
+        render_thread.join();
     }
 
     return 0;

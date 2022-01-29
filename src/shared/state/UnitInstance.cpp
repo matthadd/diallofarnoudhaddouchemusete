@@ -7,6 +7,7 @@ namespace state{
         _id = ++_idCounter;
         _typeID = gameInstanceTypeID;
         _playerID = playerID;
+        this->assignPosition(0,0);
         //init();
 
     }

@@ -1,6 +1,7 @@
 #include "GameInstance.h"
 #include <SFML/Graphics.hpp>
-
+#include "iostream"
+using namespace std;
 using namespace sf;
 namespace state
 {
@@ -10,7 +11,7 @@ namespace state
         _name = name;
         _id = ++_idCounter; 
         _typeID = typeID;
-        _position = std::vector<int> {0, 0};
+        // _position = std::vector<int> {0, 0};
     }
 
     GameInstance::GameInstance(GameInstanceTypeID gameInstanceTypeID)
@@ -31,7 +32,9 @@ namespace state
 
     void GameInstance::assignPosition(int x, int y)
     {
-        _position = std::vector<int> {x, y};
+        // _position = std::vector<int> {x, y};
+        _position[0] = x;
+        _position[1] = y;
     }
 
     int GameInstance::getID()
