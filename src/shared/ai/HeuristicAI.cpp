@@ -16,20 +16,47 @@ namespace ai{
         engine.processCommands();
     }
 
-    void HeuristicAI::GenCommands (engine::Engine& engine, state::State& state, int playerID) 
+    void HeuristicAI::GenCommands (engine::Engine& engine, state::State *state, int playerID) 
     {
         PathsMap firstpaths(NULL,_height,_length);
         firstpaths.init();
-        for (auto ally : state.findPlayerAllies(state.GetActivePlayer()->getID()))
+        for (auto ally : state->findPlayerAllies(state->playing))
         {
-            PathsMap* paths = new PathsMap((state::UnitInstance*) ally, _length, _height); 
-            if(paths->findClosestEnemy(state) != std::pair<int,int>(-1, -1))
+            if(ally->getTypeID()>6)
             {
-                engine.addCommand(std::make_shared<engine::SelectionCommand>(ally->getX(), ally->getY()));
-                Position bestPosition = paths->bestPosition(state);
-                engine.addCommand(std::make_shared<engine::MoveCommand>(bestPosition.getX(), bestPosition.getY()));
+                PathsMap* paths = new PathsMap((state::UnitInstance*) ally, _length, _height); 
+                auto closestEnemy = paths->findClosestEnemy(*state);
+                if( closestEnemy != std::pair<int,int>(-1, -1))
+                {
+                    //sélection de l'unité
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(ally->getX(), ally->getY()));
+                    Position* bestPosition = paths->giveBestPosition(*state, closestEnemy);
+
+                    // si l'unité ennemi est à portée d'attaque
+                    if(paths->distance(closestEnemy, std::pair<int, int>(ally->getX(), ally->getY()))==1 && 
+                        state->getGI(closestEnemy.first, closestEnemy.second)->getTypeID()>6)
+                    {
+                        engine.addCommand(std::make_shared<engine::SelectionCommand>(closestEnemy.first, closestEnemy.second));
+                        engine.addCommand(std::make_shared<engine::AttackCommand>());
+                    }
+
+                    //si le bâtiment ennemi est à  1 case
+                    else if(paths->distance(closestEnemy, std::pair<int, int>(ally->getX(), ally->getY()))<=1 && 
+                            state->getGI(closestEnemy.first, closestEnemy.second)->getTypeID()<7)
+                    {
+                        engine.addCommand(std::make_shared<engine::SelectionCommand>(closestEnemy.first, closestEnemy.second));
+                        engine.addCommand(std::make_shared<engine::MoveCommand>());
+                    }
+                    else{
+                        engine.addCommand(std::make_shared<engine::SelectionCommand>(bestPosition->getX(), bestPosition->getY()));
+                        engine.addCommand(std::make_shared<engine::MoveCommand>());
+                    }
+                    run(engine);
+                }
             }
         }
+        //on termine le tour
+        engine.addCommand(std::make_shared<engine::EndTurnCommand>((state::Playing) playerID));
     }
 
     

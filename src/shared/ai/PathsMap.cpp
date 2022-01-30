@@ -24,7 +24,7 @@ PathsMap::PathsMap (state::UnitInstance* unit, int height, int width)
 PathsMap::~PathsMap () {}
 
 
-std::vector<Position> PathsMap::getReachablePositions ()
+std::vector<Position*> PathsMap::getReachablePositions ()
 {
     Position unitPosition(_unit->getX(), _unit->getY());
     for (auto pairPosition : _map)
@@ -32,7 +32,7 @@ std::vector<Position> PathsMap::getReachablePositions ()
         Position* pos = new Position(pairPosition.first, pairPosition.second);
         if (distance(*pos, unitPosition) <= _unit->getMoveRange())
         {
-            _reachablePositions.push_back(*pos);
+            _reachablePositions.push_back(pos);
         }
         else
         {
@@ -54,9 +54,9 @@ double PathsMap::distance (std::pair<int,int> a, std::pair<int,int> b) const
 }
 
 void PathsMap::init()
-{
-    for (size_t i = 0; i < _width - 1; i++)
-        for (size_t j =0 ; j < _height - 1; j++)
+{ 
+    for (size_t i = 0; i < (size_t) _width - 1; i++)
+        for (size_t j =0 ; j < (size_t) _height - 1; j++)
         {
             _map.push_back(std::pair<int,int>(i, j));
         }
@@ -72,26 +72,27 @@ std::pair<int,int> PathsMap::findClosestEnemy(state::State& state)
         if (double dist = distance(enemyPosition, unitPosition)<minDist)
         {
             minDist = dist;
+            std::cout << "la position de l'ennemi le plus proche est : " << enemyPosition.first << "," << enemyPosition.second << endl;
             closestEnemyPosition = enemyPosition;
         }
     }
     return closestEnemyPosition;
 }
 
-Position PathsMap::bestPosition(state::State& state)
+Position* PathsMap::giveBestPosition(state::State& state, std::pair <int,int> closestEnemy)
 {
-    Position bestPosition;
-    std::pair<int,int> closest = findClosestEnemy(state);
+    Position* bestPosition;
     int value;
-    if (state.getGI(closest.first, closest.second)->getTypeID() > 6)
+    auto enemy = state.getGI(closestEnemy.first, closestEnemy.second);
+    if (enemy->getTypeID() > 6)
     {
         value = ENEMY_COEF;
     }
-    else if (state.getGI(closest.first, closest.second)->getTypeID() == state::GameInstanceTypeID::HEADQUARTER)
+    else if (enemy->getTypeID() == state::GameInstanceTypeID::HEADQUARTER)
     {
         value = HQ_COEF;
     }
-    else if (state.getGI(closest.first, closest.second)->getTypeID() == 4 || 5 || 6)
+    else if (enemy->getTypeID() == 4 || 5 || 6)
     {
         value = BUILDING_COEF;
     }
@@ -99,21 +100,22 @@ Position PathsMap::bestPosition(state::State& state)
     int valueMax = 0;
     for (auto position : getReachablePositions())
     {
- 
-        if(double dist = distance (position, Position(closest.first, closest.second)) != 0)
+        double dist = distance (*position, Position(closestEnemy.first, closestEnemy.second));
+        if(dist != 0)
         {
-            position.setScore (value/dist);
+            position->setScore (value/dist);
         }    
         else
         {
             if(value == BUILDING_COEF || HQ_COEF)
             {
-                position.setScore(value);
+                position->setScore(value);
             }               
         }
-        if(position.getScore()>valueMax)
-            valueMax = position.getScore();
+        if(position->getScore()>valueMax){
+            valueMax = position->getScore();
             bestPosition = position;
+        }
     }
 
     return bestPosition;

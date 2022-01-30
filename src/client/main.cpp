@@ -51,14 +51,77 @@ int main(int argc, char *argv[])
 
         // Génération des commandes de l'IA aléatoire
         state.selectObjective(OtherUnit->getPosition());
-        randomAI.GenCommands(engine, state, ai->getID());
+        randomAI.GenCommands(engine, &state, ai->getID());
         randomAI.run(engine);
 
         cout << "The new unit position (" << AIunit->getX()
              << "," << AIunit->getY() << ")" << endl;
     }
-    else
+    else if (argc == 2 && argv[1] == string("heuristic"))
     {
+        #define HEURISTIC_ID 1
+        #define RANDOM_ID 2
+        #define LENGTH 4
+        #define HEIGHT 4
+        int winCounter_H = 0;
+        int winCounter_R = 0;
+
+        for(int i =0; i<20; i++)
+        {
+            State state;
+            state.init();
+            //Tests de l'IA Heuristic sur une petite map 4*4
+            state::State heuristicAiState;
+            //création de l'ia heuristique :
+            ai::HeuristicAI heuristicAi(4,4);
+            Player hAi("Heuristic AI", "red", HEURISTIC_ID);
+            //création de l'ia random :
+            ai::RandomAI randomAi(4,4);
+            Player rAi("Random AI", "blue", RANDOM_ID);
+
+            state.Players.push_back(&hAi);
+            state.Players.push_back(&rAi);
+
+            //création des unités et bâtiments
+            state.addGIM("units", new GameInstanceManager("units", 0)); 
+            state.addGIM("buildings", new GameInstanceManager("building", 1));
+
+            //mise en place des quartiers généraux
+            BuildingFactory bf;
+            auto hqH = (BuildingInstance*) bf.createGI(HEADQUARTER, HEURISTIC_ID);
+            auto hqR = (BuildingInstance*) bf.createGI(HEADQUARTER, RANDOM_ID);
+
+            hqH->assignPosition(0,3);
+            hqR->assignPosition(3,0);
+
+            //mise en place des unités
+
+            UnitFactory uf;
+            auto batH = (UnitInstance*) uf.createGI(BAT, HEURISTIC_ID);
+            auto batR = (BuildingInstance*) uf.createGI(BAT, RANDOM_ID);
+            batH->assignPosition(0,2);
+            batR->assignPosition(1,3);
+
+            Engine engine(&state);
+            
+            while(state.playing != END_GAME)
+            {
+                heuristicAi.GenCommands(engine, &state, HEURISTIC_ID);
+                heuristicAi.run(engine);
+                randomAi.GenCommands(engine, &state, RANDOM_ID);
+                randomAi.run(engine);
+                }
+
+                if(state.winner == PLAYER_1)
+                winCounter_H++;
+                else if(state.winner == PLAYER_2)
+                winCounter_R++; 
+                }
+                std::cout << "heuristic win rate : " << winCounter_H/20 << std::endl;
+                std::cout << "random win rate : " << winCounter_R/20 << std::endl;
+            }
+    else{
+        
         state::State state;
         render::Scene s(render::MENU, &state, 32, 32);
         engine::Engine engine(&state);

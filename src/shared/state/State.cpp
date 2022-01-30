@@ -1,6 +1,8 @@
 #include "State.h"
 #include <iostream>
 #include <map>
+#include "BuildingInstance.h"
+#include "UnitInstance.h"
 
 namespace state
 {
@@ -10,7 +12,11 @@ namespace state
 
     state::Player *state::State::GetActivePlayer()
     {
-        return Players[turn % Players.size()];
+        if(Players.size() == 0){
+            throw std::logic_error("There is no player to play");
+        }
+        else
+            return Players[turn % Players.size()];
     }
 
     Playing state::State::whoIsPlaying() const {
@@ -21,29 +27,62 @@ namespace state
         return turn;
     }
 
-    void state::State::endTurn(int playerID)
+    void state::State::endTurn()
     {
-        turn++;
         if(playing != NO_PLAYER && playing != END_GAME)
         {
-            if(playerID == GetActivePlayer()->getID()){
-                turn++;
-                if (playerID == PLAYER_1)
-                {
-                    playing = PLAYER_2;
+            try
+            {
+                if(playing == GetActivePlayer()->getID()){
+                    turn++;
+                    if (playing == PLAYER_1)
+                    {
+                        playing = PLAYER_2;
+                    }
+                    else if (playing == PLAYER_2)
+                    {
+                        playing = PLAYER_1;
+                    }
                 }
-                else if (playerID == PLAYER_2)
-                {
-                    playing = PLAYER_1;
+                else{
+                    throw std::runtime_error("it is not your turn !");
                 }
             }
-            else{
-                throw std::runtime_error("it is not your turn !");
+            catch(const std::logic_error& e)
+            {
+                std::cerr << e.what() << '\n';
+                turn++;
             }
         }           
         else
         {
             throw std::logic_error("No one can currently play");
+        }
+        onTurnEnd();
+        //endGameCheck();
+    }
+
+    void state::State::onTurnEnd()
+    {
+        for(auto building : _GImanagers["buildings"]->getGameInstances())
+        {
+            auto unit = findUnit(building->getX(), building->getY());
+            auto building2 = (BuildingInstance*) building;
+            if(unit)
+                if(unit->getPlayerID() != building->getPlayerID())
+                {  
+                    building2->capturing(unit->getPlayerID());
+                    building2->addCaptureCounter();
+                }
+            else  
+                building2->resetCaptureCounter();  
+
+            /*//checking endgame           
+            if(building2->getPlayerID()==HEADQUARTER && building2->wasCaptured()){
+                this->winner = (Playing) unit->getPlayerID();
+                this->playing = (Playing) unit->getPlayerID();
+            }*/
+
         }
     }
 
@@ -54,6 +93,7 @@ namespace state
         instance = 0;
         status = 0;
         playing = PLAYER_1;
+        isOver =false;
         printf("Initialisation done ... \n");
     }
     void state::State::init(Map *map)
@@ -62,6 +102,8 @@ namespace state
         turn = 0;
         instance = 0;
         status = 0;
+        playing = PLAYER_1;
+        isOver =false;
     }
 
     void ProcessTurnBegin()
@@ -103,12 +145,26 @@ namespace state
         prevSelectedGI = unitPos;
         for (auto elt : _GImanagers)
         {
-            elt.second->selectSource(unitPos, activePlayer->getID());
+            try
+            {
+                elt.second->selectSource(unitPos, GetActivePlayer()->getID());
+            }
+            catch(const std::exception& e)
+            {
+                if(e.what() == std::string("There is no player to play")){
+                    elt.second->selectSource(unitPos, playing);
+                }
+                else{
+                    std::cerr << e.what() << '\n';
+                }
+                return;
+            }
         }
     }
 
     GameInstance *state::State::getGI(int x, int y)
     {
+
         std::vector<int> vec = {x, y};
         for (auto elt : _GImanagers)
         {
@@ -121,17 +177,54 @@ namespace state
                 }
             }
         }
+    }
+
+    UnitInstance* state::State::findUnit(int x, int y)
+    {
+        std::vector<int> vec = {x,y};
+        for(auto gi : _GImanagers["units"]->getGameInstances())
+        {
+            if(gi->getPosition() == vec)
+                {
+                    auto unit = (UnitInstance*) gi;
+                    return unit;
+                }
+        }
         return NULL;
     }
 
-    std::vector<GameInstance *> state::State::findPlayerAllies(int playerID)
+    BuildingInstance* state::State::findBuilding(int x, int y)
     {
-        std::vector<GameInstance *> allies;
-        for (auto elt : _GImanagers["units"]->getGameInstances())
+        std::vector<int> vec = {x,y};
+        for(auto gi : _GImanagers["buildings"]->getGameInstances())
         {
-            if (elt->getPlayerID() == playerID)
+            if(gi->getPosition() == vec)
+                {
+                    auto building = (BuildingInstance*) gi;
+                    return building;
+                }
+        }
+        return NULL;
+    }
+
+    bool state::State::comparePlayerID(GameInstance* gi1, GameInstance* gi2){
+        if(gi1->getPlayerID() == gi2->getPlayerID())
+            return true;
+        return false;
+    }
+
+    std::vector<GameInstance*> state::State::findPlayerAllies(int playerID)
+    {
+        std::vector<GameInstance*> allies;
+        for(auto elt : _GImanagers)
+        {
+            for(auto gi : elt.second->getGameInstances())
             {
-                allies.push_back(elt);
+                if(gi->getPlayerID() == playerID)
+                {
+                    auto gi2 = gi;
+                    allies.push_back(gi2);
+                }
             }
         }
         return allies;
@@ -139,23 +232,51 @@ namespace state
 
     std::vector<std::pair<int, int>> state::State::showEnemies()
     {
-        std::vector<std::pair<int, int>> enemies;
-        for (auto gi : _GImanagers["units"]->getGameInstances())
-        {
-            if (gi->getPlayerID() != GetActivePlayer()->getID())
+        std::vector< std::pair<int, int>> enemies;
+        for(auto elt : _GImanagers){
+            for(auto gi : elt.second->getGameInstances())
             {
-                enemies.push_back(std::pair<int, int>(gi->getX(), gi->getY()));
-            }
-        }
-        for (auto gi : _GImanagers["buildings"]->getGameInstances())
-        {
-            if (gi->getPlayerID() != GetActivePlayer()->getID())
-            {
-                enemies.push_back(std::pair<int, int>(gi->getX(), gi->getY()));
+                if(gi->getPlayerID() != (int) playing)
+                {
+                    enemies.push_back(std::pair<int,int>(gi->getX(),gi->getY()) );
+                }
             }
         }
         return enemies;
     }
+
+    void state::State:: captureBuilding(GameInstance* unit, GameInstance* building_gi){
+        if(unit->getTypeID()>6){
+            state::BuildingInstance* building = (BuildingInstance*) building_gi;
+            building->capturing(unit->getPlayerID());
+            building->addCaptureCounter();
+        }
+        else
+            throw std::runtime_error("Only units can capture a building");
+    }
+
+    void state::State:: endGameCheck()
+    {
+        /*for(auto building : _GImanagers["building"]->getGameInstances())
+        {
+            if(building->getTypeID() == HEADQUARTER)
+                {
+                    auto hq = (BuildingInstance*) building;
+                    if(hq->wasCaptured()){
+                        isOver = true;
+                        playing = END_GAME;
+                        if(hq->getPlayerID()== PLAYER_1)
+                            winner = PLAYER_2;
+                        else
+                            winner = PLAYER_1;
+                    }
+                        
+                }
+        }*/
+    }
+    /*
+    SUBSCRIBERS ??*/
+
 
     void state::State::cleanUp(GameInstance *gi)
     {

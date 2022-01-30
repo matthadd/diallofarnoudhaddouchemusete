@@ -20,10 +20,27 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
   BOOST_CHECK(1);
 }
 
-BOOST_AUTO_TEST_CASE(TestStateEngine)
+BOOST_AUTO_TEST_CASE(Move)
 {
   State state;
-  state.init();
+  state.addGIM("units", new GameInstanceManager("units", UNIT_LAYER_ID));
+  UnitFactory uf;
+  auto gi = uf.createGI(DWARF, PLAYER_1);
+  state.addGI("units", gi);
+  gi->assignPosition(0,0);
+  Engine engine(&state);
+  engine.addCommand(std::make_shared<SelectionCommand>(gi->getX(), gi->getY()));
+  engine.addCommand(std::make_shared<SelectionCommand>(11, 11));
+  engine.addCommand(std::make_shared<MoveCommand>());
+  engine.processCommands();
+  auto vec = std::vector<int> {11,11};
+  BOOST_CHECK(gi->getPosition() == vec);
+}
+
+BOOST_AUTO_TEST_CASE(TestStateEngine)
+{
+  State* state = new State();
+  state->init();
 
   //création dest joueurs 
   Player p1("player 1","red");
@@ -34,12 +51,12 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   p2.setID(2);
   p1.credit(100);
 
-  state.Players.push_back(&p1);
-  state.Players.push_back(&p2);
+  state->Players.push_back(&p1);
+  state->Players.push_back(&p2);
 
-  BOOST_CHECK_EQUAL(state.Players.size(), 2);
+  BOOST_CHECK_EQUAL(state->Players.size(), 2);
 
-  BOOST_CHECK_EQUAL(state.GetActivePlayer()->getID(), 1);
+  BOOST_CHECK_EQUAL(state->GetActivePlayer()->getID(), 1);
 
   //création des unités
   GameInstance *dwarf1 = new GameInstance("Dwarf_1", GameInstanceTypeID::DWARF);
@@ -69,45 +86,46 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
   unitGIM->add(dwarf1);
   unitGIM->add(dwarf2);
 
-  state.addGIM("buildings", buildingGIM);
-  state.addGIM("units", unitGIM);
+  state->addGIM("buildings", buildingGIM);
+  state->addGIM("units", unitGIM);
 
-  BOOST_CHECK_EQUAL(state._GImanagers.size(), 2);
+  BOOST_CHECK_EQUAL(state->_GImanagers.size(), 2);
 
-  state.addGI("units", dwarf3);
+  state->addGI("units", dwarf3);
 
   BOOST_CHECK_EQUAL(unitGIM->getGameInstances().size(), 3);
 
   //Partie engine
-  Engine engine(&state);
+  Engine engine(state);
   auto selecDwarf1 = std::make_shared<SelectionCommand>(12, 15);
 
   //auto attackDwarf1 = std::make_shared<AttackCommand>();
-  auto moveDwarf1 = std::make_shared<MoveCommand>(13, 15);
+  auto selecPos1 = std::make_shared<SelectionCommand>(13, 15);
+  auto moveDwarf1 = std::make_shared<MoveCommand>();
   auto selecbuild = std::make_shared<SelectionCommand>(3, 3);
   auto buildDwarf1 = std::make_shared<BuildUnitCommand>(HQ1->getID(), GameInstanceTypeID::DWARF);
 
   //test de la séléction
   engine.addCommand(selecDwarf1);
   engine.processCommands();
-  BOOST_CHECK_EQUAL(state.getSource()->getID(), dwarf1->getID());
+  BOOST_CHECK_EQUAL(state->getSource()->getID(), dwarf1->getID());
 
   //test du déplacement 
   engine.addCommand(moveDwarf1);
   engine.processCommands();
-  BOOST_CHECK_EQUAL(state.getSource()->getX(), 13);
+  BOOST_CHECK_EQUAL(state->getSource()->getX(), 13);
 
   //test de sélection du bâtiment
   engine.addCommand(selecbuild);
   engine.processCommands();
-  BOOST_CHECK_EQUAL(state.getSource()->getID(), HQ1->getID());
+  BOOST_CHECK_EQUAL(state->getSource()->getID(), HQ1->getID());
 
   //test de la production d'unité
   engine.addCommand(buildDwarf1);
   engine.processCommands();
-  BOOST_CHECK_EQUAL(state._GImanagers["units"]->getGameInstances().size(), 4);
+  BOOST_CHECK_EQUAL(state->_GImanagers["units"]->getGameInstances().size(), 4);
   
-  BOOST_CHECK_EQUAL(state.GetActivePlayer()->balance(), 50);
+  BOOST_CHECK_EQUAL(state->GetActivePlayer()->balance(), 50);
 
   //test de la commande d'attaque 
 
@@ -120,11 +138,11 @@ BOOST_AUTO_TEST_CASE(TestStateEngine)
  
   gimTest->add(dw1);
   gimTest->add(dw2);
-  gimTest->selectSource(dw1->getPosition());
+  gimTest->selectSource(dw1->getPosition(), PLAYER_1);
   gimTest->selectObjective(dw2->getPosition());
     // test instance state  
   state::State state2;
-  state.addGIM("units",gimTest);
+  state->addGIM("units",gimTest);
   /*engine::AttackCommand* attck = new engine::AttackCommand();
   attck->process(state2);
   state::UnitInstance* ennemy= (state::UnitInstance*)dw2;
@@ -171,8 +189,12 @@ BOOST_AUTO_TEST_CASE(MoveCommandTest)
   //création du bâtiment
   BuildingFactory bf;
   BuildingInstance* HQ = (BuildingInstance*) bf.createGI(HEADQUARTER, PLAYER_1);
+  BuildingInstance* TC = (BuildingInstance*) bf.createGI(TRAININGCAMP, PLAYER_2);
   state_ptr->addGIM("buildings", new GameInstanceManager("buildings", BUILDING_LAYER_ID));
+  state_ptr->addGI("buildings", HQ);
+  state_ptr->addGI("buildings", TC);
   HQ->assignPosition(2,0);
+  TC->assignPosition(3,0);
 
   //création des unités
   UnitFactory uf;
@@ -187,32 +209,57 @@ BOOST_AUTO_TEST_CASE(MoveCommandTest)
   //création des commandes
   Engine engine(state_ptr);
   std::shared_ptr<SelectionCommand> s1(new SelectionCommand(cyclop->getX(), cyclop->getY()));
-  std::shared_ptr<MoveCommand> mv1(new MoveCommand(dwarf->getX(), dwarf->getY()));
+  std::shared_ptr<SelectionCommand> s2(new SelectionCommand(dwarf->getX(), dwarf->getY()));
+  std::shared_ptr<MoveCommand> mv1(new MoveCommand());
+  std::shared_ptr<SelectionCommand> s3(new SelectionCommand(HQ->getX(), HQ->getY()));
+  std::shared_ptr<MoveCommand> mv2(new MoveCommand());
+  std::shared_ptr<SelectionCommand> s4(new SelectionCommand(TC->getX(), TC->getY()));
+  std::shared_ptr<MoveCommand> mv3(new MoveCommand());
 
   //test du conflit de deux unité sur la même case
   engine.addCommand(s1);
+  engine.addCommand(s2);
   engine.addCommand(mv1);
   engine.processCommands();
   BOOST_CHECK(cyclop == state_ptr->getSource());
   BOOST_CHECK_EQUAL(cyclop->getX(),1);
 
   //test avec un bâtiment
-  std::shared_ptr<MoveCommand> mv2(new MoveCommand(HQ->getX(), HQ->getY()));
+  engine.addCommand(s1);
+  engine.addCommand(s3);
   engine.addCommand(mv2);
   engine.processCommands();
   BOOST_CHECK_EQUAL(cyclop->getX(),2);
+
+  engine.addCommand(s1);
+  engine.addCommand(s4);
+  engine.addCommand(mv3);
+  engine.processCommands();
+  BOOST_CHECK_EQUAL(cyclop->getX(),TC->getX());
 }
 
 BOOST_AUTO_TEST_CASE(EndTurnTest){
   State *state_ptr = new State();
-  state_ptr->init();
+  //initialisation
   Player p1("player 1","red");
   p1.setID((int) PLAYER_1);
   Player p2("player 2","blues");
   p2.setID((int) PLAYER_2);
   state_ptr->Players.push_back(&p1);
   state_ptr->Players.push_back(&p2);
+  state_ptr->init();
 
+  //mise en place du plateau
+  state_ptr->addGIM("units",new GameInstanceManager("units", UNIT_LAYER_ID));
+  state_ptr->addGIM("buildings",new GameInstanceManager("buildings", BUILDING_LAYER_ID));
+  BuildingFactory bf;
+  UnitFactory uf;
+  auto u = (UnitInstance*) uf.createGI(DWARF, PLAYER_1);
+  auto b = (BuildingInstance*) bf.createGI(MANAMINE, PLAYER_2);
+  state_ptr->addGI("units", u);
+  state_ptr->addGI("buildings", b);
+  u->assignPosition(0,0);
+  b->assignPosition(0,0);
   BOOST_CHECK_EQUAL(state_ptr->whoIsPlaying(), PLAYER_1);
   BOOST_CHECK_EQUAL(state_ptr->showTurnNumber(), 0);
   

@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include <queue>
+#include <deque>
 #include "engine.h"
 #include <iostream>
 #include "Command.h"
@@ -16,7 +16,7 @@ namespace engine
 
     void Engine::addCommand(std::shared_ptr<Command> ptr_incomingCmd)
     {
-        _commandQueue.push_back(ptr_incomingCmd);
+        _commandQueue.push(ptr_incomingCmd);
     }
 
     void Engine::processCommands()
@@ -27,13 +27,13 @@ namespace engine
             {
                 _commandQueue.front()->process(_currentState);
             }
-            catch(const std::runtime_error& e)
+            catch(std::exception& e)
             {
                 std::cerr << e.what() << '\n';
-                _commandQueue.pop_front();
+                _commandQueue.pop();
                 continue;
             }
-            _commandQueue.pop_front();    
+            _commandQueue.pop();    
         }
     }
 

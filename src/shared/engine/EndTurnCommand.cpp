@@ -12,7 +12,7 @@ namespace engine{
     {
         // verifying the rights of the command user
         if(state->whoIsPlaying() == _playing){
-            state->endTurn(_playing);
+            state->endTurn();
             std::cout << "turn  : " << state->showTurnNumber() << "\n";
             return true;
         }

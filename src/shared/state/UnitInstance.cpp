@@ -82,4 +82,9 @@ namespace state{
         return _moveRange;
     }
 
+    GameInstanceTypeID state::UnitInstance::getTypeID()
+    {
+        return _typeID;
+    }
+
 };

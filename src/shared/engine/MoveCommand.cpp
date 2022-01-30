@@ -7,7 +7,8 @@ namespace engine
 
     MoveCommand::MoveCommand()
     {
-
+        _newPositionX = 0;
+        _newPositionY = 0;
         _commandTypeID = (CommandTypeID)2;
     }
     MoveCommand::MoveCommand(int newPositionX, int newPositionY)
@@ -29,8 +30,8 @@ namespace engine
             if (_giSource == NULL)
                 return false;
 
-            int sourceX = state->getSource()->getPosition()[0];
-            int sourceY = state->getSource()->getPosition()[1];
+            int sourceX = state->getSource()->getX();
+            int sourceY = state->getSource()->getY();
             int targetX = state->getPrevSelect()[0];
             int targetY = state->getPrevSelect()[1];
 

@@ -29,9 +29,9 @@ namespace ai
     }
 
     // Méthode de génération des commandes aléatoires
-    void RandomAI::GenCommands(engine::Engine &engine, state::State &state, int playerID)
+    void RandomAI::GenCommands(engine::Engine &engine, state::State *state, int playerID)
     {
-        for (state::GameInstance *GI : state._GImanagers["units"]->getGameInstances())
+        for (state::GameInstance *GI : state->_GImanagers["units"]->getGameInstances())
         {
             if (GI->getPlayerID() == playerID && GI->getTypeID() > 6)
             {
@@ -42,13 +42,24 @@ namespace ai
                     engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
 
                     //commande de déplacement
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(11, 11));
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(GenRand(_height), GenRand(_length)));
+                    engine.addCommand(std::make_shared<engine::MoveCommand>());
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
                     << GI->getPlayerID() << ") a été déplacée" << std::endl;
                 }
                 else if(rand_value == 2){
                     //comande de sélection
                     engine.addCommand(std::make_shared<engine::SelectionCommand>(GI->getX(), GI->getY()));
+
+                    int x = GenRand(_height);
+                    int y = GenRand(_length);
+                    if(auto gi = state->getGI(x,y))
+                    {
+                        if(gi->getTypeID() > 6){
+                            engine.addCommand(std::make_shared<engine::SelectionCommand>(x, y));
+                            engine.addCommand(std::make_shared<engine::AttackCommand>());
+                        }
+                    }
 
                     //commande d'attaque (à revoir une fois la sélection de l'objective possible avec
                     //la commande de sélection)
@@ -62,7 +73,8 @@ namespace ai
                     std::cout << "l'unité a été sélectionnée pour être déplacée" << std::endl;
 
                     //commande de déplacement
-                    engine.addCommand(std::make_shared<engine::MoveCommand>(11, 11));
+                    engine.addCommand(std::make_shared<engine::SelectionCommand>(GenRand(_height), GenRand(_length)));
+                    engine.addCommand(std::make_shared<engine::MoveCommand>());
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
                     << GI->getPlayerID() << ") a été déplacée" << std::endl;
 
@@ -72,12 +84,23 @@ namespace ai
 
                     //commande d'attaque (à revoir une fois la sélection de l'objective possible avec
                     //la commande de sélection)
+                    int x = GenRand(_height);
+                    int y = GenRand(_length);
+                    if(auto gi = state->getGI(x,y))
+                    {
+                        if(gi->getTypeID() > 6){
+                            engine.addCommand(std::make_shared<engine::SelectionCommand>(x, y));
+                            engine.addCommand(std::make_shared<engine::AttackCommand>());
+                        }
+                    }
                     /*engine.addCommand(std::make_shared<engine::AttackCommand>());
                     std::cout << "l'unité (id = " << GI->getID() << ") de l'IA (player_ID = " 
                     << GI->getPlayerID() << ") a attaqué" << std::endl;*/
                 }
             }
+            run(engine);
         }
+        engine.addCommand(std::make_shared<engine::EndTurnCommand>((state::Playing) playerID));
     }
 
     void RandomAI::run(engine::Engine &engine)
